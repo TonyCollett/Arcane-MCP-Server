@@ -200,9 +200,26 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
       },
     },
     toolHandler(async ({ environmentId, name, image, ports, env, volumes, restart, network, command }, client) => {
+      // Map the friendly inputs onto Arcane's ContainerCreate shape:
+      // env/volumes are string arrays, ports go through hostConfig.portBindings ("80/tcp" → [{ hostPort }])
+      const portBindings: Record<string, Array<{ hostPort: string }>> = {};
+      for (const p of ports ?? []) {
+        const key = `${p.containerPort}/${p.protocol ?? "tcp"}`;
+        (portBindings[key] ??= []).push({ hostPort: p.hostPort !== undefined ? String(p.hostPort) : "" });
+      }
+
       const response = await client.post<{ data: { id: string; name: string } }>(
         `/environments/${environmentId}/containers`,
-        { name, image, ports, env, volumes, restartPolicy: restart, network, command }
+        {
+          name,
+          image,
+          env: env ? Object.entries(env).map(([key, value]) => `${key}=${value}`) : undefined,
+          volumes: volumes?.map((v) => `${v.hostPath}:${v.containerPath}${v.readOnly ? ":ro" : ""}`),
+          restartPolicy: restart,
+          networks: network ? [network] : undefined,
+          command,
+          hostConfig: ports?.length ? { portBindings } : undefined,
+        }
       );
 
       return `Container created successfully!\n  Name: ${response.data.name}\n  ID: ${response.data.id}`;

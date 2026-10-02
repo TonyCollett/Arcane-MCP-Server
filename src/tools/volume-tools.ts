@@ -7,8 +7,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
-import { formatSize, formatSizeCompact, formatSizeMB, validatePath } from "../utils/format.js";
-import type { Volume, FileEntry, Backup } from "../types/arcane-types.js";
+import { formatSize, formatSizeCompact, formatSizeMB, toWorkspacePath, validatePath } from "../utils/format.js";
+import type { Volume, Backup, Workspace, WorkspaceFileContent } from "../types/arcane-types.js";
 
 export function registerVolumeTools(server: McpServer, registry?: ToolRegistry): void {
   const register = moduleRegistrar(server, registry, "volume");
@@ -224,7 +224,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     "arcane_volume_browse",
     {
       title: "Browse volume files",
-      description: "Browse files and directories in a Docker volume",
+      description: "List the files and directories directly under a path in a Docker volume (via the volume workspace)",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -234,26 +234,34 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
       inputSchema: {
       environmentId: z.string().describe("Environment ID"),
       volumeName: z.string().describe("Volume name"),
-      path: z.string().optional().default("/").describe("Path within the volume"),
+      path: z.string().optional().default("/").describe("Directory within the volume (\"/\" for the root)"),
     },
     },
     toolHandler(async ({ environmentId, volumeName, path }, client) => {
-      if (path) validatePath(path);
-
-      const response = await client.get<{ data: FileEntry[] }>(
-        `/environments/${environmentId}/volumes/${volumeName}/browse`,
-        { path }
+      const dir = toWorkspacePath(validatePath(path ?? "/"));
+      const response = await client.get<{ data: Workspace }>(
+        `/environments/${environmentId}/volumes/${volumeName}/workspace`
       );
 
-      if (!response.data || response.data.length === 0) {
-        return `Directory ${path} is empty.`;
+      // The workspace is a flat, recursive listing — keep only direct children of `dir`
+      const prefix = dir ? `${dir}/` : "";
+      const entries = (response.data.files ?? []).filter(
+        (entry) => entry.relativePath.startsWith(prefix) && !entry.relativePath.slice(prefix.length).includes("/")
+      );
+      const label = `/${dir}`;
+
+      if (entries.length === 0) {
+        return `Directory ${label} is empty or does not exist.`;
       }
 
-      const lines = [`Contents of ${path}:\n`];
-      for (const entry of response.data) {
-        const type = entry.isDirectory ? "DIR " : "FILE";
+      const lines = [`Contents of ${label}:\n`];
+      for (const entry of entries) {
+        const type = entry.isDirectory ? "DIR " : entry.isSymlink ? "LINK" : "FILE";
         const size = entry.isDirectory ? "-" : formatSizeCompact(entry.size);
         lines.push(`${type}  ${size.padEnd(8)}  ${entry.name}`);
+      }
+      if (response.data.fileTreeTruncated) {
+        lines.push("\n(Volume listing was truncated by Arcane — some entries may be missing.)");
       }
 
       return lines.join("\n");
@@ -279,14 +287,17 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId, volumeName, path }, client) => {
-      validatePath(path);
-
-      const response = await client.get<{ data: { content: string } }>(
-        `/environments/${environmentId}/volumes/${volumeName}/browse/content`,
-        { path }
+      const relativePath = toWorkspacePath(validatePath(path));
+      const response = await client.get<{ data: WorkspaceFileContent }>(
+        `/environments/${environmentId}/volumes/${volumeName}/workspace/file`,
+        { relativePath }
       );
 
-      return response.data.content;
+      const file = response.data;
+      if (file.content === undefined && file.readOnlyReason) {
+        return `Cannot display /${relativePath}: ${file.readOnlyReason} (${formatSizeCompact(file.size)}, ${file.mimeType})`;
+      }
+      return file.content ?? "";
     })
   );
 
@@ -295,7 +306,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     "arcane_volume_browse_mkdir",
     {
       title: "Create volume directory",
-      description: "Create a directory in a Docker volume",
+      description: "Create a directory in a Docker volume (the parent directory must already exist)",
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -309,10 +320,21 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId, volumeName, path }, client) => {
-      validatePath(path);
+      const relativePath = toWorkspacePath(validatePath(path));
+      if (!relativePath) {
+        throw new Error("Path must name a directory below the volume root");
+      }
+      const workspacePath = `/environments/${environmentId}/volumes/${volumeName}/workspace`;
 
-      await client.post(`/environments/${environmentId}/volumes/${volumeName}/browse/mkdir`, undefined, { path });
-      return `Directory created: ${path}`;
+      // Workspace edits are optimistic: send the revision we read so Arcane can reject stale changes
+      const current = await client.get<{ data: Workspace }>(workspacePath);
+      await client.sendForm("PUT", workspacePath, {
+        manifest: JSON.stringify({
+          fileTreeRevision: current.data.fileTreeRevision,
+          fileChanges: [{ operation: "create_folder", relativePath }],
+        }),
+      });
+      return `Directory created: /${relativePath}`;
     })
   );
 

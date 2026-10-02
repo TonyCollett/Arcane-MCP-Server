@@ -42,7 +42,31 @@ export interface FileEntry {
   size: number;
   isDirectory: boolean;
   modTime: string;
-  mode: string;
+  mode?: string;
+}
+
+/** Volume/project workspace entry (v2 workspace API; `relativePath` has no leading slash) */
+export interface WorkspaceFileEntry extends FileEntry {
+  relativePath: string;
+  isSymlink: boolean;
+  editable: boolean;
+  readOnlyReason?: string;
+}
+
+export interface Workspace {
+  files: WorkspaceFileEntry[] | null;
+  fileTreeRevision: string;
+  fileTreeTruncated: boolean;
+}
+
+export interface WorkspaceFileContent {
+  relativePath: string;
+  name: string;
+  content?: string;
+  mimeType: string;
+  size: number;
+  editable: boolean;
+  readOnlyReason?: string;
 }
 
 export interface Backup {
@@ -477,4 +501,19 @@ export interface Webhook {
   environmentId?: string;
   createdAt?: string;
   lastTriggeredAt?: string;
+}
+
+/** Global variable (v2 `/variables`; secret values are redacted on read) */
+export interface GlobalVariable {
+  id: string;
+  key: string;
+  value: string;
+  isSecret: boolean;
+  allEnvironments: boolean;
+  environmentIds: string[] | null;
+}
+
+export interface GlobalVariableMutation {
+  variable: GlobalVariable;
+  syncResults: Array<{ environmentId: string; environmentName?: string; status: string; error?: string }> | null;
 }

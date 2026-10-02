@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatSize, formatSizeCompact, formatSizeMB, formatSizeGB, validatePath } from "../format.js";
+import { formatSize, formatSizeCompact, formatSizeMB, formatSizeGB, toWorkspacePath, validatePath } from "../format.js";
 
 describe("formatSize", () => {
   it("returns 'unknown' for undefined", () => {
@@ -86,5 +86,18 @@ describe("validatePath", () => {
     expect(validatePath(".hidden")).toBe(".hidden");
     expect(validatePath("file.txt")).toBe("file.txt");
     expect(validatePath("path/to/.env")).toBe("path/to/.env");
+  });
+});
+
+describe("toWorkspacePath", () => {
+  it("maps the volume root to an empty path", () => {
+    expect(toWorkspacePath("/")).toBe("");
+    expect(toWorkspacePath("")).toBe("");
+  });
+
+  it("strips leading, trailing and duplicate slashes", () => {
+    expect(toWorkspacePath("/data/conf/")).toBe("data/conf");
+    expect(toWorkspacePath("data//conf")).toBe("data/conf");
+    expect(toWorkspacePath("\\data\\conf")).toBe("data/conf");
   });
 });

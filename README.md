@@ -67,7 +67,7 @@ Every tool carries **safety annotations** so your AI knows which operations are 
 
 ---
 
-> **🆕 Recent update — v3.0:** Full **Arcane v2** support (tested against v2.3.2). Endpoints, payloads, and tool set follow the new API — if you are still on Arcane v1.x, stay on server `2.x`. Breaking changes are listed in the [CHANGELOG](CHANGELOG.md).
+> **🆕 Recent update — v3.0:** Full **Arcane v2** support — requires **Arcane v2.8 or newer** (tested against v2.14.0). Endpoints, payloads, and tool set follow the new API — if you are still on Arcane v1.x, stay on server `2.x`. Breaking changes are listed in the [CHANGELOG](CHANGELOG.md).
 
 ## Tool Filtering
 

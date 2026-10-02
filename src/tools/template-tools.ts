@@ -6,7 +6,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
-import type { Template } from "../types/arcane-types.js";
+import type { Template, GlobalVariable, GlobalVariableMutation } from "../types/arcane-types.js";
 
 export function registerTemplateTools(server: McpServer, registry?: ToolRegistry): void {
   const register = moduleRegistrar(server, registry, "template");
@@ -197,8 +197,8 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
   register(
     "arcane_template_get_variables",
     {
-      title: "Get template variables",
-      description: "Get global template variables",
+      title: "Get global variables",
+      description: "List global variables (used for compose/template interpolation) with their environment scope. Secret values are redacted by Arcane.",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -206,21 +206,23 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
         openWorldHint: false,
       },
       inputSchema: {
-      environmentId: z.string().describe("Environment ID"),
+      environmentId: z.string().optional().describe("Only show variables that apply to this environment"),
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.get<{ data: Array<{ key: string; value: string }> }>(
-        `/environments/${environmentId}/templates/variables`
-      );
+      const response = await client.get<{ data: GlobalVariable[] | null }>("/variables");
 
-      if (!response.data || response.data.length === 0) {
+      const variables = (response.data ?? []).filter(
+        (v) => !environmentId || v.allEnvironments || (v.environmentIds ?? []).includes(environmentId)
+      );
+      if (variables.length === 0) {
         return "No global variables configured.";
       }
 
-      const lines = ["Global Template Variables:\n"];
-      for (const variable of response.data) {
-        lines.push(`  ${variable.key}: ${variable.value}`);
+      const lines = ["Global Variables:\n"];
+      for (const v of variables) {
+        const scope = v.allEnvironments ? "all environments" : `environments: ${(v.environmentIds ?? []).join(", ")}`;
+        lines.push(`  ${v.key}: ${v.isSecret ? "(secret)" : v.value}  [${scope}] (ID: ${v.id})`);
       }
 
       return lines.join("\n");
@@ -231,8 +233,8 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
   register(
     "arcane_template_update_variables",
     {
-      title: "Update template variables",
-      description: "Update global template variables",
+      title: "Update global variables",
+      description: "Create or update global variables by key, and optionally remove keys. Variables are matched by key within the given scope (all environments unless environmentIds is set); Arcane syncs changes to affected environments.",
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -240,14 +242,66 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
         openWorldHint: false,
       },
       inputSchema: {
-      environmentId: z.string().describe("Environment ID"),
-      variables: z.record(z.string()).describe("Variables to set (key-value pairs)"),
+      variables: z.record(z.string()).optional().default({}).describe("Variables to create or update (key-value pairs)"),
+      remove: z.array(z.string()).optional().describe("Keys to delete within the same scope"),
+      environmentIds: z.array(z.string()).optional().describe("Scope to these environment IDs (omit for all environments)"),
+      isSecret: z.boolean().optional().describe("Store values as secrets (encrypted, redacted when listed)"),
     },
     },
-    toolHandler(async ({ environmentId, variables }, client) => {
-      const variableList = Object.entries(variables).map(([key, value]) => ({ key, value }));
-      await client.put(`/environments/${environmentId}/templates/variables`, { variables: variableList });
-      return "Global variables updated.";
+    toolHandler(async ({ variables, remove, environmentIds, isSecret }, client) => {
+      const scope = [...new Set(environmentIds ?? [])].sort();
+      const inScope = (v: GlobalVariable) =>
+        scope.length === 0
+          ? v.allEnvironments
+          : !v.allEnvironments && [...(v.environmentIds ?? [])].sort().join(",") === scope.join(",");
+
+      const existing = ((await client.get<{ data: GlobalVariable[] | null }>("/variables")).data ?? []).filter(inScope);
+      const byKey = new Map(existing.map((v) => [v.key, v]));
+      const results: string[] = [];
+      const syncErrors = new Set<string>();
+      const collect = (res: { data?: GlobalVariableMutation }) => {
+        for (const s of res?.data?.syncResults ?? []) {
+          if (s.error) syncErrors.add(`${s.environmentName || s.environmentId}: ${s.error}`);
+        }
+      };
+
+      for (const [key, value] of Object.entries(variables ?? {})) {
+        const current = byKey.get(key);
+        if (current) {
+          collect(await client.put<{ data: GlobalVariableMutation }>(`/variables/${current.id}`, { value, isSecret }));
+          results.push(`updated ${key}`);
+        } else {
+          collect(
+            await client.post<{ data: GlobalVariableMutation }>("/variables", {
+              key,
+              value,
+              isSecret: isSecret ?? false,
+              allEnvironments: scope.length === 0,
+              environmentIds: scope,
+            })
+          );
+          results.push(`created ${key}`);
+        }
+      }
+
+      for (const key of remove ?? []) {
+        const current = byKey.get(key);
+        if (!current) {
+          results.push(`skipped ${key} (not found in scope)`);
+          continue;
+        }
+        collect(await client.delete<{ data: GlobalVariableMutation }>(`/variables/${current.id}`));
+        results.push(`deleted ${key}`);
+      }
+
+      if (results.length === 0) {
+        return "Nothing to do: pass variables to set and/or keys to remove.";
+      }
+      const lines = [`Global variables: ${results.join(", ")}.`];
+      if (syncErrors.size > 0) {
+        lines.push("", "Sync errors:", ...[...syncErrors].map((e) => `  ${e}`));
+      }
+      return lines.join("\n");
     })
   );
 

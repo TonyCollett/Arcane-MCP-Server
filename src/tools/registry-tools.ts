@@ -104,7 +104,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
       inputSchema: {
       description: z.string().describe("Registry description (display label)"),
       url: z.string().describe("Registry URL (e.g., docker.io, ghcr.io)"),
-      registryType: z.enum(["dockerhub", "gcr", "ecr", "acr", "ghcr", "custom"]).describe("Registry type"),
+      registryType: z.enum(["generic", "ecr"]).optional().default("generic").describe("Registry type: \"generic\" (any registry with username/token, e.g. Docker Hub, GHCR) or \"ecr\" (AWS keys)"),
       username: z.string().optional().describe("Username for authentication"),
       token: z.string().optional().describe("Access token / password for authentication"),
       insecure: z.boolean().optional().default(false).describe("Allow insecure (non-TLS) connections"),
@@ -112,9 +112,10 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
       awsRegion: z.string().optional().describe("AWS region (required for ECR registries)"),
       awsAccessKeyId: z.string().optional().describe("AWS access key ID (for ECR registries)"),
       awsSecretAccessKey: z.string().optional().describe("AWS secret access key (for ECR registries)"),
+      repositoryNames: z.array(z.string()).optional().describe("Full repository names (e.g. team/api) offered when pushing images from builds"),
     },
     },
-    toolHandler(async ({ description, url, registryType, username, token, insecure, enabled, awsRegion, awsAccessKeyId, awsSecretAccessKey }, client) => {
+    toolHandler(async ({ description, url, registryType, username, token, insecure, enabled, awsRegion, awsAccessKeyId, awsSecretAccessKey, repositoryNames }, client) => {
       const response = await client.post<{ data: { id: string } }>(
         "/container-registries",
         {
@@ -128,6 +129,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
           awsRegion: awsRegion ?? "",
           awsAccessKeyId: awsAccessKeyId ?? "",
           awsSecretAccessKey: awsSecretAccessKey ?? "",
+          repositoryNames: repositoryNames ?? [],
         }
       );
 
@@ -153,14 +155,26 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
       url: z.string().optional().describe("New URL"),
       username: z.string().optional().describe("New username"),
       token: z.string().optional().describe("New access token / password"),
+      insecure: z.boolean().optional().describe("Allow insecure (non-TLS) connections"),
+      enabled: z.boolean().optional().describe("Whether the registry is enabled"),
+      repositoryNames: z.array(z.string()).optional().describe("Replace the repository names list (pass [] to clear)"),
     },
     },
-    toolHandler(async ({ registryId, description, url, username, token }, client) => {
-      const body: Record<string, unknown> = {};
-      if (description) body.description = description;
-      if (url) body.url = url;
-      if (username) body.username = username;
-      if (token) body.token = token;
+    toolHandler(async ({ registryId, description, url, username, token, insecure, enabled, repositoryNames }, client) => {
+      // Arcane validates every field as present; null means "leave unchanged".
+      const body = {
+        description: description || null,
+        url: url || null,
+        username: username || null,
+        token: token || null,
+        insecure: insecure ?? null,
+        enabled: enabled ?? null,
+        registryType: null,
+        repositoryNames: repositoryNames ?? null,
+        awsAccessKeyId: null,
+        awsSecretAccessKey: null,
+        awsRegion: null,
+      };
 
       await client.put(`/container-registries/${registryId}`, body);
       return `Registry ${registryId} updated.`;

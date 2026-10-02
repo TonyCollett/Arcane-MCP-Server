@@ -254,12 +254,19 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
       name: z.string().describe("Name for the API key"),
       description: z.string().optional().describe("Description"),
       expiresAt: z.string().optional().describe("Expiration date (ISO 8601 format)"),
+      permissions: z.array(z.string()).min(1).describe("Permissions to grant, e.g. [\"containers:list\", \"projects:read\"] (cannot exceed your own)"),
+      environmentId: z.string().optional().describe("Scope every grant to this environment (omit for global grants)"),
     },
     },
-    toolHandler(async ({ name, description, expiresAt }, client) => {
+    toolHandler(async ({ name, description, expiresAt, permissions, environmentId }, client) => {
       const response = await client.post<{
         data: { id: string; name: string; key: string };
-      }>("/api-keys", { name, description, expiresAt });
+      }>("/api-keys", {
+        name,
+        description,
+        expiresAt,
+        permissions: permissions.map((permission) => ({ permission, environmentId })),
+      });
 
       return `API Key Created!\n  Name: ${response.data.name}\n  ID: ${response.data.id}\n  Key: ${response.data.key}\n\n⚠️ Save this key now - it won't be shown again!`;
     })

@@ -6,6 +6,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
+import { LOGIN_STATUS_MFA_REQUIRED } from "../constants.js";
 
 export function registerAuthTools(server: McpServer, registry?: ToolRegistry): void {
   const register = moduleRegistrar(server, registry, "auth");
@@ -29,14 +30,18 @@ export function registerAuthTools(server: McpServer, registry?: ToolRegistry): v
     toolHandler(async ({ username, password }, client) => {
       const response = await client.post<{
         data: {
-          token: string;
-          refreshToken: string;
-          expiresAt: string;
-          user: { id: string; username: string; isGlobalAdmin?: boolean };
+          status?: string;
+          token?: string;
+          refreshToken?: string;
+          expiresAt?: string;
+          user?: { id: string; username: string; isGlobalAdmin?: boolean };
         };
       }>("/auth/login", { username, password });
 
       const login = response.data;
+      if (login.status === LOGIN_STATUS_MFA_REQUIRED || !login.user) {
+        return `Credentials accepted, but ${username} has passkey MFA enabled — the challenge must be completed in the Arcane UI. Use an API key for MCP access.`;
+      }
       return `Login successful!\nUser: ${login.user.username}\nGlobal Admin: ${login.user.isGlobalAdmin ? "Yes" : "No"}\nToken expires: ${login.expiresAt}`;
     })
   );

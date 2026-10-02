@@ -272,15 +272,35 @@ export class ArcaneClient {
     fileName: string,
     content: string
   ): Promise<T> {
+    const form = new FormData();
+    form.append("file", new Blob([content]), fileName);
+    return this.sendMultipart<T>("POST", path, params, form);
+  }
+
+  /**
+   * Send multipart/form-data made of plain string fields, e.g. the JSON-encoded
+   * `project` and `manifest` parts used by project creation and workspace updates.
+   */
+  async sendForm<T>(method: "POST" | "PUT", path: string, fields: Record<string, string>): Promise<T> {
+    const form = new FormData();
+    for (const [key, value] of Object.entries(fields)) {
+      form.append(key, value);
+    }
+    return this.sendMultipart<T>(method, path, undefined, form);
+  }
+
+  private async sendMultipart<T>(
+    method: "POST" | "PUT",
+    path: string,
+    params: Record<string, string | number | boolean | undefined> | undefined,
+    form: FormData
+  ): Promise<T> {
     const url = this.buildUrl(`/api${path}`, params);
     const authHeaders = await this.authManager.getAuthHeaders();
 
-    const form = new FormData();
-    form.append("file", new Blob([content]), fileName);
-
     // Content-Type (with boundary) is set by fetch from the FormData body
     const response = await fetch(url, {
-      method: "POST",
+      method,
       headers: { Accept: "application/json", ...authHeaders },
       body: form,
     });

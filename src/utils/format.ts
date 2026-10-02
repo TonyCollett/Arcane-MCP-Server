@@ -70,3 +70,11 @@ export function validatePath(path: string): string {
   }
   return path;
 }
+
+/**
+ * Convert a user-facing volume path ("/", "/data/", "data") to the workspace
+ * API's relative form: forward slashes, no leading/trailing slash, "" for root.
+ */
+export function toWorkspacePath(path: string): string {
+  return path.replaceAll("\\", "/").split("/").filter(Boolean).join("/");
+}

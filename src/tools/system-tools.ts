@@ -144,7 +144,7 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     "arcane_system_check_upgrade",
     {
       title: "Check for upgrade",
-      description: "Check if an Arcane upgrade is available",
+      description: "Check whether this Arcane instance can upgrade itself (e.g. it runs in a container Arcane can replace). For current vs newest version use arcane_version_get.",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -156,21 +156,17 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.get<{
-        data: {
-          currentVersion: string;
-          latestVersion: string;
-          updateAvailable: boolean;
-          releaseNotes?: string;
-        };
-      }>(`/environments/${environmentId}/system/upgrade/check`);
+      // Unwrapped body (no `data` envelope): whether self-upgrade is possible here
+      const result = await client.get<{ canUpgrade: boolean; error: boolean; message: string }>(
+        `/environments/${environmentId}/system/upgrade/check`
+      );
 
-      const info = response.data;
-      if (info.updateAvailable) {
-        return `Update Available!\n  Current: ${info.currentVersion}\n  Latest: ${info.latestVersion}${info.releaseNotes ? `\n\nRelease Notes:\n${info.releaseNotes}` : ""}`;
-      } else {
-        return `You're running the latest version (${info.currentVersion})`;
+      if (result.error) {
+        return `Upgrade check failed: ${result.message}`;
       }
+      return result.canUpgrade
+        ? `Self-upgrade is supported: ${result.message}. Use arcane_system_upgrade to start it (see arcane_version_get for the newest version).`
+        : `Self-upgrade is not available for this environment: ${result.message}`;
     })
   );
 

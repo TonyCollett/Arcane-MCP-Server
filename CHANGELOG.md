@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.0] - 2026-07-11
 
-Compatibility release for **Arcane v2** (tested against v2.3.2, OpenAPI spec refreshed from v1.17.0). Tool count stays at **180** (removed tools whose endpoints no longer exist, added notification-delete and activity-tracking tools). No v1 compatibility shims — installs running Arcane v1.x should stay on `2.x` of this server.
+Compatibility release for **Arcane v2** (tested against v2.3.2 and v2.14.0, OpenAPI spec refreshed from v1.17.0 to v2.14.0). Tool count stays at **180** (removed tools whose endpoints no longer exist, added notification-delete and activity-tracking tools). **Requires Arcane v2.8 or newer** (project creation, volume workspace and global variables follow the v2.8+ API). No v1 compatibility shims — installs running Arcane v1.x should stay on `2.x` of this server.
 
 ### Removed (endpoints gone in Arcane v2)
 - `arcane_dashboard_get_action_items` — `/dashboard/action-items` no longer exists.
@@ -40,7 +40,7 @@ Compatibility release for **Arcane v2** (tested against v2.3.2, OpenAPI spec ref
 - **System**: docker info moved to `/system/docker/info` and returns Docker's native (PascalCase) fields; `system prune` sends the v2 per-resource body (`{containers, images, networks, volumes, buildCache}` with `mode`) and gained a `buildCache` option; image prune sends `mode`/`dangling` and reads the wrapped response.
 - **Projects**: destroy moved to `DELETE /projects/{id}/destroy` (body `removeVolumes`/`removeFiles`, new `removeFiles` param).
 - **Volume backups**: delete and file listing are no longer volume-scoped (`/volumes/backups/{backupId}[/files]`); backups no longer expose a `filename`; file listing returns plain paths.
-- **Templates**: global variables moved to `/environments/{id}/templates/variables` (now requires `environmentId`; PUT sends a `{key, value}` list).
+- **Templates / global variables**: now use Arcane's global `/variables` API (v2.5+ redesign with environment scoping and secrets). `arcane_template_get_variables` lists variables with their scope (optional `environmentId` filter, secrets redacted); `arcane_template_update_variables` upserts by key within a scope (`environmentIds`, `isSecret`) and can delete keys via `remove` — it no longer takes `environmentId` or replaces the whole list.
 - **Users**: `role` was removed from create/update (v2 uses role assignments); tools accept `displayName`/`email`/`password` and display `isGlobalAdmin`.
 - **Settings**: environment settings return a key/value list; public settings are environment-scoped now (`environmentId` required).
 - **Events**: list filters by `severity` instead of `resourceType`; display uses `title`/`description`/`severity` (v2 dropped `message`).
@@ -48,7 +48,18 @@ Compatibility release for **Arcane v2** (tested against v2.3.2, OpenAPI spec ref
 - **Builds**: `arcane_build_image` follows the v2 `BuildRequest` (`contextDir` required, `dockerfileInline` for inline content, `tags`/`platforms` arrays, `noCache`); Git-URL builds were dropped by the API.
 - **Auth**: login/refresh responses are unwrapped from the `{success, data}` envelope.
 - `ArcaneClient.delete()` accepts an optional JSON body (needed for `projects/{id}/destroy`).
-- OpenAPI spec (`_docs/arcane_api_docs.{json,yaml}`) and generated types refreshed to v2.3.2.
+- **Volumes**: `arcane_volume_browse` / `_browse_content` / `_browse_mkdir` use the volume workspace API (`/volumes/{name}/workspace[/file]`); the `/browse` endpoints were removed in Arcane v2.8. Browse lists the direct children of `path` from the workspace tree; mkdir is non-recursive (the parent must exist).
+- **Registries**: `registryType` is now `generic` (default) or `ecr` — the only values Arcane accepts (`dockerhub`/`ghcr`/… were always rejected). Create/update accept `repositoryNames`; update also accepts `insecure`/`enabled`.
+- **API keys**: `arcane_apikey_create` requires `permissions` (e.g. `["containers:list"]`, optional `environmentId` scope) — Arcane rejects keys without grants.
+- `arcane_system_check_upgrade` reports whether the instance can self-upgrade (`canUpgrade`/`message`); it previously read non-existent `updateAvailable`/version fields. Use `arcane_version_get` for current vs newest version.
+- OpenAPI spec (`_docs/arcane_api_docs.{json,yaml}`) and generated types refreshed to v2.14.0 (exported from the `arcane openapi` CLI of the v2.14.0 image).
+
+### Fixed (after testing against a live v2.14.0 instance)
+- `arcane_project_create` failed: project creation is multipart (`project` JSON + workspace `manifest`) since Arcane v2.8. Added `ArcaneClient.sendForm()` for string-field multipart requests.
+- `arcane_registry_create` / `arcane_registry_update` failed validation (422): `repositoryNames` is required, and update must send every field (`null` = unchanged) instead of a partial body.
+- `arcane_container_create` failed validation: `env` is sent as `KEY=value` strings, volumes as `host:container[:ro]` binds, ports via `hostConfig.portBindings` (TCP and UDP), network via `networks`.
+- Logins for accounts with passkey MFA (Arcane v2.7+) returned an MFA challenge without tokens, which crashed JWT auth and `arcane_auth_login`; both now explain that an API key is needed.
+- API errors now include Arcane's (Huma) problem `detail` and field errors, e.g. `HTTP 422: validation failed (body: expected required property … to be present)`, instead of a bare `HTTP 422`.
 
 ---
 

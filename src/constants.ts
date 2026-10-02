@@ -7,6 +7,9 @@
 /** Token refresh buffer - refresh 1 minute before expiry */
 export const TOKEN_REFRESH_BUFFER_MS = 60 * 1000;
 
+/** `/auth/login` status for accounts that must complete a passkey MFA challenge (no tokens issued) */
+export const LOGIN_STATUS_MFA_REQUIRED = "mfa_required";
+
 /** Default HTTP request timeout */
 export const DEFAULT_REQUEST_TIMEOUT_MS = 30000;
 

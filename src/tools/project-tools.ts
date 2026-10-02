@@ -177,9 +177,15 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, name, composeContent, envContent }, client) => {
-      const response = await client.post<{ data: { id: string; name: string } }>(
+      // Arcane v2.8+ creates projects from multipart parts: a JSON `project`
+      // config plus an initial workspace `manifest` (no extra files here).
+      const response = await client.sendForm<{ data: { id: string; name: string } }>(
+        "POST",
         `/environments/${environmentId}/projects`,
-        { name, composeContent, envContent }
+        {
+          project: JSON.stringify({ name, composeContent, envContent }),
+          manifest: JSON.stringify({ fileChanges: [] }),
+        }
       );
 
       return `Project created successfully!\n  Name: ${response.data.name}\n  ID: ${response.data.id}`;

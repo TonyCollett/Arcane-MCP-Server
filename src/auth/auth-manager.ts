@@ -5,7 +5,7 @@
 
 import { getConfig } from "../config.js";
 import { logger } from "../utils/logger.js";
-import { TOKEN_REFRESH_BUFFER_MS } from "../constants.js";
+import { TOKEN_REFRESH_BUFFER_MS, LOGIN_STATUS_MFA_REQUIRED } from "../constants.js";
 
 interface JwtTokens {
   accessToken: string;
@@ -14,7 +14,9 @@ interface JwtTokens {
 }
 
 interface LoginResponse {
-  token: string;
+  /** "mfa_required" when the account needs a passkey challenge (no tokens then) */
+  status?: string;
+  token?: string;
   refreshToken: string;
   expiresAt: string;
   user: {
@@ -135,6 +137,13 @@ export class AuthManager {
     }
 
     const data = unwrapAuthResponse<LoginResponse>(await response.json());
+
+    // Accounts with passkey MFA get a challenge instead of tokens
+    if (data.status === LOGIN_STATUS_MFA_REQUIRED || !data.token) {
+      throw new Error(
+        "Login requires passkey MFA, which the MCP server cannot complete. Use an API key (ARCANE_API_KEY) instead."
+      );
+    }
 
     this.jwtTokens = {
       accessToken: data.token,
