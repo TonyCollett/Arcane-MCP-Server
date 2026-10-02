@@ -302,7 +302,9 @@ export async function startTcpServer(): Promise<void> {
           };
         }
 
-        await transport.handleRequest(req, res);
+        // express.json() has already consumed the request stream, so hand the
+        // parsed body to the transport instead of letting it re-read the stream.
+        await transport.handleRequest(req, res, req.body);
         return;
       }
 
