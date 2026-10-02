@@ -176,7 +176,13 @@ Connect at `http://localhost:3000/mcp`. Set `ARCANE_HTTP_PORT` to change the por
 
 ### Docker
 
-Runs the server in HTTP mode as a long-lived container. The image is built from this repo.
+Runs the server in HTTP mode as a long-lived container. Build the image from this repo, or pull the prebuilt multi-arch (amd64/arm64) image from GitHub Container Registry. CI publishes `:latest` on every push to `main`, and `:x.y.z` on version tags:
+
+```bash
+docker pull ghcr.io/tonycollett/arcane-mcp-server:latest
+```
+
+To use it with Compose, replace `build: .` with `image: ghcr.io/tonycollett/arcane-mcp-server:latest` in `docker-compose.yml`.
 
 **Docker Compose** *(recommended)*
 

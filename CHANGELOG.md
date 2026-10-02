@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Docker support** — multi-stage `Dockerfile` (node:22-alpine, non-root `node` user, built-in `HEALTHCHECK` on `/health`), `.dockerignore`, and `docker-compose.yml` (HTTP mode, port published on `127.0.0.1`, read-only root FS, all capabilities dropped, optional `~/.arcane` mount for hot-reloaded tool filtering). The image defaults to `--tcp`; pass `--stdio` for stdio clients.
 - CI `docker` job builds the image and checks the container reaches `healthy`.
+- `Publish Docker image` workflow pushes a multi-arch (amd64/arm64) image to GHCR: `:latest` on pushes to `main`, `:x.y.z` / `:x.y` / `:x` on `v*` tags, plus `:sha-<short>`.
 - README "Docker" section covering Compose, `docker run`, stdio-via-Docker client config, and the unauthenticated-endpoint warning.
 
 ### Fixed
 - HTTP mode rejected every POST with `Parse error: Invalid JSON`. `express.json()` consumed the request stream before `StreamableHTTPServerTransport` could read it. The parsed body is now passed to `transport.handleRequest()`.
+- HTTP mode rejected `initialize` requests whose `MCP-Protocol-Version` header named a version outside a hard-coded two-entry list (e.g. clients on a newer spec sending `2026-07-28`). The client got a 400 and had to retry with an older version. The custom middleware is gone. The SDK transport now negotiates the version on `initialize` and validates the header on later requests against its full supported list, as the spec requires. `SUPPORTED_MCP_VERSIONS` was removed from `constants.ts`.
 
 ## [3.0.0] - 2026-07-11
 
