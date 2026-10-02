@@ -174,6 +174,71 @@ ARCANE_API_KEY=your-key npx @randomsynergy/arcane-mcp-server --tcp
 Connect at `http://localhost:3000/mcp`. Set `ARCANE_HTTP_PORT` to change the port.
 </details>
 
+### Docker
+
+Runs the server in HTTP mode as a long-lived container. The image is built from this repo.
+
+**Docker Compose** *(recommended)*
+
+```bash
+git clone https://github.com/RandomSynergy17/Arcane-MCP-Server.git
+cd Arcane-MCP-Server
+cp .env.example .env        # set ARCANE_BASE_URL + ARCANE_API_KEY
+docker compose up -d --build
+```
+
+- MCP endpoint: `http://localhost:3000/mcp`
+- Health check: `http://localhost:3000/health`
+- Change the host port with `ARCANE_MCP_PUBLISH_PORT=3100 docker compose up -d`
+- Logs: `docker compose logs -f`
+
+Then point your client at it, e.g. Claude Code:
+
+```bash
+claude mcp add --transport http arcane http://localhost:3000/mcp
+```
+
+> [!WARNING]
+> The `/mcp` endpoint has **no authentication of its own**. Anyone who can reach it can manage your Docker hosts through Arcane. The compose file publishes the port on `127.0.0.1` only. Before exposing it to a network, put a reverse proxy with authentication (and TLS) in front of it.
+
+**Tool filtering in Docker:** use the `ARCANE_TOOL_PRESET` / `ARCANE_*_TOOLS` env vars in `.env`. To use a config file with hot reload, uncomment the `volumes:` entry in `docker-compose.yml`. It mounts your host `~/.arcane` directory to `/home/node/.arcane` (read-only). The container runs as uid `1000`, so the file must be readable by that uid.
+
+<details>
+<summary><strong>Plain <code>docker run</code></strong></summary>
+
+```bash
+docker build -t arcane-mcp-server .
+
+# HTTP mode (default)
+docker run -d --name arcane-mcp --env-file .env \
+  -p 127.0.0.1:3000:3000 arcane-mcp-server
+
+# stdio mode — for clients that spawn the server themselves
+docker run -i --rm --env-file .env arcane-mcp-server --stdio
+```
+
+stdio mode in a Claude Desktop / Claude Code config:
+
+```json
+{
+  "mcpServers": {
+    "arcane": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm",
+               "-e", "ARCANE_BASE_URL", "-e", "ARCANE_API_KEY",
+               "arcane-mcp-server", "--stdio"],
+      "env": {
+        "ARCANE_BASE_URL": "https://arcane.example.com:3552",
+        "ARCANE_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+</details>
+
+> **Reaching Arcane on the same host:** inside the container, `localhost` refers to the container itself. Use the host's LAN IP or DNS name in `ARCANE_BASE_URL`. If Arcane runs in Compose on the same machine, you can also attach both to a shared network and use the service name.
+
 <details>
 <summary><strong>Config File</strong></summary>
 

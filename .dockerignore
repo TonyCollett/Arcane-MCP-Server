@@ -1,0 +1,34 @@
+# Dependencies & build output (rebuilt inside the image)
+node_modules/
+dist/
+coverage/
+
+# Secrets — pass at runtime via env_file / -e instead
+.env
+.env.*
+!.env.example
+
+# Repo metadata & docs not needed in the image
+.git/
+.github/
+.claude/
+.claude-plugin/
+_docs/
+assets/
+commands/
+skills/
+scripts/
+*.md
+
+# Docker files themselves
+Dockerfile
+docker-compose*.yml
+compose*.yml
+.dockerignore
+
+# Misc
+*.log
+*.tgz
+.DS_Store
+.vscode/
+.idea/

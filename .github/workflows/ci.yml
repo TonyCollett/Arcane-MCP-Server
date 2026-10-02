@@ -47,3 +47,28 @@ jobs:
 
       - name: Audit production dependencies
         run: npm audit --audit-level=high --omit=dev
+
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t arcane-mcp-server:ci .
+
+      - name: Smoke test container health
+        run: |
+          docker run -d --name arcane-mcp \
+            -e ARCANE_BASE_URL=https://arcane.invalid:3552 \
+            -e ARCANE_API_KEY=ci-dummy \
+            arcane-mcp-server:ci
+          for i in $(seq 1 30); do
+            STATUS=$(docker inspect -f '{{.State.Health.Status}}' arcane-mcp)
+            echo "health: $STATUS"
+            [ "$STATUS" = "healthy" ] && exit 0
+            sleep 2
+          done
+          docker logs arcane-mcp
+          exit 1

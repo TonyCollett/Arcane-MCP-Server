@@ -1,0 +1,40 @@
+# Arcane MCP Server — Docker Compose
+#
+#   cp .env.example .env     # fill in ARCANE_BASE_URL + ARCANE_API_KEY
+#   docker compose up -d --build
+#
+# MCP endpoint:  http://localhost:3000/mcp
+# Health check:  http://localhost:3000/health
+#
+# SECURITY: the /mcp endpoint has no authentication of its own — anyone who
+# can reach it can drive your Arcane instance. The port is published on
+# 127.0.0.1 only. Put a reverse proxy with auth in front before exposing it
+# to a network.
+
+services:
+  arcane-mcp:
+    build: .
+    image: arcane-mcp-server:latest
+    container_name: arcane-mcp-server
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Must listen on all interfaces inside the container; these override
+      # any localhost values copied from .env.example.
+      ARCANE_HTTP_HOST: 0.0.0.0
+      ARCANE_HTTP_PORT: 3000
+    ports:
+      - "127.0.0.1:${ARCANE_MCP_PUBLISH_PORT:-3000}:3000"
+    # Optional: mount a tool-filter config (~/.arcane/config.json). Edits on
+    # the host are hot-reloaded. Mount the directory, not the file, so editors
+    # that save via rename keep working.
+    # volumes:
+    #   - ${HOME}/.arcane:/home/node/.arcane:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

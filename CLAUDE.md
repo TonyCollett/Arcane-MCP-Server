@@ -14,7 +14,10 @@ npm run dev            # stdio mode
 npm run dev:tcp        # HTTP mode
 npm run update-api-spec  # Refresh OpenAPI spec from live instance
 ARCANE_BASE_URL=… ARCANE_API_KEY=… node scripts/live-smoke.mjs [envId]  # Run every read-only tool against a live instance; flags undefined/[object Object]/NaN in output
+docker compose up -d --build  # HTTP mode in a container (reads .env)
 ```
+
+Docker: `Dockerfile` (multi-stage, entrypoint `node dist/index.js`, default `--tcp`, `--stdio` for stdio) + `docker-compose.yml`. Compose forces `ARCANE_HTTP_HOST=0.0.0.0` and publishes on `127.0.0.1` only — `/mcp` has no auth.
 
 ## Architecture
 

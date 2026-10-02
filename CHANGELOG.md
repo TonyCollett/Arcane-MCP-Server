@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Docker support** — multi-stage `Dockerfile` (node:22-alpine, non-root `node` user, built-in `HEALTHCHECK` on `/health`), `.dockerignore`, and `docker-compose.yml` (HTTP mode, port published on `127.0.0.1`, read-only root FS, all capabilities dropped, optional `~/.arcane` mount for hot-reloaded tool filtering). The image defaults to `--tcp`; pass `--stdio` for stdio clients.
+- CI `docker` job builds the image and checks the container reaches `healthy`.
+- README "Docker" section covering Compose, `docker run`, stdio-via-Docker client config, and the unauthenticated-endpoint warning.
+
+### Fixed
+- HTTP mode rejected every POST with `Parse error: Invalid JSON`. `express.json()` consumed the request stream before `StreamableHTTPServerTransport` could read it. The parsed body is now passed to `transport.handleRequest()`.
+
 ## [3.0.0] - 2026-07-11
 
 Compatibility release for **Arcane v2** (tested against v2.3.2 and v2.14.0, OpenAPI spec refreshed from v1.17.0 to v2.14.0). Tool count stays at **180** (removed tools whose endpoints no longer exist, added notification-delete and activity-tracking tools). **Requires Arcane v2.8 or newer** (project creation, volume workspace and global variables follow the v2.8+ API). No v1 compatibility shims — installs running Arcane v1.x should stay on `2.x` of this server.
