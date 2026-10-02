@@ -5,6 +5,7 @@ import {
   AuthenticationError,
   ValidationError,
   formatError,
+  parseApiError,
 } from "../error-handler.js";
 
 describe("ArcaneApiError", () => {
@@ -130,5 +131,26 @@ describe("formatError", () => {
   it("formats unknown types", () => {
     const result = formatError(42);
     expect(result).toBe("Unexpected error: 42");
+  });
+});
+
+describe("parseApiError", () => {
+  it("surfaces Huma problem details and field errors", async () => {
+    const response = new Response(
+      JSON.stringify({
+        title: "Unprocessable Entity",
+        status: 422,
+        detail: "validation failed",
+        errors: [{ message: "expected required property repositoryNames to be present", location: "body" }],
+      }),
+      { status: 422, headers: { "Content-Type": "application/json" } }
+    );
+
+    const error = await parseApiError(response, "/container-registries");
+
+    expect(error.httpStatus).toBe(422);
+    expect(error.message).toBe(
+      "HTTP 422: validation failed (body: expected required property repositoryNames to be present)"
+    );
   });
 });

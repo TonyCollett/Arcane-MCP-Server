@@ -118,6 +118,15 @@ export async function parseApiError(response: Response, path: string): Promise<A
 
   try {
     const body = await response.json() as Record<string, unknown>;
+    // v2 (Huma) problem details: { title, status, detail, errors: [{ message, location }] }
+    if (body.detail && typeof body.detail === "string") {
+      const fieldErrors = Array.isArray(body.errors)
+        ? (body.errors as Array<{ message?: string; location?: string }>)
+            .filter((e) => e?.message)
+            .map((e) => (e.location ? `${e.location}: ${e.message}` : e.message))
+        : [];
+      message = `HTTP ${response.status}: ${body.detail}${fieldErrors.length ? ` (${fieldErrors.join("; ")})` : ""}`;
+    }
     if (body.message && typeof body.message === "string") message = body.message;
     if (body.error && typeof body.error === "string") message = body.error;
     if (body.code && typeof body.code === "string") code = body.code;

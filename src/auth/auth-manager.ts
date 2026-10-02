@@ -5,7 +5,7 @@
 
 import { getConfig } from "../config.js";
 import { logger } from "../utils/logger.js";
-import { TOKEN_REFRESH_BUFFER_MS } from "../constants.js";
+import { TOKEN_REFRESH_BUFFER_MS, LOGIN_STATUS_MFA_REQUIRED } from "../constants.js";
 
 interface JwtTokens {
   accessToken: string;
@@ -14,7 +14,9 @@ interface JwtTokens {
 }
 
 interface LoginResponse {
-  token: string;
+  /** "mfa_required" when the account needs a passkey challenge (no tokens then) */
+  status?: string;
+  token?: string;
   refreshToken: string;
   expiresAt: string;
   user: {
@@ -27,6 +29,14 @@ interface RefreshResponse {
   token: string;
   refreshToken: string;
   expiresAt: string;
+}
+
+/** Auth endpoints wrap their payload in `{ success, data }` — unwrap if present. */
+function unwrapAuthResponse<T>(json: unknown): T {
+  if (json && typeof json === "object" && "data" in json && (json as { data?: unknown }).data) {
+    return (json as { data: T }).data;
+  }
+  return json as T;
 }
 
 export class AuthManager {
@@ -126,7 +136,14 @@ export class AuthManager {
       throw new Error(`Login failed: ${response.status} ${error}`);
     }
 
-    const data = await response.json() as LoginResponse;
+    const data = unwrapAuthResponse<LoginResponse>(await response.json());
+
+    // Accounts with passkey MFA get a challenge instead of tokens
+    if (data.status === LOGIN_STATUS_MFA_REQUIRED || !data.token) {
+      throw new Error(
+        "Login requires passkey MFA, which the MCP server cannot complete. Use an API key (ARCANE_API_KEY) instead."
+      );
+    }
 
     this.jwtTokens = {
       accessToken: data.token,
@@ -180,7 +197,7 @@ export class AuthManager {
       throw new Error(`Token refresh failed: ${response.status} ${error}`);
     }
 
-    const data = await response.json() as RefreshResponse;
+    const data = unwrapAuthResponse<RefreshResponse>(await response.json());
 
     this.jwtTokens = {
       accessToken: data.token,

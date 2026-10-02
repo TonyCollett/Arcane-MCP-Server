@@ -7,8 +7,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
-import { formatSize, formatSizeCompact, formatSizeMB, validatePath } from "../utils/format.js";
-import type { Volume, FileEntry, Backup } from "../types/arcane-types.js";
+import { formatSize, formatSizeCompact, formatSizeMB, toWorkspacePath, validatePath } from "../utils/format.js";
+import type { Volume, Backup, Workspace, WorkspaceFileContent } from "../types/arcane-types.js";
 
 export function registerVolumeTools(server: McpServer, registry?: ToolRegistry): void {
   const register = moduleRegistrar(server, registry, "volume");
@@ -38,21 +38,21 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     toolHandler(async ({ environmentId, search, sort, order, start, limit }, client) => {
       const response = await client.get<{
         data: Volume[];
-        pagination: { total: number; start: number; limit: number };
+        pagination: { totalItems: number };
       }>(`/environments/${environmentId}/volumes`, { search, sort, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No volumes found.";
       }
 
-      const lines = [`Found ${response.pagination.total} volumes:\n`];
+      const lines = [`Found ${response.pagination.totalItems} volumes:\n`];
       for (const vol of response.data) {
         lines.push(`${vol.name}`);
         lines.push(`    Driver: ${vol.driver}`);
         lines.push(`    Mountpoint: ${vol.mountpoint}`);
         if (vol.usageData) {
-          lines.push(`    Size: ${formatSize(vol.usageData.size, true)}`);
-          lines.push(`    Containers: ${vol.usageData.refCount}`);
+          lines.push(`    Size: ${formatSize(vol.usageData.Size, true)}`);
+          lines.push(`    Containers: ${vol.usageData.RefCount}`);
         }
         lines.push("");
       }
@@ -93,8 +93,8 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
       ];
 
       if (vol.usageData) {
-        lines.push(`  Size: ${formatSizeMB(vol.usageData.size)}`);
-        lines.push(`  Container Refs: ${vol.usageData.refCount}`);
+        lines.push(`  Size: ${formatSizeMB(vol.usageData.Size)}`);
+        lines.push(`  Container Refs: ${vol.usageData.RefCount}`);
       }
 
       if (vol.labels && Object.keys(vol.labels).length > 0) {
@@ -179,13 +179,13 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.post<{ volumesDeleted?: string[]; spaceReclaimed?: number }>(
-        `/environments/${environmentId}/volumes/prune`
-      );
+      const response = await client.post<{
+        data: { volumesDeleted?: string[] | null; spaceReclaimed?: number };
+      }>(`/environments/${environmentId}/volumes/prune`);
 
-      const deleted = response.volumesDeleted?.length || 0;
-      const space = response.spaceReclaimed
-        ? formatSize(response.spaceReclaimed)
+      const deleted = response.data.volumesDeleted?.length || 0;
+      const space = response.data.spaceReclaimed
+        ? formatSize(response.data.spaceReclaimed)
         : "unknown";
 
       return `Pruned ${deleted} volumes, reclaimed ${space} of disk space.`;
@@ -210,12 +210,10 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{
-        total: number;
-        inUse: number;
-        unused: number;
+        data: { total: number; inuse: number; unused: number };
       }>(`/environments/${environmentId}/volumes/counts`);
 
-      return `Volume Counts:\n  Total: ${response.total}\n  In Use: ${response.inUse || 0}\n  Unused: ${response.unused || 0}`;
+      return `Volume Counts:\n  Total: ${response.data.total}\n  In Use: ${response.data.inuse || 0}\n  Unused: ${response.data.unused || 0}`;
     })
   );
 
@@ -226,7 +224,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     "arcane_volume_browse",
     {
       title: "Browse volume files",
-      description: "Browse files and directories in a Docker volume",
+      description: "List the files and directories directly under a path in a Docker volume (via the volume workspace)",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -236,26 +234,34 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
       inputSchema: {
       environmentId: z.string().describe("Environment ID"),
       volumeName: z.string().describe("Volume name"),
-      path: z.string().optional().default("/").describe("Path within the volume"),
+      path: z.string().optional().default("/").describe("Directory within the volume (\"/\" for the root)"),
     },
     },
     toolHandler(async ({ environmentId, volumeName, path }, client) => {
-      if (path) validatePath(path);
-
-      const response = await client.get<{ data: FileEntry[] }>(
-        `/environments/${environmentId}/volumes/${volumeName}/browse`,
-        { path }
+      const dir = toWorkspacePath(validatePath(path ?? "/"));
+      const response = await client.get<{ data: Workspace }>(
+        `/environments/${environmentId}/volumes/${volumeName}/workspace`
       );
 
-      if (!response.data || response.data.length === 0) {
-        return `Directory ${path} is empty.`;
+      // The workspace is a flat, recursive listing — keep only direct children of `dir`
+      const prefix = dir ? `${dir}/` : "";
+      const entries = (response.data.files ?? []).filter(
+        (entry) => entry.relativePath.startsWith(prefix) && !entry.relativePath.slice(prefix.length).includes("/")
+      );
+      const label = `/${dir}`;
+
+      if (entries.length === 0) {
+        return `Directory ${label} is empty or does not exist.`;
       }
 
-      const lines = [`Contents of ${path}:\n`];
-      for (const entry of response.data) {
-        const type = entry.isDir ? "DIR " : "FILE";
-        const size = entry.isDir ? "-" : formatSizeCompact(entry.size);
+      const lines = [`Contents of ${label}:\n`];
+      for (const entry of entries) {
+        const type = entry.isDirectory ? "DIR " : entry.isSymlink ? "LINK" : "FILE";
+        const size = entry.isDirectory ? "-" : formatSizeCompact(entry.size);
         lines.push(`${type}  ${size.padEnd(8)}  ${entry.name}`);
+      }
+      if (response.data.fileTreeTruncated) {
+        lines.push("\n(Volume listing was truncated by Arcane — some entries may be missing.)");
       }
 
       return lines.join("\n");
@@ -281,14 +287,17 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId, volumeName, path }, client) => {
-      validatePath(path);
-
-      const response = await client.get<{ data: { content: string } }>(
-        `/environments/${environmentId}/volumes/${volumeName}/browse/content`,
-        { path }
+      const relativePath = toWorkspacePath(validatePath(path));
+      const response = await client.get<{ data: WorkspaceFileContent }>(
+        `/environments/${environmentId}/volumes/${volumeName}/workspace/file`,
+        { relativePath }
       );
 
-      return response.data.content;
+      const file = response.data;
+      if (file.content === undefined && file.readOnlyReason) {
+        return `Cannot display /${relativePath}: ${file.readOnlyReason} (${formatSizeCompact(file.size)}, ${file.mimeType})`;
+      }
+      return file.content ?? "";
     })
   );
 
@@ -297,7 +306,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     "arcane_volume_browse_mkdir",
     {
       title: "Create volume directory",
-      description: "Create a directory in a Docker volume",
+      description: "Create a directory in a Docker volume (the parent directory must already exist)",
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -311,10 +320,21 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId, volumeName, path }, client) => {
-      validatePath(path);
+      const relativePath = toWorkspacePath(validatePath(path));
+      if (!relativePath) {
+        throw new Error("Path must name a directory below the volume root");
+      }
+      const workspacePath = `/environments/${environmentId}/volumes/${volumeName}/workspace`;
 
-      await client.post(`/environments/${environmentId}/volumes/${volumeName}/browse/mkdir`, { path });
-      return `Directory created: ${path}`;
+      // Workspace edits are optimistic: send the revision we read so Arcane can reject stale changes
+      const current = await client.get<{ data: Workspace }>(workspacePath);
+      await client.sendForm("PUT", workspacePath, {
+        manifest: JSON.stringify({
+          fileTreeRevision: current.data.fileTreeRevision,
+          fileChanges: [{ operation: "create_folder", relativePath }],
+        }),
+      });
+      return `Directory created: /${relativePath}`;
     })
   );
 
@@ -348,8 +368,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
 
       const lines = [`Backups for ${volumeName}:\n`];
       for (const backup of response.data) {
-        lines.push(`${backup.filename}`);
-        lines.push(`    ID: ${backup.id}`);
+        lines.push(`Backup ${backup.id}`);
         lines.push(`    Size: ${formatSizeMB(backup.size)}`);
         lines.push(`    Created: ${backup.createdAt}`);
         lines.push("");
@@ -381,7 +400,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
         `/environments/${environmentId}/volumes/${volumeName}/backups`
       );
 
-      return `Backup created: ${response.data.filename}\n  ID: ${response.data.id}\n  Size: ${formatSizeMB(response.data.size)}`;
+      return `Backup created for volume ${volumeName}.\n  ID: ${response.data.id}\n  Size: ${formatSizeMB(response.data.size)}`;
     })
   );
 
@@ -399,12 +418,11 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
       },
       inputSchema: {
       environmentId: z.string().describe("Environment ID"),
-      volumeName: z.string().describe("Volume name"),
       backupId: z.string().describe("Backup ID to delete"),
     },
     },
-    toolHandler(async ({ environmentId, volumeName, backupId }, client) => {
-      await client.delete(`/environments/${environmentId}/volumes/${volumeName}/backups/${backupId}`);
+    toolHandler(async ({ environmentId, backupId }, client) => {
+      await client.delete(`/environments/${environmentId}/volumes/backups/${backupId}`);
       return `Backup ${backupId} deleted.`;
     })
   );
@@ -447,27 +465,21 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
       },
       inputSchema: {
       environmentId: z.string().describe("Environment ID"),
-      volumeName: z.string().describe("Volume name"),
       backupId: z.string().describe("Backup ID"),
-      path: z.string().optional().default("/").describe("Path within the backup"),
     },
     },
-    toolHandler(async ({ environmentId, volumeName, backupId, path }, client) => {
-      if (path) validatePath(path);
-
-      const response = await client.get<{ data: FileEntry[] }>(
-        `/environments/${environmentId}/volumes/${volumeName}/backups/${backupId}/files`,
-        { path }
+    toolHandler(async ({ environmentId, backupId }, client) => {
+      const response = await client.get<{ data: string[] }>(
+        `/environments/${environmentId}/volumes/backups/${backupId}/files`
       );
 
       if (!response.data || response.data.length === 0) {
-        return `Path ${path} is empty or not found in backup.`;
+        return `Backup ${backupId} contains no files.`;
       }
 
-      const lines = [`Files in backup at ${path}:\n`];
-      for (const entry of response.data) {
-        const type = entry.isDir ? "DIR " : "FILE";
-        lines.push(`${type}  ${entry.name}`);
+      const lines = [`Files in backup ${backupId}:\n`];
+      for (const file of response.data) {
+        lines.push(`  ${file}`);
       }
 
       return lines.join("\n");

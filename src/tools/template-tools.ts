@@ -6,7 +6,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
-import type { Template } from "../types/arcane-types.js";
+import type { Template, GlobalVariable, GlobalVariableMutation } from "../types/arcane-types.js";
 
 export function registerTemplateTools(server: McpServer, registry?: ToolRegistry): void {
   const register = moduleRegistrar(server, registry, "template");
@@ -24,26 +24,26 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
       },
       inputSchema: {
       search: z.string().optional().describe("Search query"),
-      category: z.string().optional().describe("Filter by category"),
+      type: z.string().optional().describe("Filter by template type"),
       start: z.number().optional().default(0).describe("Pagination start"),
       limit: z.number().optional().default(20).describe("Items per page"),
     },
     },
-    toolHandler(async ({ search, category, start, limit }, client) => {
+    toolHandler(async ({ search, type, start, limit }, client) => {
       const response = await client.get<{
         data: Template[];
-        pagination: { total: number };
-      }>("/templates", { search, category, start, limit });
+        pagination: { totalItems: number };
+      }>("/templates", { search, type, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No templates found.";
       }
 
-      const lines = [`Found ${response.pagination.total} templates:\n`];
+      const lines = [`Found ${response.pagination.totalItems} templates:\n`];
       for (const tmpl of response.data) {
         lines.push(`${tmpl.name}`);
         lines.push(`    ID: ${tmpl.id}`);
-        if (tmpl.category) lines.push(`    Category: ${tmpl.category}`);
+        if (tmpl.registry?.name) lines.push(`    Registry: ${tmpl.registry.name}`);
         if (tmpl.description) lines.push(`    Description: ${tmpl.description.substring(0, 80)}...`);
         lines.push("");
       }
@@ -75,8 +75,9 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
       const lines = [
         `Template: ${tmpl.name}`,
         `  ID: ${tmpl.id}`,
-        `  Category: ${tmpl.category || "N/A"}`,
-        `  Source: ${tmpl.source || "N/A"}`,
+        `  Remote: ${tmpl.isRemote ? "Yes" : "No"}`,
+        `  Custom: ${tmpl.isCustom ? "Yes" : "No"}`,
+        `  Registry: ${tmpl.registry?.name || "N/A"}`,
         `  Description: ${tmpl.description || "N/A"}`,
       ];
 
@@ -124,14 +125,14 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
       inputSchema: {
       name: z.string().describe("Template name"),
       description: z.string().optional().describe("Template description"),
-      category: z.string().optional().describe("Category"),
       content: z.string().describe("Docker Compose YAML content"),
+      envContent: z.string().optional().describe("Environment file (.env) content"),
     },
     },
-    toolHandler(async ({ name, description, category, content }, client) => {
+    toolHandler(async ({ name, description, content, envContent }, client) => {
       const response = await client.post<{ data: { id: string; name: string } }>(
         "/templates",
-        { name, description, category, content }
+        { name, description: description ?? "", content, envContent: envContent ?? "" }
       );
 
       return `Template created: ${response.data.name} (ID: ${response.data.id})`;
@@ -154,16 +155,16 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
       templateId: z.string().describe("Template ID"),
       name: z.string().optional().describe("New name"),
       description: z.string().optional().describe("New description"),
-      category: z.string().optional().describe("New category"),
       content: z.string().optional().describe("New YAML content"),
+      envContent: z.string().optional().describe("New environment file (.env) content"),
     },
     },
-    toolHandler(async ({ templateId, name, description, category, content }, client) => {
+    toolHandler(async ({ templateId, name, description, content, envContent }, client) => {
       const body: Record<string, unknown> = {};
       if (name) body.name = name;
       if (description) body.description = description;
-      if (category) body.category = category;
       if (content) body.content = content;
+      if (envContent) body.envContent = envContent;
 
       await client.put(`/templates/${templateId}`, body);
       return `Template ${templateId} updated.`;
@@ -196,25 +197,32 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
   register(
     "arcane_template_get_variables",
     {
-      title: "Get template variables",
-      description: "Get global template variables",
+      title: "Get global variables",
+      description: "List global variables (used for compose/template interpolation) with their environment scope. Secret values are redacted by Arcane.",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
         idempotentHint: true,
         openWorldHint: false,
       },
+      inputSchema: {
+      environmentId: z.string().optional().describe("Only show variables that apply to this environment"),
     },
-    toolHandler(async (_params, client) => {
-      const response = await client.get<{ data: Record<string, string> }>("/templates/variables");
+    },
+    toolHandler(async ({ environmentId }, client) => {
+      const response = await client.get<{ data: GlobalVariable[] | null }>("/variables");
 
-      if (!response.data || Object.keys(response.data).length === 0) {
+      const variables = (response.data ?? []).filter(
+        (v) => !environmentId || v.allEnvironments || (v.environmentIds ?? []).includes(environmentId)
+      );
+      if (variables.length === 0) {
         return "No global variables configured.";
       }
 
-      const lines = ["Global Template Variables:\n"];
-      for (const [key, value] of Object.entries(response.data)) {
-        lines.push(`  ${key}: ${value}`);
+      const lines = ["Global Variables:\n"];
+      for (const v of variables) {
+        const scope = v.allEnvironments ? "all environments" : `environments: ${(v.environmentIds ?? []).join(", ")}`;
+        lines.push(`  ${v.key}: ${v.isSecret ? "(secret)" : v.value}  [${scope}] (ID: ${v.id})`);
       }
 
       return lines.join("\n");
@@ -225,8 +233,8 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
   register(
     "arcane_template_update_variables",
     {
-      title: "Update template variables",
-      description: "Update global template variables",
+      title: "Update global variables",
+      description: "Create or update global variables by key, and optionally remove keys. Variables are matched by key within the given scope (all environments unless environmentIds is set); Arcane syncs changes to affected environments.",
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -234,12 +242,66 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
         openWorldHint: false,
       },
       inputSchema: {
-      variables: z.record(z.string()).describe("Variables to set (key-value pairs)"),
+      variables: z.record(z.string()).optional().default({}).describe("Variables to create or update (key-value pairs)"),
+      remove: z.array(z.string()).optional().describe("Keys to delete within the same scope"),
+      environmentIds: z.array(z.string()).optional().describe("Scope to these environment IDs (omit for all environments)"),
+      isSecret: z.boolean().optional().describe("Store values as secrets (encrypted, redacted when listed)"),
     },
     },
-    toolHandler(async ({ variables }, client) => {
-      await client.put("/templates/variables", { variables });
-      return "Global variables updated.";
+    toolHandler(async ({ variables, remove, environmentIds, isSecret }, client) => {
+      const scope = [...new Set(environmentIds ?? [])].sort();
+      const inScope = (v: GlobalVariable) =>
+        scope.length === 0
+          ? v.allEnvironments
+          : !v.allEnvironments && [...(v.environmentIds ?? [])].sort().join(",") === scope.join(",");
+
+      const existing = ((await client.get<{ data: GlobalVariable[] | null }>("/variables")).data ?? []).filter(inScope);
+      const byKey = new Map(existing.map((v) => [v.key, v]));
+      const results: string[] = [];
+      const syncErrors = new Set<string>();
+      const collect = (res: { data?: GlobalVariableMutation }) => {
+        for (const s of res?.data?.syncResults ?? []) {
+          if (s.error) syncErrors.add(`${s.environmentName || s.environmentId}: ${s.error}`);
+        }
+      };
+
+      for (const [key, value] of Object.entries(variables ?? {})) {
+        const current = byKey.get(key);
+        if (current) {
+          collect(await client.put<{ data: GlobalVariableMutation }>(`/variables/${current.id}`, { value, isSecret }));
+          results.push(`updated ${key}`);
+        } else {
+          collect(
+            await client.post<{ data: GlobalVariableMutation }>("/variables", {
+              key,
+              value,
+              isSecret: isSecret ?? false,
+              allEnvironments: scope.length === 0,
+              environmentIds: scope,
+            })
+          );
+          results.push(`created ${key}`);
+        }
+      }
+
+      for (const key of remove ?? []) {
+        const current = byKey.get(key);
+        if (!current) {
+          results.push(`skipped ${key} (not found in scope)`);
+          continue;
+        }
+        collect(await client.delete<{ data: GlobalVariableMutation }>(`/variables/${current.id}`));
+        results.push(`deleted ${key}`);
+      }
+
+      if (results.length === 0) {
+        return "Nothing to do: pass variables to set and/or keys to remove.";
+      }
+      const lines = [`Global variables: ${results.join(", ")}.`];
+      if (syncErrors.size > 0) {
+        lines.push("", "Sync errors:", ...[...syncErrors].map((e) => `  ${e}`));
+      }
+      return lines.join("\n");
     })
   );
 

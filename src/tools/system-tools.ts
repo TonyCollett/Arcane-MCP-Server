@@ -55,33 +55,29 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.get<{
-        data: {
-          serverVersion: string;
-          operatingSystem: string;
-          architecture: string;
-          containers: number;
-          containersRunning: number;
-          containersStopped: number;
-          images: number;
-          memTotal: number;
-          ncpu: number;
-          driver: string;
-        };
-      }>(`/environments/${environmentId}/system/docker-info`);
-
-      const info = response.data;
+      const info = await client.get<{
+        ServerVersion: string;
+        OperatingSystem: string;
+        Architecture: string;
+        Containers: number;
+        ContainersRunning: number;
+        ContainersStopped: number;
+        Images: number;
+        MemTotal: number;
+        NCPU: number;
+        Driver: string;
+      }>(`/environments/${environmentId}/system/docker/info`);
 
       const lines = [
         "Docker System Information:",
-        `  Version: ${info.serverVersion}`,
-        `  OS: ${info.operatingSystem}`,
-        `  Architecture: ${info.architecture}`,
-        `  Storage Driver: ${info.driver}`,
-        `  CPUs: ${info.ncpu}`,
-        `  Memory: ${formatSizeGB(info.memTotal)}`,
-        `  Containers: ${info.containers} (${info.containersRunning} running, ${info.containersStopped} stopped)`,
-        `  Images: ${info.images}`,
+        `  Version: ${info.ServerVersion}`,
+        `  OS: ${info.OperatingSystem}`,
+        `  Architecture: ${info.Architecture}`,
+        `  Storage Driver: ${info.Driver}`,
+        `  CPUs: ${info.NCPU}`,
+        `  Memory: ${formatSizeGB(info.MemTotal)}`,
+        `  Containers: ${info.Containers} (${info.ContainersRunning} running, ${info.ContainersStopped} stopped)`,
+        `  Images: ${info.Images}`,
       ];
 
       return lines.join("\n");
@@ -102,31 +98,42 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
       },
       inputSchema: {
       environmentId: z.string().describe("Environment ID"),
-      volumes: z.boolean().optional().default(false).describe("Also prune volumes (DATA LOSS!)"),
+      volumes: z.boolean().optional().default(false).describe("Also prune all unused volumes (DATA LOSS!)"),
       all: z.boolean().optional().default(false).describe("Remove all unused images, not just dangling"),
+      buildCache: z.boolean().optional().default(false).describe("Also prune unused build cache"),
     },
     },
-    toolHandler(async ({ environmentId, volumes, all }, client) => {
+    toolHandler(async ({ environmentId, volumes, all, buildCache }, client) => {
       const response = await client.post<{
-        containersDeleted?: number;
-        networksDeleted?: number;
-        imagesDeleted?: number;
-        volumesDeleted?: number;
-        spaceReclaimed?: number;
-      }>(`/environments/${environmentId}/system/prune`, { volumes, all });
+        data: {
+          containersPruned?: string[];
+          imagesDeleted?: string[];
+          networksDeleted?: string[];
+          volumesDeleted?: string[];
+          spaceReclaimed?: number;
+          errors?: string[];
+        };
+      }>(`/environments/${environmentId}/system/prune`, {
+        containers: { mode: "stopped" },
+        images: { mode: all ? "all" : "dangling" },
+        networks: { mode: "unused" },
+        volumes: { mode: volumes ? "all" : "none" },
+        buildCache: { mode: buildCache ? "unused" : "none" },
+      });
 
-      const spaceMB = response.spaceReclaimed
-        ? formatSizeMB(response.spaceReclaimed)
-        : "unknown";
-
+      const r = response.data;
       const lines = [
         "System Prune Complete:",
-        `  Containers removed: ${response.containersDeleted || 0}`,
-        `  Networks removed: ${response.networksDeleted || 0}`,
-        `  Images removed: ${response.imagesDeleted || 0}`,
-        `  Volumes removed: ${response.volumesDeleted || 0}`,
-        `  Space reclaimed: ${spaceMB}`,
+        `  Containers removed: ${r.containersPruned?.length || 0}`,
+        `  Networks removed: ${r.networksDeleted?.length || 0}`,
+        `  Images removed: ${r.imagesDeleted?.length || 0}`,
+        `  Volumes removed: ${r.volumesDeleted?.length || 0}`,
+        `  Space reclaimed: ${r.spaceReclaimed ? formatSizeMB(r.spaceReclaimed) : "unknown"}`,
       ];
+
+      if (r.errors && r.errors.length > 0) {
+        lines.push(`  Errors: ${r.errors.join("; ")}`);
+      }
 
       return lines.join("\n");
     })
@@ -137,7 +144,7 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     "arcane_system_check_upgrade",
     {
       title: "Check for upgrade",
-      description: "Check if an Arcane upgrade is available",
+      description: "Check whether this Arcane instance can upgrade itself (e.g. it runs in a container Arcane can replace). For current vs newest version use arcane_version_get.",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -149,21 +156,17 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.get<{
-        data: {
-          currentVersion: string;
-          latestVersion: string;
-          updateAvailable: boolean;
-          releaseNotes?: string;
-        };
-      }>(`/environments/${environmentId}/system/upgrade/check`);
+      // Unwrapped body (no `data` envelope): whether self-upgrade is possible here
+      const result = await client.get<{ canUpgrade: boolean; error: boolean; message: string }>(
+        `/environments/${environmentId}/system/upgrade/check`
+      );
 
-      const info = response.data;
-      if (info.updateAvailable) {
-        return `Update Available!\n  Current: ${info.currentVersion}\n  Latest: ${info.latestVersion}${info.releaseNotes ? `\n\nRelease Notes:\n${info.releaseNotes}` : ""}`;
-      } else {
-        return `You're running the latest version (${info.currentVersion})`;
+      if (result.error) {
+        return `Upgrade check failed: ${result.message}`;
       }
+      return result.canUpgrade
+        ? `Self-upgrade is supported: ${result.message}. Use arcane_system_upgrade to start it (see arcane_version_get for the newest version).`
+        : `Self-upgrade is not available for this environment: ${result.message}`;
     })
   );
 
@@ -277,16 +280,18 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async (_params, client) => {
       const response = await client.get<{
-        version: string;
-        buildTime?: string;
-        gitCommit?: string;
+        currentVersion: string;
+        newestVersion?: string;
+        updateAvailable?: boolean;
+        releaseUrl?: string;
       }>("/version");
 
-      const lines = [
-        `Arcane Version: ${response.version}`,
-        `  Build Time: ${response.buildTime || "unknown"}`,
-        `  Git Commit: ${response.gitCommit || "unknown"}`,
-      ];
+      const lines = [`Arcane Version: ${response.currentVersion}`];
+      if (response.updateAvailable && response.newestVersion) {
+        lines.push(`  Update available: ${response.newestVersion}${response.releaseUrl ? ` (${response.releaseUrl})` : ""}`);
+      } else {
+        lines.push("  Up to date.");
+      }
 
       return lines.join("\n");
     })
