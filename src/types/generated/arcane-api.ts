@@ -4,26 +4,6 @@
  */
 
 export interface paths {
-    "/activities/stream": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Stream background activities across all environments
-         * @description Stream background activity updates for the local environment and all enabled remote environments as JSON lines
-         */
-        get: operations["stream-all-activities"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api-keys": {
         parameters: {
             query?: never;
@@ -71,6 +51,98 @@ export interface paths {
          * @description Delete an API key by ID
          */
         delete: operations["delete-api-key"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/apns/devices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Register a mobile device */
+        post: operations["register-apns-device"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/apns/devices/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove a mobile device */
+        delete: operations["delete-apns-device"];
+        options?: never;
+        head?: never;
+        /** Update a mobile device */
+        patch: operations["update-apns-device"];
+        trace?: never;
+    };
+    "/apns/devices/{id}/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a test push */
+        post: operations["test-apns-device"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/apns/pairing-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Issue a pairing token
+         * @description Issue a short-lived signed token the mobile app presents to the push relay
+         */
+        post: operations["create-apns-pairing-token"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/apns/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get mobile push status
+         * @description Whether mobile push is enabled and the caller's registered devices
+         */
+        get: operations["get-apns-status"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -324,6 +396,211 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/me/mfa": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get passkey MFA status */
+        get: operations["get-passkey-mfa-status"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/mfa/disable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Disable passkey MFA */
+        post: operations["disable-passkey-mfa"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/mfa/enable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enable passkey MFA */
+        post: operations["enable-passkey-mfa"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/mfa/recovery-codes/regenerate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Regenerate MFA recovery codes */
+        post: operations["regenerate-passkey-recovery-codes"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/passkeys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List my passkeys */
+        get: operations["list-my-passkeys"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/passkeys/capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get passkey capabilities */
+        get: operations["get-passkey-capabilities"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/passkeys/reauth/begin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Begin passkey step-up */
+        post: operations["begin-passkey-step-up"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/passkeys/reauth/finish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Finish passkey step-up */
+        post: operations["finish-passkey-step-up"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/passkeys/reauth/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reauthenticate with password */
+        post: operations["password-step-up"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/passkeys/register/begin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Begin passkey registration */
+        post: operations["begin-passkey-registration"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/passkeys/register/finish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Finish passkey registration */
+        post: operations["finish-passkey-registration"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me/passkeys/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Rename my passkey */
+        put: operations["rename-my-passkey"];
+        post?: never;
+        /** Delete my passkey */
+        delete: operations["delete-my-passkey"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/me/profile": {
         parameters: {
             query?: never;
@@ -338,6 +615,163 @@ export interface paths {
          */
         put: operations["update-my-profile"];
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/mfa/passkey/begin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Begin passkey MFA
+         * @description Begin a WebAuthn assertion for a pending MFA transaction
+         */
+        post: operations["begin-passkey-mfa"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/mfa/passkey/finish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Finish passkey MFA
+         * @description Validate a WebAuthn MFA assertion and create the authenticated session
+         */
+        post: operations["finish-passkey-mfa"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/mfa/recovery": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Use an MFA recovery code
+         * @description Consume one recovery code for a pending MFA transaction
+         */
+        post: operations["use-passkey-recovery-code"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/passkey/login/availability": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get passkey login availability */
+        get: operations["get-passkey-login-availability"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/passkey/login/begin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Begin passkey login
+         * @description Begin a discoverable WebAuthn passkey login ceremony
+         */
+        post: operations["begin-passkey-login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/passkey/login/finish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Finish passkey login
+         * @description Validate a discoverable WebAuthn assertion and create a session
+         */
+        post: operations["finish-passkey-login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/passkey/mobile/exchange": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Exchange mobile passkey login
+         * @description Consume a verifier-bound mobile passkey transaction and create a session
+         */
+        post: operations["exchange-mobile-passkey-login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/passkey/mobile/finish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Finish mobile passkey login
+         * @description Validate a browser assertion and create a one-time mobile exchange
+         */
+        post: operations["finish-mobile-passkey-login"];
         delete?: never;
         options?: never;
         head?: never;
@@ -398,6 +832,387 @@ export interface paths {
          * @description Revoke every session for the current user except the one making this request
          */
         post: operations["logout-all-other-sessions"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Arcane system backups */
+        get: operations["list-system-backups"];
+        put?: never;
+        /** Create Arcane system backup */
+        post: operations["create-system-backup"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/discover": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Discover Arcane system backups in S3 */
+        post: operations["discover-system-backups"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List unified backup history */
+        get: operations["list-backup-history"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/policies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Arcane system backup policies */
+        get: operations["get-system-backup-policies"];
+        /** Update Arcane system backup policies */
+        put: operations["update-system-backup-policies"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/recovery-key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Configure Arcane system backup recovery key */
+        put: operations["set-system-backup-recovery-key"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/recovery-key/generate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Generate an Arcane system backup recovery key */
+        post: operations["generate-system-backup-recovery-key"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/s3": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List S3 destinations
+         * @description List saved S3-compatible backup destinations with search, sorting, and pagination
+         */
+        get: operations["list-s3-destinations"];
+        put?: never;
+        /** Create S3 destination */
+        post: operations["create-s3-destination"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/s3/options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List all S3 destination options
+         * @description List saved S3-compatible destinations for backup configuration selectors
+         */
+        get: operations["list-all-s3-destinations"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/s3/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Sync S3 destinations
+         * @description Synchronize manager-owned S3 destinations to an agent
+         */
+        post: operations["sync-s3-destinations"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/s3/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Test unsaved S3 destination configuration
+         * @description Verify upload, download, and delete access before saving an S3 destination
+         */
+        post: operations["test-s3-destination-configuration"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/s3/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get S3 destination */
+        get: operations["get-s3-destination"];
+        /** Update S3 destination */
+        put: operations["update-s3-destination"];
+        post?: never;
+        /** Delete S3 destination */
+        delete: operations["delete-s3-destination"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/s3/{id}/in-use": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check S3 destination references
+         * @description Report whether backup records, policies, or settings on this environment still reference the destination
+         */
+        get: operations["get-s3-destination-usage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/s3/{id}/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Test S3 destination
+         * @description Verify upload, download, and delete access using the saved or supplied S3 destination configuration
+         */
+        post: operations["test-s3-destination"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/volumes/config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get system-managed volume backup policies */
+        get: operations["get-system-volume-backup-config"];
+        /** Update system-managed volume backup policies */
+        put: operations["update-system-volume-backup-config"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/volumes/options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List volumes available to system-managed backups */
+        get: operations["list-system-volume-backup-options"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/volumes/run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Run system-managed volume backups */
+        post: operations["run-system-volume-backups"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Arcane system backup */
+        delete: operations["delete-system-backup"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/{id}/files/browse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Browse project files in an Arcane system backup */
+        post: operations["browse-system-backup-files"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore Arcane system backup */
+        post: operations["restore-system-backup"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/{id}/restore-files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore project files from an Arcane system backup */
+        post: operations["restore-system-backup-files"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/backups/{id}/upload": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Upload Arcane system backup */
+        post: operations["upload-system-backup"];
         delete?: never;
         options?: never;
         head?: never;
@@ -668,26 +1483,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/dashboard/stream": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Stream dashboard snapshots across all environments
-         * @description Stream dashboard snapshot updates for the local environment and all enabled remote environments as JSON lines
-         */
-        get: operations["stream-all-dashboards"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/diagnostics": {
         parameters: {
             query?: never;
@@ -702,6 +1497,26 @@ export interface paths {
         get: operations["get-diagnostics"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/diagnostics/goroutineleak": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Scan for leaked goroutines
+         * @description Runs a goroutine leak-detection GC cycle and returns the goroutineleak pprof profile as text (leaked stacks only).
+         */
+        post: operations["scan-goroutine-leaks"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1015,7 +1830,7 @@ export interface paths {
         put?: never;
         /**
          * Upload build workspace file
-         * @description Upload a file into the builds workspace root
+         * @description Copy a complete chunked upload session into the builds workspace root. multipart/form-data bodies are still accepted for backward compatibility; that form is deprecated and will be removed in a future release.
          */
         post: operations["builds-browse-upload"];
         delete?: never;
@@ -1056,6 +1871,26 @@ export interface paths {
         get: operations["container-status-counts"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/containers/generate-compose": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Generate compose file
+         * @description Generate a compose file from existing containers
+         */
+        post: operations["generate-compose"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1120,6 +1955,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/containers/{containerId}/edit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Edit container
+         * @description Apply configuration changes and recreate the container
+         */
+        post: operations["edit-container"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/containers/{containerId}/edit-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get container edit config
+         * @description Editable configuration snapshot backing the container edit form
+         */
+        get: operations["get-container-edit-config"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/containers/{containerId}/kill": {
         parameters: {
             query?: never;
@@ -1140,6 +2015,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/containers/{containerId}/logs/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Download container logs
+         * @description Download every log line Docker retains for the container as a text file
+         */
+        get: operations["download-container-logs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/containers/{containerId}/pause": {
         parameters: {
             query?: never;
@@ -1151,6 +2046,26 @@ export interface paths {
         put?: never;
         /** Pause container */
         post: operations["pause-container"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/containers/{containerId}/processes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get container processes
+         * @description Snapshot of the processes running inside the container, as reported by Docker
+         */
+        get: operations["get-container-processes"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1412,6 +2327,86 @@ export interface paths {
          * @description Delete a GitOps sync configuration by ID
          */
         delete: operations["deleteGitOpsSync"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/gitops-syncs/{syncId}/backup/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Git backup history
+         * @description List repository revisions that changed the backup
+         */
+        get: operations["listGitOpsBackupHistory"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/gitops-syncs/{syncId}/backup/history/{commit}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a Git backup revision
+         * @description Get one revision with per-file diffs
+         */
+        get: operations["getGitOpsBackupRevision"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/gitops-syncs/{syncId}/backup/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Preview a Git backup
+         * @description Show the files the next backup would commit and any conflicts
+         */
+        get: operations["previewGitOpsBackup"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/gitops-syncs/{syncId}/backup/resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resolve a Git backup conflict
+         * @description Resolve a backup that needs attention
+         */
+        post: operations["resolveGitOpsBackupConflict"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -1700,6 +2695,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/images/patch-targets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List image patch targets
+         * @description Retrieves scanned images with fixable vulnerability counts and their latest patch run
+         */
+        get: operations["list-image-patch-targets"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/images/patches": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List image patches
+         * @description Retrieves the paginated image patch history for the environment
+         */
+        get: operations["list-image-patches"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/images/prune": {
         parameters: {
             query?: never;
@@ -1771,7 +2806,7 @@ export interface paths {
         put?: never;
         /**
          * Upload an image
-         * @description Upload a Docker image from a tar archive
+         * @description Load a Docker image tar archive from a complete chunked upload session. multipart/form-data bodies are still accepted for backward compatibility; that form is deprecated and will be removed in a future release.
          */
         post: operations["upload-image"];
         delete?: never;
@@ -1819,6 +2854,26 @@ export interface paths {
          * @description Remove a Docker image by ID
          */
         delete: operations["remove-image"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/images/{imageId}/patch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Patch image
+         * @description Patches OS package vulnerabilities in the image using Copacetic, producing a new patched tag
+         */
+        post: operations["patch-image"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -2028,6 +3083,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/jobs/{jobId}/restart": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restart continuous job worker */
+        post: operations["restart-job-worker"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/jobs/{jobId}/run": {
         parameters: {
             query?: never;
@@ -2042,6 +3114,108 @@ export interface paths {
          * @description Manually trigger a background job to run immediately
          */
         post: operations["run-job"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/jobs/{jobId}/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List job runs */
+        get: operations["list-job-runs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/jobs/{jobId}/runs/{runId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get job run */
+        get: operations["get-job-run"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/jobs/{jobId}/runs/{runId}/ack": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Acknowledge remote run completion */
+        post: operations["ack-job-run"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/jobs/{jobId}/runs/{runId}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel pending job run */
+        post: operations["cancel-job-run"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/jobs/{jobId}/runs/{runId}/resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resolve job run after review */
+        post: operations["resolve-job-run"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/jobs/{jobId}/runs/{runId}/retry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Retry job run */
+        post: operations["retry-job-run"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2130,6 +3304,40 @@ export interface paths {
         post?: never;
         /** Delete network */
         delete: operations["delete-network"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/networks/{networkId}/connect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Connect container to network */
+        post: operations["connect-network-container"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/networks/{networkId}/disconnect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Disconnect container from network */
+        post: operations["disconnect-network-container"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -2241,6 +3449,26 @@ export interface paths {
          * @description Get counts of running, stopped, and total projects
          */
         get: operations["get-project-status-counts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/projects/tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List project tags
+         * @description Get sorted, distinct project tag names
+         */
+        get: operations["list-project-tags"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2373,66 +3601,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/environments/{id}/projects/{projectId}/file": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get a project file
-         * @description Get the contents of a single project-related file by relative path
-         */
-        get: operations["get-project-file"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/environments/{id}/projects/{projectId}/files": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get project files
-         * @description Get directory files for a project
-         */
-        get: operations["get-project-files"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/environments/{id}/projects/{projectId}/includes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Update project include file
-         * @description Update an include file within a Docker Compose project
-         */
-        put: operations["update-project-include"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/environments/{id}/projects/{projectId}/pull": {
         parameters: {
             query?: never;
@@ -2511,6 +3679,26 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/projects/{projectId}/tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update a project tag
+         * @description Attach or detach a UI-managed project tag
+         */
+        patch: operations["update-project-tag"];
         trace?: never;
     };
     "/environments/{id}/projects/{projectId}/unarchive": {
@@ -2593,6 +3781,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/projects/{projectId}/workspace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get project workspace */
+        get: operations["get-project-workspace"];
+        /** Update project workspace */
+        put: operations["update-project-workspace"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/projects/{projectId}/workspace/file": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get project workspace file */
+        get: operations["get-project-workspace-file"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/projects/{projectId}/workspace/file/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Download project workspace file */
+        get: operations["download-project-workspace-file"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/settings": {
         parameters: {
             query?: never;
@@ -2664,8 +3904,7 @@ export interface paths {
         };
         /** Get swarm config */
         get: operations["get-swarm-config"];
-        /** Update swarm config */
-        put: operations["update-swarm-config"];
+        put?: never;
         post?: never;
         /** Delete swarm config */
         delete: operations["delete-swarm-config"];
@@ -2719,6 +3958,40 @@ export interface paths {
         put?: never;
         /** Join swarm */
         post: operations["join-swarm"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/swarm/join-candidates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List environments available for Easy Join */
+        get: operations["get-swarm-join-candidates"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/swarm/join-environments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Join environments to a swarm */
+        post: operations["join-swarm-environments"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2793,6 +4066,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/swarm/nodes/agents/reconcile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reconcile swarm node agent bindings */
+        post: operations["reconcile-swarm-node-agents"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/swarm/nodes/{nodeId}": {
         parameters: {
             query?: never;
@@ -2812,6 +4102,24 @@ export interface paths {
         patch: operations["update-swarm-node"];
         trace?: never;
     };
+    "/environments/{id}/swarm/nodes/{nodeId}/agent/binding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Attach a visible environment to a swarm node */
+        put: operations["put-swarm-node-agent-binding"];
+        post?: never;
+        /** Detach a visible environment from a swarm node */
+        delete: operations["delete-swarm-node-agent-binding"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/swarm/nodes/{nodeId}/agent/deployment": {
         parameters: {
             query?: never;
@@ -2823,7 +4131,8 @@ export interface paths {
         put?: never;
         /** Get swarm node agent deployment snippets */
         post: operations["get-swarm-node-agent-deployment"];
-        delete?: never;
+        /** Remove a dedicated swarm node agent registration */
+        delete: operations["delete-swarm-node-agent-deployment"];
         options?: never;
         head?: never;
         patch?: never;
@@ -2907,8 +4216,7 @@ export interface paths {
         };
         /** Get swarm secret */
         get: operations["get-swarm-secret"];
-        /** Update swarm secret */
-        put: operations["update-swarm-secret"];
+        put?: never;
         post?: never;
         /** Delete swarm secret */
         delete: operations["delete-swarm-secret"];
@@ -3206,7 +4514,7 @@ export interface paths {
         put?: never;
         /**
          * Sync environment
-         * @description Sync container registries and git repositories to a remote environment
+         * @description Sync container registries, S3 destinations, and git repositories to a remote environment. Returns an error if any resource group fails; other groups may still sync successfully.
          */
         post: operations["syncEnvironment"];
         delete?: never;
@@ -3435,30 +4743,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/environments/{id}/templates/variables": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get global variables
-         * @description Get global template variables for an environment
-         */
-        get: operations["getGlobalVariables"];
-        /**
-         * Update global variables
-         * @description Update global template variables for an environment
-         */
-        put: operations["updateGlobalVariables"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/environments/{id}/test": {
         parameters: {
             query?: never;
@@ -3493,6 +4777,23 @@ export interface paths {
         get: operations["get-updater-history"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/updater/projects/{projectId}/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Check project service updates */
+        post: operations["check-project-updates"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3539,6 +4840,70 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/uploads/{kind}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create an upload session
+         * @description Start a chunked upload session; the file arrives as independently retryable chunks
+         */
+        post: operations["create-upload-session"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/uploads/{kind}/{uploadId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get an upload session
+         * @description Inspect an upload session to resume by re-sending only the missing chunks
+         */
+        get: operations["get-upload-session"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete an upload session
+         * @description Abort an upload session and discard its received chunks
+         */
+        delete: operations["delete-upload-session"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/uploads/{kind}/{uploadId}/chunks/{index}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Upload a chunk
+         * @description Upload one chunk of an upload session; re-sending a chunk is idempotent
+         */
+        put: operations["upload-chunk"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/version": {
         parameters: {
             query?: never;
@@ -3577,6 +4942,26 @@ export interface paths {
          * @description Create a new Docker volume
          */
         post: operations["create-volume"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/volumes/backups/discover": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Discover volume backups on an S3 destination
+         * @description Import existing volume backups stored on the destination by this or other Arcane instances
+         */
+        post: operations["discover-volume-backups"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3634,6 +5019,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/volumes/backups/{backupId}/files/browse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Browse files in a volume backup */
+        get: operations["browse-volume-backup-files"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/volumes/backups/{backupId}/has-path": {
         parameters: {
             query?: never;
@@ -3645,6 +5047,26 @@ export interface paths {
         get: operations["backup-has-path"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/volumes/backups/{backupId}/upload": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upload volume backup
+         * @description Upload an existing local volume backup to the selected S3 destination
+         */
+        post: operations["upload-retained-volume-backup-to-s3"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3735,6 +5157,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/volumes/{volumeName}/backup-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get volume backup policies */
+        get: operations["get-volume-backup-policy"];
+        /** Update volume backup policies */
+        put: operations["update-volume-backup-policy"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/volumes/{volumeName}/backups": {
         parameters: {
             query?: never;
@@ -3762,7 +5202,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Upload and restore volume backup */
+        /**
+         * Upload and restore volume backup
+         * @description Restore a volume from a complete chunked upload session containing a tar.gz backup archive. multipart/form-data bodies are still accepted for backward compatibility; that form is deprecated and will be removed in a future release.
+         */
         post: operations["upload-volume-backup"];
         delete?: never;
         options?: never;
@@ -3804,59 +5247,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/environments/{id}/volumes/{volumeName}/browse": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List volume directory */
-        get: operations["browse-volume-directory"];
-        put?: never;
-        post?: never;
-        /** Delete file or directory in volume */
-        delete: operations["delete-volume-file"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/environments/{id}/volumes/{volumeName}/browse/content": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get file content preview */
-        get: operations["get-volume-file-content"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/environments/{id}/volumes/{volumeName}/browse/download": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Download file from volume */
-        get: operations["download-volume-file"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/environments/{id}/volumes/{volumeName}/browse/mkdir": {
+    "/environments/{id}/volumes/{volumeName}/rename": {
         parameters: {
             query?: never;
             header?: never;
@@ -3865,25 +5256,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create directory in volume */
-        post: operations["create-volume-directory"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/environments/{id}/volumes/{volumeName}/browse/upload": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Upload file to volume */
-        post: operations["upload-volume-file"];
+        /**
+         * Rename a volume
+         * @description Copy an unused Docker volume to a new name and remove the source
+         */
+        post: operations["rename-volume"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3902,6 +5279,58 @@ export interface paths {
          * @description Get containers using a specific volume
          */
         get: operations["get-volume-usage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/volumes/{volumeName}/workspace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get volume workspace */
+        get: operations["get-volume-workspace"];
+        /** Update volume workspace */
+        put: operations["update-volume-workspace"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/volumes/{volumeName}/workspace/file": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get volume workspace file */
+        get: operations["get-volume-workspace-file"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/volumes/{volumeName}/workspace/file/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Download volume workspace file */
+        get: operations["download-volume-workspace-file"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3930,6 +5359,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/vulnerabilities/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export environment vulnerabilities
+         * @description Downloads every vulnerability matching the given filters as a CSV file
+         */
+        get: operations["export-environment-vulnerabilities"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/vulnerabilities/ignore": {
         parameters: {
             query?: never;
@@ -3944,6 +5393,26 @@ export interface paths {
          * @description Creates an ignore record for a specific vulnerability
          */
         post: operations["ignore-vulnerability"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/vulnerabilities/ignore/bulk": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Ignore vulnerabilities in bulk
+         * @description Creates ignore records for every active vulnerability matching the given filters
+         */
+        post: operations["bulk-ignore-vulnerabilities"];
         delete?: never;
         options?: never;
         head?: never;
@@ -4010,6 +5479,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/environments/{id}/vulnerabilities/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get environment vulnerability risk overview
+         * @description Retrieves the environment risk score, trend, drivers, riskiest images and priority findings
+         */
+        get: operations["get-environment-vulnerability-overview"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/environments/{id}/vulnerabilities/scanner-status": {
         parameters: {
             query?: never;
@@ -4044,6 +5533,26 @@ export interface paths {
         get: operations["get-environment-vulnerability-summary"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/environments/{id}/vulnerabilities/unignore/bulk": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Restore ignored vulnerabilities in bulk
+         * @description Removes every ignore record matching the given filters
+         */
+        post: operations["bulk-unignore-vulnerabilities"];
         delete?: never;
         options?: never;
         head?: never;
@@ -4130,6 +5639,26 @@ export interface paths {
          * @description Get a paginated list of events for a specific environment
          */
         get: operations["getEventsByEnvironment"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/events/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Event severity counts
+         * @description Get global event counts grouped by severity
+         */
+        get: operations["getEventStats"];
         put?: never;
         post?: never;
         delete?: never;
@@ -4539,6 +6068,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/stream": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Multiplexed client stream
+         * @description Streams the requested channels (environments, dashboard, activities, events, version) over a single JSON-lines connection
+         */
+        get: operations["streamClient"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/swarm/node-identity": {
         parameters: {
             query?: never;
@@ -4856,6 +6405,94 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/variables": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List global variables
+         * @description List all global variables with their environment scope (secret values are redacted)
+         */
+        get: operations["listVariables"];
+        put?: never;
+        /**
+         * Create a global variable
+         * @description Create a global variable scoped to all or specific environments
+         */
+        post: operations["createVariable"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/variables/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Sync global variables
+         * @description Push the effective global variable set to every environment now
+         */
+        post: operations["syncVariables"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/variables/sync-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get variable sync status
+         * @description Get the last global-variable sync result per environment
+         */
+        get: operations["getVariableSyncStatus"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/variables/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update a global variable
+         * @description Update a global variable's key, value, secret flag, or environment scope
+         */
+        put: operations["updateVariable"];
+        post?: never;
+        /**
+         * Delete a global variable
+         * @description Delete a global variable and re-sync affected environments
+         */
+        delete: operations["deleteVariable"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/version": {
         parameters: {
             query?: never;
@@ -4881,6 +6518,7 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         ActivityActivity: {
+            batchId?: string;
             /** Format: date-time */
             createdAt: string;
             /** Format: int64 */
@@ -4934,17 +6572,6 @@ export interface components {
             userId?: string;
             username: string;
         };
-        ApiKeyPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ApiKeyPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["ApikeyApiKey"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
-        };
         "ApiResponseStruct {}DataStruct": Record<string, never>;
         ApikeyApiKey: {
             /**
@@ -4961,7 +6588,7 @@ export interface components {
             expiresAt?: string;
             /** @description Unique identifier of the API key */
             id: string;
-            /** @description Whether the API key is an auto-generated environment bootstrap key (locked from manual edit / delete) */
+            /** @description Whether the API key is currently referenced by an environment as its pairing key (locked from manual edit / delete) */
             isBootstrap: boolean;
             /** @description Whether the API key is environment-managed and protected from deletion */
             isStatic: boolean;
@@ -5001,7 +6628,7 @@ export interface components {
             expiresAt?: string;
             /** @description Unique identifier of the API key */
             id: string;
-            /** @description Whether the API key is an auto-generated environment bootstrap key (locked from manual edit / delete) */
+            /** @description Whether the API key is currently referenced by an environment as its pairing key (locked from manual edit / delete) */
             isBootstrap: boolean;
             /** @description Whether the API key is environment-managed and protected from deletion */
             isStatic: boolean;
@@ -5032,7 +6659,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ApikeyCreateApiKey.json
+             * @example /api/schemas/ApikeyCreateApiKey.json
              */
             readonly $schema?: string;
             /** @description Optional description of the API key */
@@ -5054,7 +6681,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ApikeyCreateUserApiKey.json
+             * @example /api/schemas/ApikeyCreateUserApiKey.json
              */
             readonly $schema?: string;
             /** @description Optional description of the API key */
@@ -5083,26 +6710,102 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ApikeyUpdateApiKey.json
+             * @example /api/schemas/ApikeyUpdateApiKey.json
              */
             readonly $schema?: string;
             /** @description New description for the API key */
-            description?: string;
+            description?: string | null;
             /**
              * Format: date-time
              * @description New expiration date for the API key
              */
-            expiresAt?: string;
+            expiresAt?: string | null;
             /** @description New name for the API key */
-            name?: string;
+            name?: string | null;
             /** @description Replace the key's permission grants. Omit to leave unchanged. Cannot exceed the updater's own permissions. */
             permissions?: components["schemas"]["ApikeyPermissionGrant"][] | null;
+        };
+        ApnsDevice: {
+            /** Format: date-time */
+            createdAt: string;
+            environmentIds: string[] | null;
+            events: {
+                [key: string]: boolean;
+            };
+            id: string;
+            label: string;
+            /** Format: date-time */
+            lastSeenAt?: string;
+        };
+        ApnsPairingToken: {
+            channelId: string;
+            /** Format: date-time */
+            expiresAt: string;
+            token: string;
+        };
+        ApnsRegisterDeviceRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/ApnsRegisterDeviceRequest.json
+             */
+            readonly $schema?: string;
+            environmentIds?: string[] | null;
+            events?: {
+                [key: string]: boolean;
+            };
+            label: string;
+            recipientId: string;
+        };
+        ApnsStatus: {
+            channelId?: string;
+            devices: components["schemas"]["ApnsDevice"][] | null;
+            enabled: boolean;
+            relayUrl: string;
+        };
+        ApnsUpdateDeviceRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/ApnsUpdateDeviceRequest.json
+             */
+            readonly $schema?: string;
+            environmentIds?: string[] | null;
+            events?: {
+                [key: string]: boolean;
+            };
+            label?: string | null;
+        };
+        AuthAuthenticationResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/AuthAuthenticationResponse.json
+             */
+            readonly $schema?: string;
+            /**
+             * Format: date-time
+             * @description Expiration time of the access token
+             */
+            expiresAt?: string;
+            /** @description Pending MFA challenge */
+            mfa?: components["schemas"]["AuthMFAChallenge"];
+            /** @description Refresh token for obtaining new access tokens */
+            refreshToken?: string;
+            /** @description Authentication state */
+            status: string;
+            /** @description Whether the authentication request was accepted */
+            success: boolean;
+            /** @description JWT access token */
+            token?: string;
+            /** @description Authenticated user information */
+            user?: components["schemas"]["UserUser"];
         };
         AuthLogin: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthLogin.json
+             * @example /api/schemas/AuthLogin.json
              */
             readonly $schema?: string;
             /** @description Password of the user */
@@ -5113,24 +6816,33 @@ export interface components {
              */
             username: string;
         };
-        AuthLoginResponse: {
+        AuthMFAChallenge: {
             /**
              * Format: date-time
-             * @description Expiration time of the access token
+             * @description MFA transaction expiration time
              */
             expiresAt: string;
-            /** @description Refresh token for obtaining new access tokens */
-            refreshToken: string;
-            /** @description JWT access token */
-            token: string;
-            /** @description Authenticated user information */
-            user: components["schemas"]["UserUser"];
+            /** @description MFA method */
+            method: string;
+            /** @description WebAuthn assertion options */
+            options: unknown;
+            /** @description Opaque MFA transaction identifier */
+            transactionId: string;
+        };
+        AuthMobilePasskeyCompletion: {
+            /**
+             * Format: date-time
+             * @description Mobile passkey transaction expiration time
+             */
+            expiresAt: string;
+            /** @description Opaque mobile passkey transaction identifier */
+            transactionId: string;
         };
         AuthOidcAuthUrlRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthOidcAuthUrlRequest.json
+             * @example /api/schemas/AuthOidcAuthUrlRequest.json
              */
             readonly $schema?: string;
             mobileRedirectUri?: string;
@@ -5140,7 +6852,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthOidcAuthUrlResponse.json
+             * @example /api/schemas/AuthOidcAuthUrlResponse.json
              */
             readonly $schema?: string;
             authUrl: string;
@@ -5149,32 +6861,18 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthOidcCallbackRequest.json
+             * @example /api/schemas/AuthOidcCallbackRequest.json
              */
             readonly $schema?: string;
             code: string;
             mobileRedirectUri?: string;
             state: string;
         };
-        AuthOidcCallbackResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthOidcCallbackResponse.json
-             */
-            readonly $schema?: string;
-            /** Format: date-time */
-            expiresAt: string;
-            refreshToken: string;
-            success: boolean;
-            token: string;
-            user: components["schemas"]["UserUser"];
-        };
         AuthOidcConfigResponse: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthOidcConfigResponse.json
+             * @example /api/schemas/AuthOidcConfigResponse.json
              */
             readonly $schema?: string;
             authorizationEndpoint: string;
@@ -5190,7 +6888,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthOidcDeviceAuthResponse.json
+             * @example /api/schemas/AuthOidcDeviceAuthResponse.json
              */
             readonly $schema?: string;
             deviceCode: string;
@@ -5206,30 +6904,16 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthOidcDeviceTokenRequest.json
+             * @example /api/schemas/AuthOidcDeviceTokenRequest.json
              */
             readonly $schema?: string;
             deviceCode: string;
-        };
-        AuthOidcDeviceTokenResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthOidcDeviceTokenResponse.json
-             */
-            readonly $schema?: string;
-            /** Format: date-time */
-            expiresAt: string;
-            refreshToken: string;
-            success: boolean;
-            token: string;
-            user: components["schemas"]["UserUser"];
         };
         AuthOidcStatusInfo: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthOidcStatusInfo.json
+             * @example /api/schemas/AuthOidcStatusInfo.json
              */
             readonly $schema?: string;
             envConfigured: boolean;
@@ -5238,11 +6922,15 @@ export interface components {
             providerLogoUrl?: string;
             providerName?: string;
         };
+        AuthPasskeyLoginAvailability: {
+            /** @description Whether a passkey is registered for the current WebAuthn domain */
+            available: boolean;
+        };
         AuthPasswordChange: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthPasswordChange.json
+             * @example /api/schemas/AuthPasswordChange.json
              */
             readonly $schema?: string;
             /** @description Current password of the user (required for non-OIDC users) */
@@ -5254,7 +6942,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/AuthRefresh.json
+             * @example /api/schemas/AuthRefresh.json
              */
             readonly $schema?: string;
             /** @description Refresh token used to obtain a new access token */
@@ -5298,26 +6986,339 @@ export interface components {
             /** Format: date-time */
             updatedAt?: string;
         };
-        BackupHasPathResponse: {
-            exists: boolean;
+        BackupBackupFileEntry: {
+            isDirectory: boolean;
+            name: string;
+            path: string;
         };
-        BaseApiResponseActionResult: {
+        BackupBackupRunAccepted: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseActionResult.json
+             * @example /api/schemas/BackupBackupRunAccepted.json
              */
             readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ContainerActionResult"];
-            /** @description Whether the request was successful */
-            success: boolean;
+            activityId: string;
+            status: string;
         };
-        BaseApiResponseActivity: {
+        BackupCreateS3Destination: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseActivity.json
+             * @example /api/schemas/BackupCreateS3Destination.json
+             */
+            readonly $schema?: string;
+            accessKeyId: string;
+            bucket: string;
+            endpoint?: string;
+            forcePathStyle: boolean;
+            name: string;
+            prefix?: string;
+            region: string;
+            secretAccessKey: string;
+            useSsl: boolean;
+        };
+        BackupCreateSystemBackupRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupCreateSystemBackupRequest.json
+             */
+            readonly $schema?: string;
+            destination?: string;
+            policyId?: string;
+            recoveryKey?: string;
+            s3DestinationId?: string;
+        };
+        BackupDeleteSystemBackupRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupDeleteSystemBackupRequest.json
+             */
+            readonly $schema?: string;
+            recoveryKey?: string;
+        };
+        BackupDiscoverSystemBackupsRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupDiscoverSystemBackupsRequest.json
+             */
+            readonly $schema?: string;
+            recoveryKey: string;
+            s3DestinationId: string;
+        };
+        BackupHistoryEntry: {
+            /** Format: date-time */
+            createdAt: string;
+            destination: string;
+            error?: string;
+            format?: string;
+            id: string;
+            localSnapshotId?: string;
+            policyId?: string;
+            remoteAvailable?: boolean;
+            remoteSnapshotId?: string;
+            resourceName: string;
+            resourceType: string;
+            s3DestinationId?: string;
+            s3DestinationName?: string;
+            /** Format: int64 */
+            size: number;
+            status: string;
+            trigger: string;
+            type: string;
+        };
+        BackupRestoreSelection: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupRestoreSelection.json
+             */
+            readonly $schema?: string;
+            paths?: string[] | null;
+            search?: string;
+            selectAll?: boolean;
+        };
+        BackupRestoreSystemBackupFilesRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupRestoreSystemBackupFilesRequest.json
+             */
+            readonly $schema?: string;
+            paths?: string[] | null;
+            recoveryKey: string;
+            search?: string;
+            selectAll?: boolean;
+        };
+        BackupRestoreSystemBackupRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupRestoreSystemBackupRequest.json
+             */
+            readonly $schema?: string;
+            recoveryKey: string;
+        };
+        BackupRunSystemVolumeBackupsRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupRunSystemVolumeBackupsRequest.json
+             */
+            readonly $schema?: string;
+            custom?: components["schemas"]["BackupSystemVolumeBackupCustomRun"];
+            policyId?: string;
+        };
+        BackupS3Destination: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupS3Destination.json
+             */
+            readonly $schema?: string;
+            accessKeyId: string;
+            bucket: string;
+            /** Format: date-time */
+            createdAt: string;
+            endpoint?: string;
+            forcePathStyle: boolean;
+            id: string;
+            name: string;
+            prefix?: string;
+            region: string;
+            secretConfigured: boolean;
+            /** Format: date-time */
+            updatedAt?: string;
+            useSsl: boolean;
+        };
+        BackupS3DestinationSync: {
+            accessKeyId: string;
+            bucket: string;
+            /** Format: date-time */
+            createdAt: string;
+            endpoint?: string;
+            forcePathStyle: boolean;
+            id: string;
+            name: string;
+            prefix?: string;
+            region: string;
+            secretAccessKey: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            useSsl: boolean;
+        };
+        BackupS3DestinationSyncRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupS3DestinationSyncRequest.json
+             */
+            readonly $schema?: string;
+            destinations: components["schemas"]["BackupS3DestinationSync"][] | null;
+        };
+        BackupSystemBackupPolicy: {
+            enabled: boolean;
+            id: string;
+            lastRun?: components["schemas"]["BackupSystemBackupRun"];
+            localEnabled: boolean;
+            /** Format: int64 */
+            retentionCount: number;
+            s3DestinationId?: string;
+            s3DestinationName?: string;
+            s3Enabled: boolean;
+            schedule: string;
+        };
+        BackupSystemBackupPolicyCollection: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupSystemBackupPolicyCollection.json
+             */
+            readonly $schema?: string;
+            policies: components["schemas"]["BackupSystemBackupPolicy"][] | null;
+            recoveryKeyStored: boolean;
+        };
+        BackupSystemBackupRecoveryKey: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupSystemBackupRecoveryKey.json
+             */
+            readonly $schema?: string;
+            recoveryKey: string;
+        };
+        BackupSystemBackupRecoveryKeyStatus: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupSystemBackupRecoveryKeyStatus.json
+             */
+            readonly $schema?: string;
+            configured: boolean;
+        };
+        BackupSystemBackupRun: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupSystemBackupRun.json
+             */
+            readonly $schema?: string;
+            activityId?: string;
+            /** Format: date-time */
+            createdAt: string;
+            destination: string;
+            error?: string;
+            id: string;
+            localSnapshotId?: string;
+            policyId?: string;
+            remoteAvailable?: boolean;
+            remoteSnapshotId?: string;
+            s3DestinationId?: string;
+            s3DestinationName?: string;
+            /** Format: int64 */
+            size: number;
+            status: string;
+            trigger: string;
+        };
+        BackupSystemVolumeBackupCustomRun: {
+            destination: string;
+            ignoreAnonymous: boolean;
+            s3DestinationId?: string;
+            selectionMode: string;
+            stopContainers: boolean;
+            volumeNames: string[] | null;
+        };
+        BackupSystemVolumeBackupOption: {
+            anonymous: boolean;
+            available: boolean;
+            name: string;
+        };
+        BackupSystemVolumeBackupPolicy: {
+            enabled: boolean;
+            id: string;
+            ignoreAnonymous: boolean;
+            lastRun?: components["schemas"]["BackupSystemBackupRun"];
+            localEnabled: boolean;
+            /** Format: int64 */
+            retentionCount: number;
+            s3DestinationId?: string;
+            s3DestinationName?: string;
+            s3Enabled: boolean;
+            schedule: string;
+            selectionMode: string;
+            stopContainers: boolean;
+            volumeNames: string[] | null;
+        };
+        BackupSystemVolumeBackupPolicyCollection: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupSystemVolumeBackupPolicyCollection.json
+             */
+            readonly $schema?: string;
+            policies: components["schemas"]["BackupSystemVolumeBackupPolicy"][] | null;
+        };
+        BackupUpdateBackupPolicy: {
+            enabled: boolean;
+            id?: string;
+            localEnabled: boolean;
+            /** Format: int64 */
+            retentionCount: number;
+            s3DestinationId?: string;
+            s3Enabled: boolean;
+            schedule: string;
+            stopContainers?: boolean;
+        };
+        BackupUpdateSystemBackupPolicies: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupUpdateSystemBackupPolicies.json
+             */
+            readonly $schema?: string;
+            policies: components["schemas"]["BackupUpdateBackupPolicy"][] | null;
+        };
+        BackupUpdateSystemVolumeBackupPolicies: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupUpdateSystemVolumeBackupPolicies.json
+             */
+            readonly $schema?: string;
+            policies: components["schemas"]["BackupUpdateSystemVolumeBackupPolicy"][] | null;
+        };
+        BackupUpdateSystemVolumeBackupPolicy: {
+            enabled: boolean;
+            id?: string;
+            ignoreAnonymous: boolean;
+            localEnabled: boolean;
+            /** Format: int64 */
+            retentionCount: number;
+            s3DestinationId?: string;
+            s3Enabled: boolean;
+            schedule: string;
+            selectionMode: string;
+            stopContainers?: boolean;
+            volumeNames: string[] | null;
+        };
+        BackupUploadSystemBackupRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BackupUploadSystemBackupRequest.json
+             */
+            readonly $schema?: string;
+            recoveryKey: string;
+            s3DestinationId: string;
+        };
+        BaseApiResponseActivityActivity: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseActivityActivity.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5325,23 +7326,35 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseAgentPairResponse: {
+        BaseApiResponseActivityClearHistoryResult: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseAgentPairResponse.json
+             * @example /api/schemas/BaseApiResponseActivityClearHistoryResult.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["EnvironmentAgentPairResponse"];
+            data: components["schemas"]["ActivityClearHistoryResult"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseApiKey: {
+        BaseApiResponseActivityDetail: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseApiKey.json
+             * @example /api/schemas/BaseApiResponseActivityDetail.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ActivityDetail"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseApikeyApiKey: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseApikeyApiKey.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5349,11 +7362,11 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseApiKeyCreatedDto: {
+        BaseApiResponseApikeyApiKeyCreatedDto: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseApiKeyCreatedDto.json
+             * @example /api/schemas/BaseApiResponseApikeyApiKeyCreatedDto.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5361,15 +7374,99 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseAttestationList: {
+        BaseApiResponseApnsDevice: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseAttestationList.json
+             * @example /api/schemas/BaseApiResponseApnsDevice.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["ImageAttestationList"];
+            data: components["schemas"]["ApnsDevice"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseApnsPairingToken: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseApnsPairingToken.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ApnsPairingToken"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseApnsStatus: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseApnsStatus.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ApnsStatus"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseAuthAuthenticationResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseAuthAuthenticationResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["AuthAuthenticationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseAuthMFAChallenge: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseAuthMFAChallenge.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["AuthMFAChallenge"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseAuthMobilePasskeyCompletion: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseAuthMobilePasskeyCompletion.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["AuthMobilePasskeyCompletion"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseAuthPasskeyLoginAvailability: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseAuthPasskeyLoginAvailability.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["AuthPasskeyLoginAvailability"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseAuthTokenRefreshResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseAuthTokenRefreshResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["AuthTokenRefreshResponse"];
             /** @description Whether the request was successful */
             success: boolean;
         };
@@ -5377,19 +7474,487 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseBackupHasPathResponse.json
+             * @example /api/schemas/BaseApiResponseBackupHasPathResponse.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["BackupHasPathResponse"];
+            data: components["schemas"]["DockerVolumeBackupHasPathResponse"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseBatchResponse: {
+        BaseApiResponseBackupS3Destination: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseBatchResponse.json
+             * @example /api/schemas/BaseApiResponseBackupS3Destination.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["BackupS3Destination"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseBuildFileContentResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseBuildFileContentResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["BuildFileContentResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerActionResult: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerActionResult.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerActionResult"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerCommitResult: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerCommitResult.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerCommitResult"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerCreated: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerCreated.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerCreated"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerDetails: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerDetails.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerDetails"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerEditConfig: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerEditConfig.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerEditConfig"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerGenerateComposeResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerGenerateComposeResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerGenerateComposeResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerProcesses: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerProcesses.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerProcesses"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerStatusCounts: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerStatusCounts.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerStatusCounts"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerregistryContainerRegistry: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerregistryContainerRegistry.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerregistryContainerRegistry"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseContainerregistryPullUsageResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseContainerregistryPullUsageResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ContainerregistryPullUsageResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseDashboardSnapshot: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseDashboardSnapshot.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["DashboardSnapshot"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseDeploymentSnippet: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseDeploymentSnippet.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["DeploymentSnippet"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseEnvGlobalVariableMutationResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseEnvGlobalVariableMutationResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["EnvGlobalVariableMutationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseEnvironmentAgentPairResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseEnvironmentAgentPairResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["EnvironmentAgentPairResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseEnvironmentEnvironment: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseEnvironmentEnvironment.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["EnvironmentEnvironment"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseEnvironmentTest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseEnvironmentTest.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["EnvironmentTest"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseEnvironmentUpdateJob: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseEnvironmentUpdateJob.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["DockerSystemEnvironmentUpdateJob"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseEnvironmentWithApiKey: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseEnvironmentWithApiKey.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["EnvironmentWithApiKey"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseEventSeverityCounts: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseEventSeverityCounts.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["EventSeverityCounts"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseFederatedFederatedCredential: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseFederatedFederatedCredential.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["FederatedFederatedCredential"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsBackupHistoryResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsBackupHistoryResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsBackupHistoryResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsBackupPreview: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsBackupPreview.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsBackupPreview"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsBackupRevision: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsBackupRevision.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsBackupRevision"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsBranchesResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsBranchesResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsBranchesResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsBrowseResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsBrowseResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsBrowseResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsGitOpsSync: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsGitOpsSync.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsGitOpsSync"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsGitRepository: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsGitRepository.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsGitRepository"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsImportGitOpsSyncResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsImportGitOpsSyncResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsImportGitOpsSyncResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsSyncResult: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsSyncResult.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsSyncResult"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseGitopsSyncStatus: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseGitopsSyncStatus.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["GitopsSyncStatus"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseImageAttestationList: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseImageAttestationList.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ImageAttestationList"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseImageBuildRecord: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseImageBuildRecord.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ImageBuildRecord"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseImageDetailSummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseImageDetailSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ImageDetailSummary"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseImageLoadResult: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseImageLoadResult.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ImageLoadResult"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseImagePruneReport: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseImagePruneReport.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ImagePruneReport"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseImageUsageCounts: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseImageUsageCounts.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ImageUsageCounts"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseImagepatchPatchRecord: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseImagepatchPatchRecord.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ImagepatchPatchRecord"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseImageupdateBatchResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseImageupdateBatchResponse.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5399,351 +7964,42 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseBranchesResponse: {
+        BaseApiResponseImageupdateResponse: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseBranchesResponse.json
+             * @example /api/schemas/BaseApiResponseImageupdateResponse.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["GitopsBranchesResponse"];
+            data: components["schemas"]["ImageupdateResponse"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseBrowseResponse: {
+        BaseApiResponseImageupdateSummary: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseBrowseResponse.json
+             * @example /api/schemas/BaseApiResponseImageupdateSummary.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["GitopsBrowseResponse"];
+            data: components["schemas"]["ImageupdateSummary"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseBuildFileContentResponse: {
+        BaseApiResponseInt: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseBuildFileContentResponse.json
+             * @example /api/schemas/BaseApiResponseInt.json
              */
             readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["BuildFileContentResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseBuildRecord: {
             /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseBuildRecord.json
+             * Format: int64
+             * @description Response data
              */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ImageBuildRecord"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseClearHistoryResult: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseClearHistoryResult.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ActivityClearHistoryResult"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseCommitResult: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseCommitResult.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ContainerCommitResult"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseConfig: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseConfig.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["JobscheduleConfig"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseConfigSummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseConfigSummary.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmConfigSummary"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseContainerRegistry: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseContainerRegistry.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ContainerregistryContainerRegistry"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseCreateReponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseCreateReponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ProjectCreateReponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseCreated: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseCreated.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["WebhookCreated"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseDefaultTemplatesResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseDefaultTemplatesResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["TemplateDefaultTemplatesResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseDeploymentSnippet: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseDeploymentSnippet.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["DeploymentSnippet"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseDetail: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseDetail.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ActivityDetail"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseDetailSummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseDetailSummary.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ImageDetailSummary"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseDetails: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseDetails.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ProjectDetails"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseDispatchResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseDispatchResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["NotificationDispatchResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseEnvironment: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseEnvironment.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["EnvironmentEnvironment"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseEnvironmentUpdateJob: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseEnvironmentUpdateJob.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["EnvironmentUpdateJob"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseEnvironmentVulnerabilitySummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseEnvironmentVulnerabilitySummary.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["VulnerabilityEnvironmentVulnerabilitySummary"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseEnvironmentWithApiKey: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseEnvironmentWithApiKey.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["EnvironmentWithApiKey"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseFederatedCredential: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseFederatedCredential.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["FederatedFederatedCredential"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseFileContentResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseFileContentResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["FileContentResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseGitOpsSync: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseGitOpsSync.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["GitopsGitOpsSync"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseGitRepository: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseGitRepository.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["GitopsGitRepository"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseIgnoredVulnerability: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseIgnoredVulnerability.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["VulnerabilityIgnoredVulnerability"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseImportGitOpsSyncResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseImportGitOpsSyncResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["GitopsImportGitOpsSyncResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseIncludeFile: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseIncludeFile.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ProjectIncludeFile"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseInfo: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseInfo.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["VersionInfo"];
+            data: number;
             /** @description Whether the request was successful */
             success: boolean;
         };
@@ -5751,7 +8007,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseInterface {}.json
+             * @example /api/schemas/BaseApiResponseInterface {}.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5759,11 +8015,23 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListApiKey: {
+        BaseApiResponseJobscheduleConfig: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListApiKey.json
+             * @example /api/schemas/BaseApiResponseJobscheduleConfig.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["JobscheduleConfig"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseListApikeyApiKey: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseListApikeyApiKey.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5775,7 +8043,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListAutoUpdateRecord.json
+             * @example /api/schemas/BaseApiResponseListAutoUpdateRecord.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5783,35 +8051,35 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListConfigSummary: {
+        BaseApiResponseListEnvEnvironmentSyncStatus: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListConfigSummary.json
+             * @example /api/schemas/BaseApiResponseListEnvEnvironmentSyncStatus.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["SwarmConfigSummary"][] | null;
+            data: components["schemas"]["EnvEnvironmentSyncStatus"][] | null;
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListFileEntry: {
+        BaseApiResponseListEnvGlobalVariable: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListFileEntry.json
+             * @example /api/schemas/BaseApiResponseListEnvGlobalVariable.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["VolumeFileEntry"][] | null;
+            data: components["schemas"]["EnvGlobalVariable"][] | null;
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListHistoryItem: {
+        BaseApiResponseListImageHistoryItem: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListHistoryItem.json
+             * @example /api/schemas/BaseApiResponseListImageHistoryItem.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5819,23 +8087,11 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListRoleAssignment: {
+        BaseApiResponseListImageSearchResult: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListRoleAssignment.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["RoleRoleAssignment"][] | null;
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseListSearchResult: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListSearchResult.json
+             * @example /api/schemas/BaseApiResponseListImageSearchResult.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5843,23 +8099,59 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListSecretSummary: {
+        BaseApiResponseListPasskeySummary: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListSecretSummary.json
+             * @example /api/schemas/BaseApiResponseListPasskeySummary.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["SwarmSecretSummary"][] | null;
+            data: components["schemas"]["PasskeySummary"][] | null;
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListSettingDto: {
+        BaseApiResponseListProjectTagOption: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListSettingDto.json
+             * @example /api/schemas/BaseApiResponseListProjectTagOption.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ProjectTagOption"][] | null;
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseListRoleOidcRoleMapping: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseListRoleOidcRoleMapping.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["RoleOidcRoleMapping"][] | null;
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseListRoleRoleAssignment: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseListRoleRoleAssignment.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["RoleRoleAssignment"][] | null;
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseListSettingsSettingDto: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseListSettingsSettingDto.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5871,7 +8163,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListString.json
+             * @example /api/schemas/BaseApiResponseListString.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5879,23 +8171,47 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListSummary: {
+        BaseApiResponseListSwarmConfigSummary: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListSummary.json
+             * @example /api/schemas/BaseApiResponseListSwarmConfigSummary.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["WebhookSummary"][] | null;
+            data: components["schemas"]["SwarmConfigSummary"][] | null;
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListTemplate: {
+        BaseApiResponseListSwarmSecretSummary: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListTemplate.json
+             * @example /api/schemas/BaseApiResponseListSwarmSecretSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmSecretSummary"][] | null;
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseListSwarmSwarmJoinCandidate: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseListSwarmSwarmJoinCandidate.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmSwarmJoinCandidate"][] | null;
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseListTemplateTemplate: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseListTemplateTemplate.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5903,11 +8219,11 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListTemplateRegistry: {
+        BaseApiResponseListTemplateTemplateRegistry: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListTemplateRegistry.json
+             * @example /api/schemas/BaseApiResponseListTemplateTemplateRegistry.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5915,59 +8231,59 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseListVariable: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListVariable.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["EnvVariable"][] | null;
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
         BaseApiResponseListVolumeSizeInfo: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseListVolumeSizeInfo.json
+             * @example /api/schemas/BaseApiResponseListVolumeSizeInfo.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["VolumeSizeInfo"][] | null;
+            data: components["schemas"]["DockerVolumeVolumeSizeInfo"][] | null;
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseLoadResult: {
+        BaseApiResponseListWebhookSummary: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseLoadResult.json
+             * @example /api/schemas/BaseApiResponseListWebhookSummary.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["ImageLoadResult"];
+            data: components["schemas"]["WebhookSummary"][] | null;
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseLoginResponse: {
+        BaseApiResponseListWorkspaceFileEntry: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseLoginResponse.json
+             * @example /api/schemas/BaseApiResponseListWorkspaceFileEntry.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["AuthLoginResponse"];
+            data: components["schemas"]["WorkspaceFileEntry"][] | null;
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseMapStringUpdateInfo: {
+        BaseApiResponseMFAStatus: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseMapStringUpdateInfo.json
+             * @example /api/schemas/BaseApiResponseMFAStatus.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["MFAStatus"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseMapStringImageUpdateInfo: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseMapStringImageUpdateInfo.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5981,7 +8297,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseMessageResponse.json
+             * @example /api/schemas/BaseApiResponseMessageResponse.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -5989,479 +8305,83 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseNodeSummary: {
+        BaseApiResponseNetworkCreateResponse: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseNodeSummary.json
+             * @example /api/schemas/BaseApiResponseNetworkCreateResponse.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["SwarmNodeSummary"];
+            data: components["schemas"]["NetworkCreateResponse"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponsePermissionsManifest: {
+        BaseApiResponseNetworkInspect: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponsePermissionsManifest.json
+             * @example /api/schemas/BaseApiResponseNetworkInspect.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["RolePermissionsManifest"];
+            data: components["schemas"]["NetworkInspect"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponsePruneAllResult: {
+        BaseApiResponseNetworkPruneReport: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponsePruneAllResult.json
+             * @example /api/schemas/BaseApiResponseNetworkPruneReport.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["SystemPruneAllResult"];
+            data: components["schemas"]["NetworkPruneReport"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponsePruneReport: {
+        BaseApiResponseNetworkTopology: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponsePruneReport.json
+             * @example /api/schemas/BaseApiResponseNetworkTopology.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["ImagePruneReport"];
+            data: components["schemas"]["NetworkTopology"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponsePullUsageResponse: {
+        BaseApiResponseNetworkUsageCounts: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponsePullUsageResponse.json
+             * @example /api/schemas/BaseApiResponseNetworkUsageCounts.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["ContainerregistryPullUsageResponse"];
+            data: components["schemas"]["NetworkUsageCounts"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseRemoteRegistry: {
+        BaseApiResponseNotificationDispatchResponse: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseRemoteRegistry.json
+             * @example /api/schemas/BaseApiResponseNotificationDispatchResponse.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["TemplateRemoteRegistry"];
+            data: components["schemas"]["NotificationDispatchResponse"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseResponse: {
+        BaseApiResponseNotificationTestResponse: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ImageupdateResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseResult: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseResult.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["UpdaterResult"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseRole: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseRole.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["RoleRole"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseRuntimeStatus: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseRuntimeStatus.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmRuntimeStatus"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseScanResult: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseScanResult.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["VulnerabilityScanResult"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseScanSummariesResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseScanSummariesResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["VulnerabilityScanSummariesResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseScanSummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseScanSummary.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["VulnerabilityScanSummary"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseScannerStatus: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseScannerStatus.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ScannerStatus"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSecretSummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSecretSummary.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmSecretSummary"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseServiceCreateResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseServiceCreateResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmServiceCreateResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseServiceInspect: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseServiceInspect.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmServiceInspect"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseServiceUpdateResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseServiceUpdateResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmServiceUpdateResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSnapshot: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSnapshot.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["DashboardSnapshot"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseStackDeployResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseStackDeployResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmStackDeployResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseStackInspect: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseStackInspect.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmStackInspect"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseStackRenderConfigResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseStackRenderConfigResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmStackRenderConfigResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseStackSource: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseStackSource.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmStackSource"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseStatus: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseStatus.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["UpdaterStatus"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseStatusCounts: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseStatusCounts.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ProjectStatusCounts"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        "BaseApiResponseStruct {}": {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseStruct {}.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ApiResponseStruct {}DataStruct"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSummary.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["ImageupdateSummary"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSwarmInfo: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSwarmInfo.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmSwarmInfo"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSwarmInitResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSwarmInitResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmSwarmInitResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSwarmJoinTokensResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSwarmJoinTokensResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmSwarmJoinTokensResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSwarmNodeAgentDeployment: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSwarmNodeAgentDeployment.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmNodeAgentDeployment"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSwarmNodeIdentity: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSwarmNodeIdentity.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmNodeIdentity"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSwarmUnlockKeyResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSwarmUnlockKeyResponse.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["SwarmSwarmUnlockKeyResponse"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSyncResult: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSyncResult.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["GitopsSyncResult"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseSyncStatus: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseSyncStatus.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["GitopsSyncStatus"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseTemplate: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseTemplate.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["TemplateTemplate"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseTemplateContent: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseTemplateContent.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["TemplateTemplateContent"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseTemplateRegistry: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseTemplateRegistry.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["TemplateTemplateRegistry"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseTest: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseTest.json
-             */
-            readonly $schema?: string;
-            /** @description Response data */
-            data: components["schemas"]["EnvironmentTest"];
-            /** @description Whether the request was successful */
-            success: boolean;
-        };
-        BaseApiResponseTestResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseTestResponse.json
+             * @example /api/schemas/BaseApiResponseNotificationTestResponse.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -6469,23 +8389,539 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseTokenRefreshResponse: {
+        BaseApiResponsePasskeyBeginResponse: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseTokenRefreshResponse.json
+             * @example /api/schemas/BaseApiResponsePasskeyBeginResponse.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["AuthTokenRefreshResponse"];
+            data: components["schemas"]["PasskeyBeginResponse"];
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseUser: {
+        BaseApiResponsePasskeyCapabilities: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseUser.json
+             * @example /api/schemas/BaseApiResponsePasskeyCapabilities.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["PasskeyCapabilities"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponsePasskeySummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponsePasskeySummary.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["PasskeySummary"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseProjectCreateReponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseProjectCreateReponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ProjectCreateReponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseProjectDetails: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseProjectDetails.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ProjectDetails"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseProjectStatusCounts: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseProjectStatusCounts.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ProjectStatusCounts"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseProjectUpdateInfo: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseProjectUpdateInfo.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ProjectUpdateInfo"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseProjectUpdateTagResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseProjectUpdateTagResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ProjectUpdateTagResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseRecoveryCodesResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseRecoveryCodesResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["RecoveryCodesResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseRoleOidcRoleMapping: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseRoleOidcRoleMapping.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["RoleOidcRoleMapping"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseRolePermissionsManifest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseRolePermissionsManifest.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["RolePermissionsManifest"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseRoleRole: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseRoleRole.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["RoleRole"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseScannerStatus: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseScannerStatus.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ScannerStatus"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseStepUpGrant: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseStepUpGrant.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["StepUpGrant"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        "BaseApiResponseStruct {}": {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseStruct {}.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["ApiResponseStruct {}DataStruct"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmConfigSummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmConfigSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmConfigSummary"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmNodeAgentDeployment: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmNodeAgentDeployment.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["DockerSwarmSwarmNodeAgentDeployment"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmNodeAgentReconcileResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmNodeAgentReconcileResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmNodeAgentReconcileResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmNodeIdentity: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmNodeIdentity.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["DockerSwarmSwarmNodeIdentity"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmNodeSummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmNodeSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmNodeSummary"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmRuntimeStatus: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmRuntimeStatus.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmRuntimeStatus"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmSecretSummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmSecretSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmSecretSummary"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmServiceCreateResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmServiceCreateResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmServiceCreateResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmServiceInspect: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmServiceInspect.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmServiceInspect"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmServiceUpdateResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmServiceUpdateResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmServiceUpdateResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmStackDeployResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmStackDeployResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmStackDeployResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmStackInspect: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmStackInspect.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmStackInspect"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmStackRenderConfigResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmStackRenderConfigResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmStackRenderConfigResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmStackSource: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmStackSource.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmStackSource"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmSwarmInfo: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmSwarmInfo.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmSwarmInfo"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmSwarmInitResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmSwarmInitResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmSwarmInitResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmSwarmJoinEnvironmentsResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmSwarmJoinEnvironmentsResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmSwarmJoinEnvironmentsResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmSwarmJoinTokensResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmSwarmJoinTokensResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmSwarmJoinTokensResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSwarmSwarmUnlockKeyResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSwarmSwarmUnlockKeyResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SwarmSwarmUnlockKeyResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseSystemPruneAllResult: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseSystemPruneAllResult.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["SystemPruneAllResult"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseTemplateDefaultTemplatesResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseTemplateDefaultTemplatesResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["TemplateDefaultTemplatesResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseTemplateRemoteRegistry: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseTemplateRemoteRegistry.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["TemplateRemoteRegistry"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseTemplateTemplate: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseTemplateTemplate.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["TemplateTemplate"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseTemplateTemplateContent: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseTemplateTemplateContent.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["TemplateTemplateContent"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseTemplateTemplateRegistry: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseTemplateTemplateRegistry.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["TemplateTemplateRegistry"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseTriggerUpgradeData: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseTriggerUpgradeData.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["DockerSystemTriggerUpgradeData"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseUpdaterResult: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseUpdaterResult.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["UpdaterResult"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseUpdaterStatus: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseUpdaterStatus.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["UpdaterStatus"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseUploadSession: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseUploadSession.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["UploadSession"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseUserUser: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseUserUser.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -6493,15 +8929,15 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BaseApiResponseVolume: {
+        BaseApiResponseVersionInfo: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseVolume.json
+             * @example /api/schemas/BaseApiResponseVersionInfo.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["VolumeVolume"];
+            data: components["schemas"]["VersionInfo"];
             /** @description Whether the request was successful */
             success: boolean;
         };
@@ -6509,7 +8945,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseVolumeBackup.json
+             * @example /api/schemas/BaseApiResponseVolumeBackup.json
              */
             readonly $schema?: string;
             /** @description Response data */
@@ -6517,15 +8953,51 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
+        BaseApiResponseVolumeBackupEntry: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVolumeBackupEntry.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VolumeBackupEntry"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVolumeBackupPolicyCollection: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVolumeBackupPolicyCollection.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VolumeBackupPolicyCollection"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVolumeDiscoverBackupsResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVolumeDiscoverBackupsResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VolumeDiscoverBackupsResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
         BaseApiResponseVolumePruneReportData: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseVolumePruneReportData.json
+             * @example /api/schemas/BaseApiResponseVolumePruneReportData.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["VolumePruneReportData"];
+            data: components["schemas"]["DockerVolumeVolumePruneReportData"];
             /** @description Whether the request was successful */
             success: boolean;
         };
@@ -6533,11 +9005,11 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseVolumeUsageCountsData.json
+             * @example /api/schemas/BaseApiResponseVolumeUsageCountsData.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["VolumeUsageCountsData"];
+            data: components["schemas"]["DockerVolumeVolumeUsageCountsData"];
             /** @description Whether the request was successful */
             success: boolean;
         };
@@ -6545,11 +9017,143 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BaseApiResponseVolumeUsageResponse.json
+             * @example /api/schemas/BaseApiResponseVolumeUsageResponse.json
              */
             readonly $schema?: string;
             /** @description Response data */
-            data: components["schemas"]["VolumeUsageResponse"];
+            data: components["schemas"]["DockerVolumeVolumeUsageResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVolumeVolume: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVolumeVolume.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VolumeVolume"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVulnerabilityBulkIgnoreResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVulnerabilityBulkIgnoreResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VulnerabilityBulkIgnoreResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVulnerabilityEnvironmentVulnerabilitySummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVulnerabilityEnvironmentVulnerabilitySummary.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VulnerabilityEnvironmentVulnerabilitySummary"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVulnerabilityIgnoredVulnerability: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVulnerabilityIgnoredVulnerability.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VulnerabilityIgnoredVulnerability"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVulnerabilityRiskOverview: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVulnerabilityRiskOverview.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VulnerabilityRiskOverview"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVulnerabilityScanResult: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVulnerabilityScanResult.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VulnerabilityScanResult"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVulnerabilityScanSummariesResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVulnerabilityScanSummariesResponse.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VulnerabilityScanSummariesResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseVulnerabilityScanSummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseVulnerabilityScanSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["VulnerabilityScanSummary"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseWebhookCreated: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseWebhookCreated.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["WebhookCreated"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseWorkspaceFileContent: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseWorkspaceFileContent.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["WorkspaceFileContent"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BaseApiResponseWorkspaceWorkspace: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BaseApiResponseWorkspaceWorkspace.json
+             */
+            readonly $schema?: string;
+            /** @description Response data */
+            data: components["schemas"]["WorkspaceWorkspace"];
             /** @description Whether the request was successful */
             success: boolean;
         };
@@ -6559,11 +9163,11 @@ export interface components {
             /** @description Response message */
             message: string;
         };
-        BasePaginatedActivity: {
+        BasePaginatedActivityActivity: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BasePaginatedActivity.json
+             * @example /api/schemas/BasePaginatedActivityActivity.json
              */
             readonly $schema?: string;
             /** @description Array of items for the current page */
@@ -6573,11 +9177,123 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BasePaginatedFederatedCredential: {
+        BasePaginatedApikeyApiKey: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BasePaginatedFederatedCredential.json
+             * @example /api/schemas/BasePaginatedApikeyApiKey.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["ApikeyApiKey"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedBackupBackupFileEntry: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedBackupBackupFileEntry.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["BackupBackupFileEntry"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedBackupHistoryEntry: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedBackupHistoryEntry.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["BackupHistoryEntry"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedBackupS3Destination: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedBackupS3Destination.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["BackupS3Destination"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedBackupSystemBackupRun: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedBackupSystemBackupRun.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["BackupSystemBackupRun"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedContainerregistryContainerRegistry: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedContainerregistryContainerRegistry.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["ContainerregistryContainerRegistry"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedEnvironmentEnvironment: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedEnvironmentEnvironment.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["EnvironmentEnvironment"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedEventEvent: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedEventEvent.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["EventEvent"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedFederatedFederatedCredential: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedFederatedFederatedCredential.json
              */
             readonly $schema?: string;
             /** @description Array of items for the current page */
@@ -6587,11 +9303,193 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BasePaginatedIgnoredVulnerability: {
+        BasePaginatedGitopsGitRepository: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BasePaginatedIgnoredVulnerability.json
+             * @example /api/schemas/BasePaginatedGitopsGitRepository.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["GitopsGitRepository"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedImageBuildRecord: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedImageBuildRecord.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["ImageBuildRecord"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedImagepatchPatchRecord: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedImagepatchPatchRecord.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["ImagepatchPatchRecord"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedImagepatchPatchTarget: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedImagepatchPatchTarget.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["ImagepatchPatchTarget"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedPortPortMapping: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedPortPortMapping.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["PortPortMapping"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedProjectDetails: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedProjectDetails.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["ProjectDetails"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedRoleRole: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedRoleRole.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["RoleRole"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedSwarmNodeSummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedSwarmNodeSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["SwarmNodeSummary"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedSwarmServiceSummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedSwarmServiceSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["SwarmServiceSummary"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedSwarmStackSummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedSwarmStackSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["SwarmStackSummary"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedSwarmTaskSummary: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedSwarmTaskSummary.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["SwarmTaskSummary"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedTemplateTemplate: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedTemplateTemplate.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["TemplateTemplate"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedUserUser: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedUserUser.json
+             */
+            readonly $schema?: string;
+            /** @description Array of items for the current page */
+            data: components["schemas"]["UserUser"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedVulnerabilityIgnoredVulnerability: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedVulnerabilityIgnoredVulnerability.json
              */
             readonly $schema?: string;
             /** @description Array of items for the current page */
@@ -6601,11 +9499,11 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BasePaginatedVulnerability: {
+        BasePaginatedVulnerabilityVulnerability: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BasePaginatedVulnerability.json
+             * @example /api/schemas/BasePaginatedVulnerabilityVulnerability.json
              */
             readonly $schema?: string;
             /** @description Array of items for the current page */
@@ -6615,15 +9513,63 @@ export interface components {
             /** @description Whether the request was successful */
             success: boolean;
         };
-        BasePaginatedVulnerabilityWithImage: {
+        BasePaginatedVulnerabilityVulnerabilityWithImage: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BasePaginatedVulnerabilityWithImage.json
+             * @example /api/schemas/BasePaginatedVulnerabilityVulnerabilityWithImage.json
              */
             readonly $schema?: string;
             /** @description Array of items for the current page */
             data: components["schemas"]["VulnerabilityVulnerabilityWithImage"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedWithCountsGitopsGitOpsSyncGitopsSyncCounts: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedWithCountsGitopsGitOpsSyncGitopsSyncCounts.json
+             */
+            readonly $schema?: string;
+            /** @description Aggregate counts for the filtered collection */
+            counts: components["schemas"]["GitopsSyncCounts"];
+            /** @description Array of items for the current page */
+            data: components["schemas"]["GitopsGitOpsSync"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedWithCountsNetworkSummaryNetworkUsageCounts: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedWithCountsNetworkSummaryNetworkUsageCounts.json
+             */
+            readonly $schema?: string;
+            /** @description Aggregate counts for the filtered collection */
+            counts: components["schemas"]["NetworkUsageCounts"];
+            /** @description Array of items for the current page */
+            data: components["schemas"]["NetworkSummary"][] | null;
+            /** @description Pagination metadata */
+            pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
+            success: boolean;
+        };
+        BasePaginatedWithCountsVolumeVolumeVolumeUsageCountsData: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/BasePaginatedWithCountsVolumeVolumeVolumeUsageCountsData.json
+             */
+            readonly $schema?: string;
+            /** @description Aggregate counts for the filtered collection */
+            counts: components["schemas"]["DockerVolumeVolumeUsageCountsData"];
+            /** @description Array of items for the current page */
+            data: components["schemas"]["VolumeVolume"][] | null;
             /** @description Pagination metadata */
             pagination: components["schemas"]["BasePaginationResponse"];
             /** @description Whether the request was successful */
@@ -6711,7 +9657,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/BuildProjectInputBody.json
+             * @example /api/schemas/BuildProjectInputBody.json
              */
             readonly $schema?: string;
             /** @description Load images into Docker */
@@ -6735,16 +9681,6 @@ export interface components {
             title: string;
             url: string;
         };
-        ContainerActionResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ContainerActionResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["BaseMessageResponse"];
-            success: boolean;
-        };
         ContainerActionResult: {
             activityId?: string;
             errors?: string[] | null;
@@ -6757,7 +9693,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ContainerCommitRequest.json
+             * @example /api/schemas/ContainerCommitRequest.json
              */
             readonly $schema?: string;
             /** @description Commit author */
@@ -6794,7 +9730,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ContainerCreate.json
+             * @example /api/schemas/ContainerCreate.json
              */
             readonly $schema?: string;
             attachStderr?: boolean;
@@ -6813,6 +9749,7 @@ export interface components {
             exposedPorts?: {
                 [key: string]: components["schemas"]["Value"];
             };
+            healthcheck?: components["schemas"]["ContainerHealthcheckCreate"];
             hostConfig?: components["schemas"]["ContainerHostConfigCreate"];
             hostname?: string;
             image: string;
@@ -6844,18 +9781,9 @@ export interface components {
             name: string;
             status: string;
         };
-        ContainerCreatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ContainerCreatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["ContainerCreated"];
-            success: boolean;
-        };
         ContainerDetails: {
             activityId?: string;
+            autoUpdateEnabled: boolean;
             composeInfo?: components["schemas"]["ContainerComposeInfo"];
             config: components["schemas"]["ContainerConfig"];
             created: string;
@@ -6874,19 +9802,97 @@ export interface components {
             ports: components["schemas"]["ContainerPort"][] | null;
             redeployDisabled?: boolean;
             state: components["schemas"]["ContainerState"];
+            updateInfo?: components["schemas"]["ImageUpdateInfo"];
         };
-        ContainerDetailsResponse: {
+        ContainerEdit: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ContainerDetailsResponse.json
+             * @example /api/schemas/ContainerEdit.json
              */
             readonly $schema?: string;
-            data: components["schemas"]["ContainerDetails"];
-            success: boolean;
+            clearHealthcheck?: boolean;
+            command?: string[];
+            credentials?: components["schemas"]["ContainerregistryCredential"][] | null;
+            entrypoint?: string[];
+            environment?: string[];
+            healthcheck?: components["schemas"]["ContainerHealthcheckCreate"];
+            hostConfig?: components["schemas"]["ContainerHostConfigEdit"];
+            image?: string;
+            labels?: {
+                [key: string]: string;
+            };
+            name?: string;
+            networkingConfig?: components["schemas"]["ContainerNetworkingConfigCreate"];
+            user?: string;
+            workingDir?: string;
+        };
+        ContainerEditConfig: {
+            command?: string[] | null;
+            composeProject?: string;
+            editDisabled?: boolean;
+            entrypoint?: string[] | null;
+            environment?: string[] | null;
+            healthcheck?: components["schemas"]["ContainerHealthcheckCreate"];
+            hostConfig: components["schemas"]["ContainerEditConfigHostConfig"];
+            id: string;
+            image: string;
+            isCompose?: boolean;
+            labels?: {
+                [key: string]: string;
+            };
+            name: string;
+            networks?: {
+                [key: string]: components["schemas"]["ContainerEditConfigNetwork"];
+            };
+            running: boolean;
+            user?: string;
+            workingDir?: string;
+        };
+        ContainerEditConfigHostConfig: {
+            autoRemove?: boolean;
+            binds?: string[] | null;
+            capAdd?: string[] | null;
+            capDrop?: string[] | null;
+            /** Format: int64 */
+            cpuShares?: number;
+            /** Format: int64 */
+            memory?: number;
+            /** Format: int64 */
+            memorySwap?: number;
+            mounts?: components["schemas"]["ContainerMountCreate"][] | null;
+            /** Format: int64 */
+            nanoCpus?: number;
+            networkMode?: string;
+            portBindings?: {
+                [key: string]: components["schemas"]["ContainerPortBindingCreate"][] | null;
+            };
+            privileged?: boolean;
+            readonlyRootfs?: boolean;
+            restartPolicy: components["schemas"]["ContainerRestartPolicyCreate"];
+        };
+        ContainerEditConfigNetwork: {
+            aliases?: string[] | null;
+            ipv4Address?: string;
+            ipv6Address?: string;
         };
         ContainerEndpointSettingsCreate: {
             aliases?: string[] | null;
+            ipv4Address?: string;
+            ipv6Address?: string;
+        };
+        ContainerGenerateComposeRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/ContainerGenerateComposeRequest.json
+             */
+            readonly $schema?: string;
+            /** @description IDs of the containers to convert */
+            containerIds: string[] | null;
+        };
+        ContainerGenerateComposeResponse: {
+            composeContent: string;
         };
         ContainerHealth: {
             /** Format: int64 */
@@ -6914,6 +9920,19 @@ export interface components {
             /** Format: int64 */
             timeout?: number;
         };
+        ContainerHealthcheckCreate: {
+            /** Format: int64 */
+            interval?: number;
+            /** Format: int64 */
+            retries?: number;
+            /** Format: int64 */
+            startInterval?: number;
+            /** Format: int64 */
+            startPeriod?: number;
+            test?: string[] | null;
+            /** Format: int64 */
+            timeout?: number;
+        };
         ContainerHostConfig: {
             autoRemove?: boolean;
             /** Format: int64 */
@@ -6927,12 +9946,15 @@ export interface components {
         ContainerHostConfigCreate: {
             autoRemove?: boolean;
             binds?: string[] | null;
+            capAdd?: string[] | null;
+            capDrop?: string[] | null;
             /** Format: int64 */
             cpuShares?: number;
             /** Format: int64 */
             memory?: number;
             /** Format: int64 */
             memorySwap?: number;
+            mounts?: components["schemas"]["ContainerMountCreate"][] | null;
             /** Format: int64 */
             nanoCpus?: number;
             networkMode?: string;
@@ -6944,6 +9966,27 @@ export interface components {
             readonlyRootfs?: boolean;
             restartPolicy?: components["schemas"]["ContainerRestartPolicyCreate"];
         };
+        ContainerHostConfigEdit: {
+            autoRemove?: boolean;
+            binds?: string[];
+            capAdd?: string[];
+            capDrop?: string[];
+            /** Format: int64 */
+            cpuShares?: number;
+            /** Format: int64 */
+            memory?: number;
+            /** Format: int64 */
+            memorySwap?: number;
+            mounts?: components["schemas"]["ContainerMountCreate"][];
+            /** Format: int64 */
+            nanoCpus?: number;
+            portBindings?: {
+                [key: string]: components["schemas"]["ContainerPortBindingCreate"][] | null;
+            };
+            privileged?: boolean;
+            readonlyRootfs?: boolean;
+            restartPolicy?: components["schemas"]["ContainerRestartPolicyCreate"];
+        };
         ContainerMount: {
             destination: string;
             driver?: string;
@@ -6952,6 +9995,12 @@ export interface components {
             propagation?: string;
             rw?: boolean;
             source?: string;
+            type: string;
+        };
+        ContainerMountCreate: {
+            readOnly?: boolean;
+            source: string;
+            target: string;
             type: string;
         };
         ContainerNetworkEndpoint: {
@@ -6986,19 +10035,6 @@ export interface components {
                 [key: string]: components["schemas"]["ContainerEndpointSettingsCreate"];
             };
         };
-        ContainerPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ContainerPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            counts: components["schemas"]["ContainerStatusCounts"];
-            data: components["schemas"]["ContainerSummary"][] | null;
-            groups?: components["schemas"]["ContainerSummaryGroup"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
-        };
         ContainerPort: {
             ip?: string;
             /** Format: int64 */
@@ -7011,16 +10047,19 @@ export interface components {
             hostIp?: string;
             hostPort?: string;
         };
-        ContainerRegistryPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ContainerRegistryPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["ContainerregistryContainerRegistry"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
+        ContainerProcesses: {
+            processes: (string[] | null)[] | null;
+            titles: string[] | null;
+        };
+        ContainerResourceSample: {
+            /** Format: double */
+            cpuPercent: number;
+            /** Format: int64 */
+            memoryLimitBytes: number;
+            /** Format: int64 */
+            memoryUsageBytes: number;
+            /** Format: date-time */
+            sampleTime: string;
         };
         ContainerRestartPolicyCreate: {
             /** Format: int64 */
@@ -7044,20 +10083,12 @@ export interface components {
             /** Format: int64 */
             totalContainers: number;
         };
-        ContainerStatusCountsResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ContainerStatusCountsResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["ContainerStatusCounts"];
-            success: boolean;
-        };
         ContainerSummary: {
+            autoUpdateEnabled: boolean;
             command: string;
             /** Format: int64 */
             created: number;
+            hidden?: boolean;
             hostConfig: components["schemas"]["ContainerHostConfig"];
             iconDarkUrl?: string;
             iconLightUrl?: string;
@@ -7072,9 +10103,11 @@ export interface components {
             networkSettings: components["schemas"]["ContainerNetworkSettings"];
             ports: components["schemas"]["ContainerPort"][] | null;
             redeployDisabled?: boolean;
+            resourceSample?: components["schemas"]["ContainerResourceSample"];
             state: string;
             status: string;
             updateInfo?: components["schemas"]["ImageUpdateInfo"];
+            updateStrategy?: string;
         };
         ContainerSummaryGroup: {
             groupName: string;
@@ -7090,8 +10123,28 @@ export interface components {
             id: string;
             insecure: boolean;
             registryType: string;
+            repositoryNames: string[] | null;
             /** Format: date-time */
             updatedAt: string;
+            url: string;
+            username: string;
+        };
+        ContainerregistryCreateContainerRegistryRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/ContainerregistryCreateContainerRegistryRequest.json
+             */
+            readonly $schema?: string;
+            awsAccessKeyId: string;
+            awsRegion: string;
+            awsSecretAccessKey: string;
+            description: string | null;
+            enabled: boolean | null;
+            insecure: boolean | null;
+            registryType: string;
+            repositoryNames: string[] | null;
+            token: string;
             url: string;
             username: string;
         };
@@ -7133,11 +10186,12 @@ export interface components {
             awsSecretAccessKey?: string;
             /** Format: date-time */
             createdAt: string;
-            description?: string;
+            description?: string | null;
             enabled: boolean;
             id: string;
             insecure: boolean;
             registryType: string;
+            repositoryNames: string[] | null;
             token: string;
             /** Format: date-time */
             updatedAt: string;
@@ -7148,55 +10202,29 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ContainerregistrySyncRequest.json
+             * @example /api/schemas/ContainerregistrySyncRequest.json
              */
             readonly $schema?: string;
             registries: components["schemas"]["ContainerregistrySync"][] | null;
         };
-        CreateContainerRegistryRequest: {
+        ContainerregistryUpdateContainerRegistryRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/CreateContainerRegistryRequest.json
+             * @example /api/schemas/ContainerregistryUpdateContainerRegistryRequest.json
              */
             readonly $schema?: string;
-            awsAccessKeyId: string;
-            awsRegion: string;
-            awsSecretAccessKey: string;
+            awsAccessKeyId: string | null;
+            awsRegion: string | null;
+            awsSecretAccessKey: string | null;
             description: string | null;
             enabled: boolean | null;
             insecure: boolean | null;
-            registryType: string;
-            token: string;
-            url: string;
-            username: string;
-        };
-        CreateGitRepositoryRequest: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/CreateGitRepositoryRequest.json
-             */
-            readonly $schema?: string;
-            authType: string;
-            description?: string;
-            enabled?: boolean;
-            name: string;
-            sshHostKeyVerification?: string;
-            sshKey?: string;
-            token?: string;
-            url: string;
-            username?: string;
-        };
-        CreateOidcRoleMappingOutputBody: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/CreateOidcRoleMappingOutputBody.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["RoleOidcRoleMapping"];
-            success: boolean;
+            registryType: string | null;
+            repositoryNames: string[] | null;
+            token: string | null;
+            url: string | null;
+            username: string | null;
         };
         CredentialSpecConfig: {
             config?: string;
@@ -7219,6 +10247,7 @@ export interface components {
             images: components["schemas"]["DashboardSnapshotImages"];
             settings: components["schemas"]["DashboardSnapshotSettings"];
             versionInfo?: components["schemas"]["VersionInfo"];
+            volumeUsageCounts?: components["schemas"]["VolumeUsageCounts"];
         };
         DashboardSnapshotContainers: {
             counts: components["schemas"]["ContainerStatusCounts"];
@@ -7234,7 +10263,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/DeleteOidcRoleMappingOutputBody.json
+             * @example /api/schemas/DeleteOidcRoleMappingOutputBody.json
              */
             readonly $schema?: string;
             message: string;
@@ -7322,6 +10351,20 @@ export interface components {
             kind: string;
             /** Format: int64 */
             value: number;
+        };
+        DockerContainerContainerPaginatedResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/DockerContainerContainerPaginatedResponse.json
+             */
+            readonly $schema?: string;
+            counts: components["schemas"]["ContainerStatusCounts"];
+            data: components["schemas"]["ContainerSummary"][] | null;
+            groups?: components["schemas"]["ContainerSummaryGroup"][] | null;
+            pagination: components["schemas"]["BasePaginationResponse"];
+            resourceSortSupported: boolean;
+            success: boolean;
         };
         DockerMountBindOptions: {
             CreateMountpoint?: boolean;
@@ -7749,6 +10792,23 @@ export interface components {
         DockerSwarmSpreadOver: {
             SpreadDescriptor: string;
         };
+        DockerSwarmSwarmNodeAgentDeployment: {
+            agent: components["schemas"]["SwarmNodeAgentStatus"];
+            /** @description Docker compose YAML snippet */
+            dockerCompose: string;
+            /** @description Docker run command snippet */
+            dockerRun: string;
+            environmentId: string;
+            /** @description Optional Arcane-generated mTLS deployment assets for edge agents */
+            mtls?: components["schemas"]["DeploymentSnippetMTLS"];
+        };
+        DockerSwarmSwarmNodeIdentity: {
+            engineVersion: string;
+            hostname: string;
+            role: string;
+            swarmActive: boolean;
+            swarmNodeId: string;
+        };
         DockerSwarmTLSInfo: {
             CertIssuerPublicKey?: string;
             CertIssuerSubject?: string;
@@ -7809,6 +10869,31 @@ export interface components {
             ID: string;
             Source: string;
         };
+        DockerSystemEnvironmentUpdateJob: {
+            /** Format: date-time */
+            completedAt?: string;
+            /** Format: date-time */
+            createdAt: string;
+            error?: string;
+            id: string;
+            managerDigestAtStart: string;
+            managerTargetVersion: string;
+            managerVersionAtStart: string;
+            results?: components["schemas"]["DockerSystemEnvironmentUpdateResult"][] | null;
+            status: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            userId: string;
+            username: string;
+        };
+        DockerSystemEnvironmentUpdateResult: {
+            environmentId: string;
+            environmentName: string;
+            error?: string;
+            fromVersion?: string;
+            status: string;
+            toVersion?: string;
+        };
         DockerSystemFirewallInfo: {
             Driver: string;
             Info?: (string[] | null)[] | null;
@@ -7838,11 +10923,28 @@ export interface components {
                 [key: string]: string;
             };
         };
+        DockerSystemTriggerUpgradeData: {
+            /** @description Response message */
+            message: string;
+            /** @description Environment already runs the newest image, so no restart is expected */
+            upToDate: boolean;
+        };
+        DockerSystemUpgradeCheckResultData: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/DockerSystemUpgradeCheckResultData.json
+             */
+            readonly $schema?: string;
+            canUpgrade: boolean;
+            error: boolean;
+            message: string;
+        };
         DockerTypesBuildRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/DockerTypesBuildRequest.json
+             * @example /api/schemas/DockerTypesBuildRequest.json
              */
             readonly $schema?: string;
             /** @description Build arguments */
@@ -8149,17 +11251,81 @@ export interface components {
             /** Format: int32 */
             Weight: number;
         };
+        DockerVolumeBackupHasPathResponse: {
+            exists: boolean;
+        };
         DockerVolumeUsageData: {
             /** Format: int64 */
             RefCount: number;
             /** Format: int64 */
             Size: number;
         };
+        DockerVolumeVolumeBackup: {
+            activityId?: string;
+            /** Format: date-time */
+            createdAt: string;
+            destination: string;
+            error?: string;
+            format: string;
+            id: string;
+            localSnapshotId?: string;
+            policyId?: string;
+            remoteAvailable?: boolean;
+            remoteInstanceId?: string;
+            remoteSnapshotId?: string;
+            s3DestinationId?: string;
+            s3DestinationName?: string;
+            /** Format: int64 */
+            size: number;
+            status: string;
+            trigger: string;
+            type: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            volumeName: string;
+        };
+        DockerVolumeVolumeBackupPaginatedResponse: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/DockerVolumeVolumeBackupPaginatedResponse.json
+             */
+            readonly $schema?: string;
+            data: components["schemas"]["DockerVolumeVolumeBackup"][] | null;
+            pagination: components["schemas"]["BasePaginationResponse"];
+            success: boolean;
+            warnings?: string[] | null;
+        };
+        DockerVolumeVolumePruneReportData: {
+            activityId?: string;
+            /** Format: int64 */
+            spaceReclaimed: number;
+            volumesDeleted?: string[] | null;
+        };
+        DockerVolumeVolumeSizeInfo: {
+            name: string;
+            /** Format: int64 */
+            refCount: number;
+            /** Format: int64 */
+            size: number;
+        };
+        DockerVolumeVolumeUsageCountsData: {
+            /** Format: int64 */
+            inuse: number;
+            /** Format: int64 */
+            total: number;
+            /** Format: int64 */
+            unused: number;
+        };
+        DockerVolumeVolumeUsageResponse: {
+            containers: string[] | null;
+            inUse: boolean;
+        };
         DockerinfoInfo: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/DockerinfoInfo.json
+             * @example /api/schemas/DockerinfoInfo.json
              */
             readonly $schema?: string;
             Architecture: string;
@@ -8245,14 +11411,64 @@ export interface components {
             os: string;
             success: boolean;
         };
-        EnvSummary: {
+        Entry: {
+            attrs?: {
+                [key: string]: unknown;
+            };
+            level: string;
+            message: string;
+            /** Format: date-time */
+            time: string;
+        };
+        EnvCreateGlobalVariableRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/EnvSummary.json
+             * @example /api/schemas/EnvCreateGlobalVariableRequest.json
              */
             readonly $schema?: string;
-            variables: components["schemas"]["EnvVariable"][] | null;
+            allEnvironments?: boolean;
+            environmentIds?: string[] | null;
+            isSecret?: boolean;
+            key: string;
+            value: string;
+        };
+        EnvEnvironmentSyncStatus: {
+            environmentId: string;
+            environmentName?: string;
+            error?: string;
+            /** Format: date-time */
+            lastSyncedAt?: string;
+            status: string;
+        };
+        EnvGlobalVariable: {
+            allEnvironments: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            environmentIds: string[] | null;
+            id: string;
+            isSecret: boolean;
+            key: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            value: string;
+        };
+        EnvGlobalVariableMutationResponse: {
+            syncResults?: components["schemas"]["EnvEnvironmentSyncStatus"][] | null;
+            variable?: components["schemas"]["EnvGlobalVariable"];
+        };
+        EnvUpdateGlobalVariableRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/EnvUpdateGlobalVariableRequest.json
+             */
+            readonly $schema?: string;
+            allEnvironments?: boolean | null;
+            environmentIds?: string[] | null;
+            isSecret?: boolean | null;
+            key?: string | null;
+            value?: string | null;
         };
         EnvVariable: {
             key: string;
@@ -8262,7 +11478,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/EnvironmentAgentPairRequest.json
+             * @example /api/schemas/EnvironmentAgentPairRequest.json
              */
             readonly $schema?: string;
             rotate?: boolean;
@@ -8274,7 +11490,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/EnvironmentCreate.json
+             * @example /api/schemas/EnvironmentCreate.json
              */
             readonly $schema?: string;
             accessToken?: string;
@@ -8318,17 +11534,6 @@ export interface components {
             name?: string;
             status: string;
         };
-        EnvironmentPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/EnvironmentPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["EnvironmentEnvironment"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
-        };
         EnvironmentTest: {
             message?: string;
             status: string;
@@ -8337,7 +11542,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/EnvironmentTestConnectionRequest.json
+             * @example /api/schemas/EnvironmentTestConnectionRequest.json
              */
             readonly $schema?: string;
             apiUrl?: string;
@@ -8346,39 +11551,14 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/EnvironmentUpdate.json
+             * @example /api/schemas/EnvironmentUpdate.json
              */
             readonly $schema?: string;
-            accessToken?: string;
-            apiUrl?: string;
-            enabled?: boolean;
-            name?: string;
-            regenerateApiKey?: boolean;
-        };
-        EnvironmentUpdateJob: {
-            /** Format: date-time */
-            completedAt?: string;
-            /** Format: date-time */
-            createdAt: string;
-            error?: string;
-            id: string;
-            managerDigestAtStart: string;
-            managerTargetVersion: string;
-            managerVersionAtStart: string;
-            results?: components["schemas"]["EnvironmentUpdateResult"][] | null;
-            status: string;
-            /** Format: date-time */
-            updatedAt?: string;
-            userId: string;
-            username: string;
-        };
-        EnvironmentUpdateResult: {
-            environmentId: string;
-            environmentName: string;
-            error?: string;
-            fromVersion?: string;
-            status: string;
-            toVersion?: string;
+            accessToken?: string | null;
+            apiUrl?: string | null;
+            enabled?: boolean | null;
+            name?: string | null;
+            regenerateApiKey?: boolean | null;
         };
         EnvironmentWithApiKey: {
             /** @description API key for pairing (only shown once during creation) */
@@ -8418,7 +11598,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ErrorModel.json
+             * @example /api/schemas/ErrorModel.json
              */
             readonly $schema?: string;
             /**
@@ -8475,16 +11655,17 @@ export interface components {
             userId?: string;
             username?: string;
         };
-        EventPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/EventPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["EventEvent"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
+        EventSeverityCounts: {
+            /** Format: int64 */
+            error: number;
+            /** Format: int64 */
+            info: number;
+            /** Format: int64 */
+            success: number;
+            /** Format: int64 */
+            total: number;
+            /** Format: int64 */
+            warning: number;
         };
         ExtendsConfig: {
             file?: string;
@@ -8494,7 +11675,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/FederatedCreateFederatedCredential.json
+             * @example /api/schemas/FederatedCreateFederatedCredential.json
              */
             readonly $schema?: string;
             /** @description Allowed external token audiences */
@@ -8598,82 +11779,85 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/FederatedUpdateFederatedCredential.json
+             * @example /api/schemas/FederatedUpdateFederatedCredential.json
              */
             readonly $schema?: string;
             /** @description Allowed external token audiences */
             audiences?: string[] | null;
             /** @description Optional description */
-            description?: string;
+            description?: string | null;
             /** @description Whether exchanges are allowed */
-            enabled?: boolean;
+            enabled?: boolean | null;
             /** @description Optional environment scope for the role assignment */
-            environmentId?: string;
+            environmentId?: string | null;
             /**
              * Format: date-time
              * @description Optional credential expiration
              */
-            expiresAt?: string;
+            expiresAt?: string | null;
             /**
              * Format: uri
              * @description Trusted external OIDC issuer URL
              */
-            issuerUrl?: string;
+            issuerUrl?: string | null;
             /**
              * @description Subject match strategy
-             * @enum {string}
+             * @enum {string|null}
              */
-            matchType?: "exact" | "glob";
+            matchType?: "exact" | "glob" | null;
             /** @description Display name */
-            name?: string;
+            name?: string | null;
             /** @description Mapped role ID */
-            roleId?: string;
+            roleId?: string | null;
             /** @description Claim path to match against */
-            subjectClaim?: string;
+            subjectClaim?: string | null;
             /** @description Exact subject or anchored glob pattern */
-            subjectMatch?: string;
+            subjectMatch?: string | null;
             /**
              * Format: int64
              * @description Issued token lifetime in seconds
              */
-            tokenTtlSeconds?: number;
-        };
-        FileContentResponse: {
-            content: string;
-            mimeType: string;
+            tokenTtlSeconds?: number | null;
         };
         GetSwarmNodeAgentDeploymentInputBody: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/GetSwarmNodeAgentDeploymentInputBody.json
+             * @example /api/schemas/GetSwarmNodeAgentDeploymentInputBody.json
              */
             readonly $schema?: string;
             /** @description Rotate the environment token before generating snippets */
             rotate?: boolean;
         };
-        GitOpsSyncPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/GitOpsSyncPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            counts: components["schemas"]["GitopsSyncCounts"];
-            data: components["schemas"]["GitopsGitOpsSync"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
+        GitopsBackupFileChange: {
+            change: string;
+            path: string;
         };
-        GitRepositoryPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/GitRepositoryPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["GitopsGitRepository"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
+        GitopsBackupFileDiff: {
+            patch: string;
+            path: string;
+        };
+        GitopsBackupHistoryEntry: {
+            author: string;
+            commit: string;
+            /** Format: date-time */
+            date: string;
+            files: string[] | null;
+            message: string;
+        };
+        GitopsBackupHistoryResponse: {
+            entries: components["schemas"]["GitopsBackupHistoryEntry"][] | null;
+        };
+        GitopsBackupPreview: {
+            changes: components["schemas"]["GitopsBackupFileChange"][] | null;
+            conflicts: components["schemas"]["GitopsBackupFileChange"][] | null;
+            files: string[] | null;
+            remoteCommit?: string;
+            state: string;
+        };
+        GitopsBackupRevision: {
+            diffs: components["schemas"]["GitopsBackupFileDiff"][] | null;
+            entry: components["schemas"]["GitopsBackupHistoryEntry"];
         };
         GitopsBranchInfo: {
             isDefault: boolean;
@@ -8686,22 +11870,47 @@ export interface components {
             files: components["schemas"]["GitopsFileTreeNode"][] | null;
             path: string;
         };
+        GitopsCreateRepositoryRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/GitopsCreateRepositoryRequest.json
+             */
+            readonly $schema?: string;
+            authType: string;
+            commitAuthorEmail?: string;
+            commitAuthorName?: string;
+            description?: string;
+            enabled?: boolean;
+            name: string;
+            signingKey?: string;
+            signingKeyPassphrase?: string;
+            sshHostKeyVerification?: string;
+            sshKey?: string;
+            token?: string;
+            url: string;
+            username?: string;
+        };
         GitopsCreateSyncRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/GitopsCreateSyncRequest.json
+             * @example /api/schemas/GitopsCreateSyncRequest.json
              */
             readonly $schema?: string;
             autoSync?: boolean;
+            backupDirectory?: string;
+            backupOnSave?: boolean;
+            backupPaths?: string[] | null;
             branch: string;
-            composePath: string;
+            composePath?: string;
             /** Format: int64 */
             maxSyncBinarySize?: number;
             /** Format: int64 */
             maxSyncFiles?: number;
             /** Format: int64 */
             maxSyncTotalSize?: number;
+            mode?: string;
             name: string;
             preDeployEnv?: string;
             preDeployExtraMounts?: string;
@@ -8710,7 +11919,10 @@ export interface components {
             preDeployScriptPath?: string;
             /** Format: int64 */
             preDeployTimeoutSec?: number;
+            projectId?: string;
             projectName?: string;
+            pullImageAfterSync?: boolean;
+            redeployAfterSync?: boolean;
             repositoryId: string;
             syncDirectory?: boolean;
             /** Format: int64 */
@@ -8727,12 +11939,20 @@ export interface components {
         };
         GitopsGitOpsSync: {
             autoSync: boolean;
+            backupDirectory?: string;
+            backupFailureReason?: string;
+            backupOnSave: boolean;
+            backupPaths?: string[] | null;
+            backupPending: boolean;
+            backupState?: string;
             branch: string;
             composePath: string;
             /** Format: date-time */
             createdAt: string;
             environmentId: string;
             id: string;
+            /** Format: date-time */
+            lastBackupAt?: string;
             /** Format: date-time */
             lastSyncAt?: string;
             lastSyncCommit?: string;
@@ -8744,6 +11964,7 @@ export interface components {
             maxSyncFiles: number;
             /** Format: int64 */
             maxSyncTotalSize: number;
+            mode: string;
             name: string;
             preDeployEnv?: string;
             preDeployExtraMounts?: string;
@@ -8758,6 +11979,8 @@ export interface components {
             preDeployTimeoutSec: number;
             projectId?: string;
             projectName: string;
+            pullImageAfterSync: boolean;
+            redeployAfterSync: boolean;
             repository?: components["schemas"]["GitopsGitRepository"];
             repositoryId: string;
             syncDirectory: boolean;
@@ -8770,10 +11993,15 @@ export interface components {
         };
         GitopsGitRepository: {
             authType: string;
+            commitAuthorEmail?: string;
+            commitAuthorName?: string;
             /** Format: date-time */
             createdAt: string;
             description?: string;
             enabled: boolean;
+            hasSigningKey: boolean;
+            hasSshKey: boolean;
+            hasToken: boolean;
             id: string;
             name: string;
             sshHostKeyVerification?: string;
@@ -8793,6 +12021,16 @@ export interface components {
             maxSyncFiles?: number;
             /** Format: int64 */
             maxSyncTotalSize?: number;
+            preDeployEnv?: string;
+            preDeployExtraMounts?: string;
+            preDeployNetworkMode?: string;
+            preDeployRunnerImage?: string;
+            preDeployScriptPath?: string;
+            /** Format: int64 */
+            preDeployTimeoutSec?: number;
+            projectName?: string;
+            pullImageAfterSync?: boolean;
+            redeployAfterSync?: boolean;
             syncDirectory?: boolean;
             /** Format: int64 */
             syncInterval: number;
@@ -8807,12 +12045,16 @@ export interface components {
         };
         GitopsRepositorySync: {
             authType: string;
+            commitAuthorEmail?: string;
+            commitAuthorName?: string;
             /** Format: date-time */
             createdAt: string;
             description?: string;
             enabled: boolean;
             id: string;
             name: string;
+            signingKey?: string;
+            signingKeyPassphrase?: string;
             sshHostKeyVerification?: string;
             sshKey?: string;
             token?: string;
@@ -8825,14 +12067,27 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/GitopsRepositorySyncRequest.json
+             * @example /api/schemas/GitopsRepositorySyncRequest.json
              */
             readonly $schema?: string;
             repositories: components["schemas"]["GitopsRepositorySync"][] | null;
         };
+        GitopsResolveBackupConflictRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/GitopsResolveBackupConflictRequest.json
+             */
+            readonly $schema?: string;
+            strategy: string;
+        };
         GitopsSyncCounts: {
             /** Format: int64 */
             activeSyncs: number;
+            /** Format: int64 */
+            backupSyncs: number;
+            /** Format: int64 */
+            deploySyncs: number;
             /** Format: int64 */
             successfulSyncs: number;
             /** Format: int64 */
@@ -8847,32 +12102,61 @@ export interface components {
         };
         GitopsSyncStatus: {
             autoSync: boolean;
+            backupFailureReason?: string;
+            backupPending: boolean;
+            backupState?: string;
             id: string;
+            /** Format: date-time */
+            lastBackupAt?: string;
             /** Format: date-time */
             lastSyncAt?: string;
             lastSyncCommit?: string;
             lastSyncError?: string;
             lastSyncStatus?: string;
+            mode: string;
             /** Format: date-time */
             nextSyncAt?: string;
+        };
+        GitopsUpdateRepositoryRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/GitopsUpdateRepositoryRequest.json
+             */
+            readonly $schema?: string;
+            authType?: string | null;
+            commitAuthorEmail?: string | null;
+            commitAuthorName?: string | null;
+            description?: string | null;
+            enabled?: boolean | null;
+            name?: string | null;
+            signingKey?: string | null;
+            signingKeyPassphrase?: string | null;
+            sshHostKeyVerification?: string | null;
+            sshKey?: string | null;
+            token?: string | null;
+            url?: string | null;
+            username?: string | null;
         };
         GitopsUpdateSyncRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/GitopsUpdateSyncRequest.json
+             * @example /api/schemas/GitopsUpdateSyncRequest.json
              */
             readonly $schema?: string;
-            autoSync?: boolean;
-            branch?: string;
-            composePath?: string;
+            autoSync?: boolean | null;
+            backupOnSave?: boolean | null;
+            backupPaths?: string[] | null;
+            branch?: string | null;
+            composePath?: string | null;
             /** Format: int64 */
-            maxSyncBinarySize?: number;
+            maxSyncBinarySize?: number | null;
             /** Format: int64 */
-            maxSyncFiles?: number;
+            maxSyncFiles?: number | null;
             /** Format: int64 */
-            maxSyncTotalSize?: number;
-            name?: string;
+            maxSyncTotalSize?: number | null;
+            name?: string | null;
             preDeployEnv?: string;
             preDeployExtraMounts?: string;
             preDeployNetworkMode?: string;
@@ -8880,12 +12164,14 @@ export interface components {
             preDeployScriptPath?: string;
             /** Format: int64 */
             preDeployTimeoutSec?: number;
-            projectName?: string;
-            repositoryId?: string;
-            syncDirectory?: boolean;
+            projectName?: string | null;
+            pullImageAfterSync?: boolean | null;
+            redeployAfterSync?: boolean | null;
+            repositoryId?: string | null;
+            syncDirectory?: boolean | null;
             /** Format: int64 */
-            syncInterval?: number;
-            targetType?: string;
+            syncInterval?: number | null;
+            targetType?: string | null;
         };
         HealthCheckConfig: {
             disable?: boolean;
@@ -8937,17 +12223,6 @@ export interface components {
                 [key: string]: string;
             };
             name: string;
-        };
-        ImageBuildPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ImageBuildPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["ImageBuildRecord"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
         };
         ImageBuildRecord: {
             buildArgs?: {
@@ -9005,6 +12280,7 @@ export interface components {
             id: string;
             metadata: components["schemas"]["DetailSummaryMetadataStruct"];
             os: string;
+            pinnedReferences?: string[] | null;
             repoDigests: string[] | null;
             repoTags: string[] | null;
             rootFs: components["schemas"]["DetailSummaryRootFsStruct"];
@@ -9021,19 +12297,27 @@ export interface components {
             size: number;
             tags: string[] | null;
         };
-        ImageLoadResult: {
-            stream: string;
-        };
-        ImagePaginatedResponse: {
+        ImageListResponse: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ImagePaginatedResponse.json
+             * @example /api/schemas/ImageListResponse.json
              */
             readonly $schema?: string;
+            /** @description Array of items for the current page */
             data: components["schemas"]["ImageSummary"][] | null;
+            /**
+             * Format: int64
+             * @description Maximum image archive upload size in MB
+             */
+            maxImageUploadSize: number;
+            /** @description Pagination metadata */
             pagination: components["schemas"]["BasePaginationResponse"];
+            /** @description Whether the request was successful */
             success: boolean;
+        };
+        ImageLoadResult: {
+            stream: string;
         };
         ImagePruneReport: {
             imagesDeleted: string[] | null;
@@ -9044,7 +12328,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ImagePullOptions.json
+             * @example /api/schemas/ImagePullOptions.json
              */
             readonly $schema?: string;
             auth?: components["schemas"]["ContainerregistryCredential"];
@@ -9070,6 +12354,7 @@ export interface components {
             labels: {
                 [key: string]: unknown;
             };
+            pinnedReferences?: string[] | null;
             repo: string;
             repoDigests: string[] | null;
             repoTags: string[] | null;
@@ -9086,7 +12371,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ImageTagRequest.json
+             * @example /api/schemas/ImageTagRequest.json
              */
             readonly $schema?: string;
             /** @description Target repository name */
@@ -9121,26 +12406,79 @@ export interface components {
             /** Format: int64 */
             totalImages: number;
         };
-        ImageUsageCountsResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ImageUsageCountsResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["ImageUsageCounts"];
-            success: boolean;
-        };
         ImageUsedBy: {
             id?: string;
             name: string;
             type: string;
         };
+        ImagepatchPatchOptions: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/ImagepatchPatchOptions.json
+             */
+            readonly $schema?: string;
+            /** @description Continue patching when individual package updates fail */
+            ignoreErrors?: boolean;
+            /** @description Explicit tag for the patched image */
+            patchedTag?: string;
+            /** @description Vulnerability scan ID to patch from; empty patches all outdated packages */
+            scanId?: string;
+            /** @description Suffix appended to the source tag for the patched image */
+            suffix?: string;
+            /**
+             * Format: int64
+             * @description Timeout for the patch operation in seconds
+             */
+            timeoutSeconds?: number;
+        };
+        ImagepatchPatchRecord: {
+            activityId?: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: int64 */
+            durationMs?: number;
+            environmentId: string;
+            error?: string;
+            id: string;
+            mode: string;
+            originalDigest?: string;
+            originalImageId: string;
+            originalRef: string;
+            /** Format: int64 */
+            packagesUpdated?: number;
+            patchedRef: string;
+            status: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        ImagepatchPatchScanSummary: {
+            /** Format: int64 */
+            fixableCount: number;
+            /** Format: date-time */
+            scanTime: string;
+            status: string;
+            /** Format: int64 */
+            totalCount: number;
+        };
+        ImagepatchPatchTarget: {
+            /** Format: int64 */
+            fixableCount: number;
+            imageId: string;
+            imageRef: string;
+            lastPatch?: components["schemas"]["ImagepatchPatchRecord"];
+            lastPatchScan?: components["schemas"]["ImagepatchPatchScanSummary"];
+            localOnly?: boolean;
+            /** Format: date-time */
+            scanTime: string;
+            /** Format: int64 */
+            totalCount: number;
+        };
         ImageupdateBatchImageUpdateRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ImageupdateBatchImageUpdateRequest.json
+             * @example /api/schemas/ImageupdateBatchImageUpdateRequest.json
              */
             readonly $schema?: string;
             credentials?: components["schemas"]["ContainerregistryCredential"][] | null;
@@ -9150,7 +12488,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ImageupdateCheckAllImagesRequest.json
+             * @example /api/schemas/ImageupdateCheckAllImagesRequest.json
              */
             readonly $schema?: string;
             credentials?: components["schemas"]["ContainerregistryCredential"][] | null;
@@ -9162,10 +12500,15 @@ export interface components {
             authUsername?: string;
             /** Format: date-time */
             checkTime: string;
+            containerUpdates?: {
+                [key: string]: components["schemas"]["ImageupdateResponse"];
+            };
             currentDigest?: string;
             currentVersion: string;
             error?: string;
             hasUpdate: boolean;
+            imageRef?: string;
+            imageUpdate?: components["schemas"]["ImageupdateResponse"];
             latestDigest?: string;
             latestVersion?: string;
             /** Format: int64 */
@@ -9187,7 +12530,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/JobscheduleConfig.json
+             * @example /api/schemas/JobscheduleConfig.json
              */
             readonly $schema?: string;
             autoHealInterval: string;
@@ -9196,6 +12539,7 @@ export interface components {
             environmentHealthInterval: string;
             eventCleanupInterval: string;
             expiredSessionsCleanupInterval: string;
+            imageAutoPatchInterval: string;
             pollingInterval: string;
             scheduledPruneInterval: string;
             vulnerabilityScanInterval: string;
@@ -9204,11 +12548,15 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/JobscheduleJobListResponse.json
+             * @example /api/schemas/JobscheduleJobListResponse.json
              */
             readonly $schema?: string;
+            durableRuns: boolean;
             isAgent: boolean;
             jobs: components["schemas"]["JobscheduleJobStatus"][] | null;
+            /** Format: date-time */
+            observedAt: string;
+            offline?: boolean;
         };
         JobscheduleJobPrerequisite: {
             isMet: boolean;
@@ -9220,19 +12568,27 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/JobscheduleJobRunResponse.json
+             * @example /api/schemas/JobscheduleJobRunResponse.json
              */
             readonly $schema?: string;
             message: string;
+            runId?: string;
+            status?: string;
             success: boolean;
         };
         JobscheduleJobStatus: {
             canRunManually: boolean;
             category: string;
+            children?: components["schemas"]["JobscheduleJobStatus"][] | null;
+            currentRun?: components["schemas"]["SchedulerRun"];
             description: string;
             enabled: boolean;
             id: string;
             isContinuous: boolean;
+            lastError?: string;
+            lastRun?: components["schemas"]["SchedulerRun"];
+            /** Format: date-time */
+            lastSuccess?: string;
             managerOnly: boolean;
             name: string;
             /** Format: date-time */
@@ -9240,39 +12596,47 @@ export interface components {
             prerequisites: components["schemas"]["JobscheduleJobPrerequisite"][] | null;
             schedule: string;
             settingsKey?: string;
+            workerHealth?: components["schemas"]["SchedulerWorkerHealth"];
+        };
+        JobscheduleSubmitRunInput: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/JobscheduleSubmitRunInput.json
+             */
+            readonly $schema?: string;
+            runId: string;
         };
         JobscheduleUpdate: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/JobscheduleUpdate.json
+             * @example /api/schemas/JobscheduleUpdate.json
              */
             readonly $schema?: string;
-            autoHealInterval?: string;
-            autoUpdateInterval?: string;
-            dockerClientRefreshInterval?: string;
-            environmentHealthInterval?: string;
-            eventCleanupInterval?: string;
-            expiredSessionsCleanupInterval?: string;
-            pollingInterval?: string;
-            scheduledPruneInterval?: string;
-            vulnerabilityScanInterval?: string;
-        };
-        ListOidcRoleMappingsOutputBody: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ListOidcRoleMappingsOutputBody.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["RoleOidcRoleMapping"][] | null;
-            success: boolean;
+            autoHealInterval?: string | null;
+            autoUpdateInterval?: string | null;
+            dockerClientRefreshInterval?: string | null;
+            environmentHealthInterval?: string | null;
+            eventCleanupInterval?: string | null;
+            expiredSessionsCleanupInterval?: string | null;
+            imageAutoPatchInterval?: string | null;
+            pollingInterval?: string | null;
+            scheduledPruneInterval?: string | null;
+            vulnerabilityScanInterval?: string | null;
         };
         LoggingConfig: {
             driver?: string;
             options?: {
                 [key: string]: string;
             };
+        };
+        MFAStatus: {
+            enabled: boolean;
+            /** Format: int64 */
+            passkeyCount: number;
+            /** Format: int64 */
+            recoveryCodesRemaining: number;
         };
         MetaMetadata: {
             description?: string;
@@ -9291,6 +12655,66 @@ export interface components {
             updatedAt?: string;
             version?: string;
         };
+        MfaBeginBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/MfaBeginBody.json
+             */
+            readonly $schema?: string;
+            transactionId: string;
+        };
+        MfaFinishBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/MfaFinishBody.json
+             */
+            readonly $schema?: string;
+            credential: {
+                [key: string]: unknown;
+            };
+            transactionId: string;
+        };
+        MobilePasskeyExchangeBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/MobilePasskeyExchangeBody.json
+             */
+            readonly $schema?: string;
+            codeVerifier: string;
+            transactionId: string;
+        };
+        MobilePasskeyFinishBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/MobilePasskeyFinishBody.json
+             */
+            readonly $schema?: string;
+            ceremonyId: string;
+            codeChallenge: string;
+            credential: {
+                [key: string]: unknown;
+            };
+        };
+        NetworkConnectContainerRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/NetworkConnectContainerRequest.json
+             */
+            readonly $schema?: string;
+            /** @description Network-scoped aliases */
+            aliases?: string[] | null;
+            /** @description Container ID or name */
+            containerId: string;
+            /** @description Static IPv4 address */
+            ipv4Address?: string;
+            /** @description Static IPv6 address */
+            ipv6Address?: string;
+        };
         NetworkContainerEndpoint: {
             endpointId: string;
             id: string;
@@ -9298,16 +12722,6 @@ export interface components {
             ipv6Address: string;
             macAddress: string;
             name: string;
-        };
-        NetworkCountsApiResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NetworkCountsApiResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["NetworkUsageCounts"];
-            success: boolean;
         };
         NetworkCreateOptions: {
             /** @description Allow manual container attachment */
@@ -9337,7 +12751,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NetworkCreateRequest.json
+             * @example /api/schemas/NetworkCreateRequest.json
              */
             readonly $schema?: string;
             /** @description Name of the network */
@@ -9350,15 +12764,17 @@ export interface components {
             id: string;
             warning?: string;
         };
-        NetworkCreatedApiResponse: {
+        NetworkDisconnectContainerRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NetworkCreatedApiResponse.json
+             * @example /api/schemas/NetworkDisconnectContainerRequest.json
              */
             readonly $schema?: string;
-            data: components["schemas"]["NetworkCreateResponse"];
-            success: boolean;
+            /** @description Container ID or name */
+            containerId: string;
+            /** @description Force the disconnect */
+            force?: boolean;
         };
         NetworkIPAM: {
             config?: components["schemas"]["NetworkIPAMConfig"][] | null;
@@ -9405,53 +12821,11 @@ export interface components {
                 [key: string]: components["schemas"]["DockerNetworkServiceInfo"];
             };
         };
-        NetworkInspectApiResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NetworkInspectApiResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["NetworkInspect"];
-            success: boolean;
-        };
-        NetworkMessageApiResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NetworkMessageApiResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["BaseMessageResponse"];
-            success: boolean;
-        };
-        NetworkPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NetworkPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            counts: components["schemas"]["NetworkUsageCounts"];
-            data: components["schemas"]["NetworkSummary"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
-        };
         NetworkPruneReport: {
             activityId?: string;
             networksDeleted: string[] | null;
             /** Format: int64 */
             spaceReclaimed: number;
-        };
-        NetworkPruneResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NetworkPruneResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["NetworkPruneReport"];
-            success: boolean;
         };
         NetworkSummary: {
             /** Format: date-time */
@@ -9459,6 +12833,7 @@ export interface components {
             driver: string;
             id: string;
             inUse: boolean;
+            ipam: components["schemas"]["NetworkIPAM"];
             isDefault: boolean;
             labels: {
                 [key: string]: string;
@@ -9472,16 +12847,6 @@ export interface components {
         NetworkTopology: {
             edges: components["schemas"]["NetworkTopologyEdge"][] | null;
             nodes: components["schemas"]["NetworkTopologyNode"][] | null;
-        };
-        NetworkTopologyApiResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NetworkTopologyApiResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["NetworkTopology"];
-            success: boolean;
         };
         NetworkTopologyEdge: {
             id: string;
@@ -9515,6 +12880,9 @@ export interface components {
             containerId: string;
             containerName: string;
         };
+        NotificationDispatchBatchContainerUpdate: {
+            updates: components["schemas"]["NotificationDispatchContainerUpdate"][] | null;
+        };
         NotificationDispatchBatchImageUpdate: {
             updates: {
                 [key: string]: components["schemas"]["ImageupdateResponse"];
@@ -9537,10 +12905,11 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NotificationDispatchRequest.json
+             * @example /api/schemas/NotificationDispatchRequest.json
              */
             readonly $schema?: string;
             autoHeal?: components["schemas"]["NotificationDispatchAutoHeal"];
+            batchContainerUpdate?: components["schemas"]["NotificationDispatchBatchContainerUpdate"];
             batchImageUpdate?: components["schemas"]["NotificationDispatchBatchImageUpdate"];
             containerUpdate?: components["schemas"]["NotificationDispatchContainerUpdate"];
             imageUpdate?: components["schemas"]["NotificationDispatchImageUpdate"];
@@ -9566,7 +12935,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NotificationResponse.json
+             * @example /api/schemas/NotificationResponse.json
              */
             readonly $schema?: string;
             config: {
@@ -9585,7 +12954,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/NotificationUpdate.json
+             * @example /api/schemas/NotificationUpdate.json
              */
             readonly $schema?: string;
             config: {
@@ -9594,16 +12963,61 @@ export interface components {
             enabled: boolean;
             provider: string;
         };
-        PortPaginatedResponse: {
+        PasskeyBeginResponse: {
+            ceremonyId: string;
+            /** Format: date-time */
+            expiresAt: string;
+            options: unknown;
+            transactionId?: string;
+        };
+        PasskeyCapabilities: {
+            canDeleteLastPasskey: boolean;
+            canEnrollWithActiveSession: boolean;
+            hasLocalPassword: boolean;
+            hasOidcFallback: boolean;
+            /** Format: int64 */
+            passkeyCount: number;
+            passkeyMfaEnabled: boolean;
+            requiresStepUp: boolean;
+        };
+        PasskeyCredentialBody: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/PortPaginatedResponse.json
+             * @example /api/schemas/PasskeyCredentialBody.json
              */
             readonly $schema?: string;
-            data: components["schemas"]["PortPortMapping"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
+            ceremonyId?: string;
+            credential: {
+                [key: string]: unknown;
+            };
+            name?: string;
+        };
+        PasskeySummary: {
+            aaguid?: string;
+            authenticatorAttachment?: string;
+            backupEligible: boolean;
+            backupState: boolean;
+            cloneWarning: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            id: string;
+            /** Format: date-time */
+            lastUsedAt?: string;
+            name: string;
+            rpId: string;
+            transports?: string[] | null;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        PasswordReauthBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/PasswordReauthBody.json
+             */
+            readonly $schema?: string;
+            password: string;
         };
         PortPortMapping: {
             containerId: string;
@@ -9617,17 +13031,14 @@ export interface components {
             isPublished: boolean;
             protocol: string;
         };
-        ProjectCreateProject: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ProjectCreateProject.json
-             */
-            readonly $schema?: string;
-            composeContent: string;
-            envContent?: string;
-            name: string;
-            projectFiles?: components["schemas"]["ProjectProjectFileDraft"][] | null;
+        ProjectConfigurationError: {
+            blocksOperations: boolean;
+            code: string;
+            /** Format: int64 */
+            gid: number;
+            path: string;
+            /** Format: int64 */
+            uid: number;
         };
         ProjectCreateReponse: {
             activityId?: string;
@@ -9647,24 +13058,26 @@ export interface components {
             serviceCount: number;
             status: string;
             statusReason?: string;
+            tags: components["schemas"]["ProjectTag"][] | null;
             updatedAt: string;
         };
         ProjectDeployOptions: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ProjectDeployOptions.json
+             * @example /api/schemas/ProjectDeployOptions.json
              */
             readonly $schema?: string;
             forceRecreate?: boolean;
             pullPolicy?: string;
+            recreateVolumes?: boolean;
             removeOrphans?: boolean;
         };
         ProjectDestroy: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ProjectDestroy.json
+             * @example /api/schemas/ProjectDestroy.json
              */
             readonly $schema?: string;
             removeFiles?: boolean;
@@ -9676,11 +13089,11 @@ export interface components {
             archivedAt?: string;
             composeContent?: string;
             composeFileName?: string;
+            composeFiles?: string[] | null;
+            configurationError?: components["schemas"]["ProjectConfigurationError"];
             createdAt: string;
             dirName?: string;
-            directoryFiles?: components["schemas"]["ProjectIncludeFile"][] | null;
             envContent?: string;
-            fileTreeRevision?: string;
             gitOpsManagedBy?: string;
             gitRepositoryURL?: string;
             hasBuildDirective?: boolean;
@@ -9692,8 +13105,9 @@ export interface components {
             isDiscovered?: boolean;
             lastSyncCommit?: string;
             name: string;
+            overrideContent?: string;
+            overrideFileName?: string;
             path: string;
-            projectFiles?: components["schemas"]["ProjectProjectFile"][] | null;
             redeployDisabled?: boolean;
             relativePath?: string;
             /** Format: int64 */
@@ -9704,6 +13118,7 @@ export interface components {
             services?: components["schemas"]["DockerTypesServiceConfig"][] | null;
             status: string;
             statusReason?: string;
+            tags: components["schemas"]["ProjectTag"][] | null;
             updateInfo?: components["schemas"]["ProjectUpdateInfo"];
             updatedAt: string;
             urls?: string[] | null;
@@ -9711,43 +13126,6 @@ export interface components {
         ProjectIncludeFile: {
             content?: string;
             path: string;
-            relativePath: string;
-        };
-        ProjectPaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ProjectPaginatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["ProjectDetails"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
-        };
-        ProjectProjectFile: {
-            content?: string;
-            isDirectory: boolean;
-            /** Format: date-time */
-            modTime: string;
-            name: string;
-            path: string;
-            protected?: boolean;
-            relativePath: string;
-            /** Format: int64 */
-            size: number;
-        };
-        ProjectProjectFileChange: {
-            content?: string;
-            newName?: string;
-            newParentPath?: string;
-            /** @enum {string} */
-            operation: "create_file" | "create_folder" | "update_file" | "rename" | "move" | "delete";
-            recursive?: boolean;
-            relativePath: string;
-        };
-        ProjectProjectFileDraft: {
-            content?: string;
-            isDirectory: boolean;
             relativePath: string;
         };
         ProjectRuntimeService: {
@@ -9763,6 +13141,10 @@ export interface components {
             serviceConfig?: components["schemas"]["ServiceConfig"];
             status: string;
         };
+        ProjectServiceUpdateInfo: {
+            imageRef: string;
+            updateInfo?: components["schemas"]["ImageUpdateInfo"];
+        };
         ProjectStatusCounts: {
             /** Format: int64 */
             archivedProjects: number;
@@ -9773,15 +13155,14 @@ export interface components {
             /** Format: int64 */
             totalProjects: number;
         };
-        ProjectUpdateIncludeFile: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ProjectUpdateIncludeFile.json
-             */
-            readonly $schema?: string;
-            content: string;
-            relativePath: string;
+        ProjectTag: {
+            color: string;
+            name: string;
+            sources: string[] | null;
+        };
+        ProjectTagOption: {
+            color: string;
+            name: string;
         };
         ProjectUpdateInfo: {
             /** Format: int64 */
@@ -9794,30 +13175,53 @@ export interface components {
             imageCount: number;
             imageRefs?: string[] | null;
             /** Format: int64 */
+            imagesNotPulled: number;
+            /** Format: int64 */
             imagesWithUpdates: number;
             /** Format: date-time */
             lastCheckedAt?: string;
+            notPulledImageRefs?: string[] | null;
+            serviceUpdates?: {
+                [key: string]: components["schemas"]["ProjectServiceUpdateInfo"];
+            };
             status: string;
+            updateInfoByRef?: {
+                [key: string]: components["schemas"]["ImageUpdateInfo"];
+            };
             updatedImageRefs?: string[] | null;
         };
         ProjectUpdateProject: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/ProjectUpdateProject.json
+             * @example /api/schemas/ProjectUpdateProject.json
              */
             readonly $schema?: string;
-            composeContent?: string;
-            envContent?: string;
-            fileChanges?: components["schemas"]["ProjectProjectFileChange"][] | null;
-            fileTreeRevision?: string;
-            name?: string;
+            composeContent?: string | null;
+            envContent?: string | null;
+            name?: string | null;
+            overrideContent?: string | null;
+        };
+        ProjectUpdateTag: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/ProjectUpdateTag.json
+             */
+            readonly $schema?: string;
+            attached: boolean;
+            color?: string;
+            name: string;
+        };
+        ProjectUpdateTagResponse: {
+            activityId?: string;
+            tags: components["schemas"]["ProjectTag"][] | null;
         };
         PruneImagesInputBody: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/PruneImagesInputBody.json
+             * @example /api/schemas/PruneImagesInputBody.json
              */
             readonly $schema?: string;
             dangling?: boolean;
@@ -9826,6 +13230,38 @@ export interface components {
             };
             mode?: string;
             until?: string;
+        };
+        RecoveryBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/RecoveryBody.json
+             */
+            readonly $schema?: string;
+            code: string;
+            transactionId: string;
+        };
+        RecoveryCodesResponse: {
+            /** @description Recovery codes; shown only once */
+            codes: string[] | null;
+        };
+        RenamePasskeyBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/RenamePasskeyBody.json
+             */
+            readonly $schema?: string;
+            name: string;
+        };
+        ResolveRunInputBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/ResolveRunInputBody.json
+             */
+            readonly $schema?: string;
+            resolvedBy?: string;
         };
         Resource: {
             /** Format: float */
@@ -9845,16 +13281,6 @@ export interface components {
             max_attempts?: number;
             /** Format: int64 */
             window?: number;
-        };
-        RestoreBackupFilesInputBody: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/RestoreBackupFilesInputBody.json
-             */
-            readonly $schema?: string;
-            /** @description Paths to restore from backup */
-            paths: string[] | null;
         };
         RoleAccessSurface: {
             /**
@@ -9906,7 +13332,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/RoleCreateOidcRoleMapping.json
+             * @example /api/schemas/RoleCreateOidcRoleMapping.json
              */
             readonly $schema?: string;
             /** @description OIDC claim value to match */
@@ -9920,7 +13346,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/RoleCreateRole.json
+             * @example /api/schemas/RoleCreateRole.json
              */
             readonly $schema?: string;
             /** @description Optional human description */
@@ -9954,17 +13380,6 @@ export interface components {
             source: "manual" | "env";
             /** Format: date-time */
             updatedAt?: string;
-        };
-        RolePaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/RolePaginatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["RoleRole"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
         };
         RolePermissionAction: {
             /** @description Optional longer description */
@@ -10093,7 +13508,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/RoleSetUserAssignments.json
+             * @example /api/schemas/RoleSetUserAssignments.json
              */
             readonly $schema?: string;
             /** @description Desired manual role assignments for the user */
@@ -10103,22 +13518,22 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/RoleUpdateOidcRoleMapping.json
+             * @example /api/schemas/RoleUpdateOidcRoleMapping.json
              */
             readonly $schema?: string;
             claimValue: string;
-            environmentId?: string;
+            environmentId?: string | null;
             roleId: string;
         };
         RoleUpdateRole: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/RoleUpdateRole.json
+             * @example /api/schemas/RoleUpdateRole.json
              */
             readonly $schema?: string;
             /** @description Optional human description */
-            description?: string;
+            description?: string | null;
             /** @description Display name of the role */
             name: string;
             /** @description Permission strings granted by this role */
@@ -10130,15 +13545,118 @@ export interface components {
             /** @description ID of the role to grant */
             roleId: string;
         };
+        S3DestinationUsageOutputInternalBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/S3DestinationUsageOutputInternalBody.json
+             */
+            readonly $schema?: string;
+            inUse: boolean;
+        };
         ScannerStatus: {
             available: boolean;
             version?: string;
+        };
+        SchedulerAttempt: {
+            /** Format: date-time */
+            finishedAt?: string;
+            /** Format: int64 */
+            number: number;
+            outcome: components["schemas"]["SchedulerOutcome"];
+            /** Format: date-time */
+            startedAt: string;
+        };
+        SchedulerOutcome: {
+            activityId?: string;
+            message?: string;
+            status: string;
+            targets?: components["schemas"]["SchedulerTargetOutcome"][] | null;
+        };
+        SchedulerRun: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/SchedulerRun.json
+             */
+            readonly $schema?: string;
+            activityEnvironmentId?: string;
+            activityId?: string;
+            /** Format: int64 */
+            attemptCount: number;
+            attempts?: components["schemas"]["SchedulerAttempt"][] | null;
+            /** Format: date-time */
+            createdAt: string;
+            environmentId: string;
+            /** Format: date-time */
+            finishedAt?: string;
+            id: string;
+            jobId: string;
+            /** Format: date-time */
+            lastConfirmedAt?: string;
+            /** Format: date-time */
+            nextAttempt?: string;
+            outcome: components["schemas"]["SchedulerOutcome"];
+            owner?: string;
+            remoteAccepted: boolean;
+            /** Format: int64 */
+            remoteAttemptCount?: number;
+            remoteDeliveryAttempted: boolean;
+            remoteOutcome?: components["schemas"]["SchedulerOutcome"];
+            remoteRetryAttempted?: boolean;
+            remoteRetryRequested?: boolean;
+            remoteSettled: boolean;
+            requestedBy?: string;
+            requestedWithKey?: string;
+            resolution?: components["schemas"]["SchedulerRunResolution"];
+            /** Format: date-time */
+            startedAt?: string;
+            status: string;
+            trigger: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        SchedulerRunList: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/SchedulerRunList.json
+             */
+            readonly $schema?: string;
+            /** Format: int64 */
+            limit: number;
+            /** Format: int64 */
+            page: number;
+            runs: components["schemas"]["SchedulerRun"][] | null;
+            /** Format: int64 */
+            total: number;
+        };
+        SchedulerRunResolution: {
+            reason: string;
+            /** Format: date-time */
+            resolvedAt: string;
+            resolvedBy: string;
+        };
+        SchedulerTargetOutcome: {
+            activityId?: string;
+            id: string;
+            message?: string;
+            resourceType?: string;
+            status: string;
+        };
+        SchedulerWorkerHealth: {
+            lastError?: string;
+            /** Format: date-time */
+            nextRetry?: string;
+            status: string;
+            /** Format: date-time */
+            updatedAt: string;
         };
         SearchRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SearchRequest.json
+             * @example /api/schemas/SearchRequest.json
              */
             readonly $schema?: string;
             query: string;
@@ -10147,7 +13665,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SearchResponse.json
+             * @example /api/schemas/SearchResponse.json
              */
             readonly $schema?: string;
             /** Format: int64 */
@@ -10344,7 +13862,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SetAutoUpdateInputBody.json
+             * @example /api/schemas/SetAutoUpdateInputBody.json
              */
             readonly $schema?: string;
             /** @description Whether auto-update is enabled for this container */
@@ -10365,111 +13883,135 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SettingsUpdate.json
+             * @example /api/schemas/SettingsUpdate.json
              */
             readonly $schema?: string;
-            accentColor?: string;
-            activityHistoryMaxEntries?: string;
-            activityHistoryRetentionDays?: string;
-            animationsEnabled?: string;
-            applicationTheme?: string;
-            authLocalEnabled?: string;
-            authPasswordPolicy?: string;
-            authSessionTimeout?: string;
-            autoHealEnabled?: string;
-            autoHealExcludedContainers?: string;
-            autoHealInterval?: string;
-            autoHealMaxRestarts?: string;
-            autoHealRestartWindow?: string;
-            autoInjectEnv?: string;
-            autoUpdate?: string;
-            autoUpdateExcludedContainers?: string;
-            autoUpdateInterval?: string;
-            avatarMaxUploadSizeMb?: string;
-            baseServerUrl?: string;
-            buildProvider?: string;
-            buildTimeout?: string;
-            buildsDirectory?: string;
-            defaultDeployPullPolicy?: string;
-            defaultShell?: string;
-            depotProjectId?: string;
-            depotToken?: string;
-            diskUsagePath?: string;
-            dockerApiTimeout?: string;
-            dockerClientRefreshInterval?: string;
-            dockerHost?: string;
-            dockerImagePullTimeout?: string;
-            enableGravatar?: string;
-            environmentHealthInterval?: string;
-            followProjectSymlinks?: string;
-            gitOperationTimeout?: string;
-            gitSyncMaxBinarySizeMb?: string;
-            gitSyncMaxFiles?: string;
-            gitSyncMaxTotalSizeMb?: string;
-            glassEffectsEnabled?: string;
-            httpClientTimeout?: string;
-            iconCatalog?: string;
-            keyboardShortcutsEnabled?: string;
-            lifecycleDefaultRunnerImage?: string;
-            lifecycleEnabled?: string;
-            lifecycleMaxTimeoutSec?: string;
-            maxImageUploadSize?: string;
-            mobileNavigationMode?: string;
-            mobileNavigationShowLabels?: string;
-            oidcAutoRedirectToProvider?: string;
-            oidcClientId?: string;
-            oidcClientSecret?: string;
-            oidcEnabled?: string;
-            oidcGroupsClaim?: string;
-            oidcIssuerUrl?: string;
-            oidcMergeAccounts?: string;
-            oidcProviderLogoUrl?: string;
-            oidcProviderName?: string;
-            oidcScopes?: string;
-            oidcSkipTlsVerify?: string;
-            oledMode?: string;
-            pollingEnabled?: string;
-            pollingInterval?: string;
-            projectsDirectory?: string;
-            proxyRequestTimeout?: string;
-            pruneBuildCacheMode?: string;
-            pruneBuildCacheUntil?: string;
-            pruneContainerMode?: string;
-            pruneContainerUntil?: string;
-            pruneImageMode?: string;
-            pruneImageUntil?: string;
-            pruneNetworkMode?: string;
-            pruneNetworkUntil?: string;
-            pruneVolumeMode?: string;
-            registryTimeout?: string;
-            scheduledPruneEnabled?: string;
-            scheduledPruneInterval?: string;
-            sidebarHoverExpansion?: string;
-            swarmStackSourcesDirectory?: string;
-            templatesDirectory?: string;
-            trivyConcurrentScanContainers?: string;
-            trivyCpuLimit?: string;
-            trivyIgnoreUnfixed?: string;
-            trivyImage?: string;
-            trivyMemoryLimitMb?: string;
-            trivyNetwork?: string;
-            trivyPreserveCacheOnVolumePrune?: string;
-            trivyPrivileged?: string;
-            trivyResourceLimitsEnabled?: string;
-            trivyScanTimeout?: string;
-            trivySecurityOpts?: string;
-            trivyServerEnabled?: string;
-            trivyServerToken?: string;
-            trivyServerUrl?: string;
-            volumeBrowserHelperIdleTimeout?: string;
-            vulnerabilityScanEnabled?: string;
-            vulnerabilityScanInterval?: string;
+            activityHistoryMaxEntries?: string | null;
+            activityHistoryRetentionDays?: string | null;
+            apnsEnabled?: string | null;
+            authLocalEnabled?: string | null;
+            authPasswordPolicy?: string | null;
+            authSessionTimeout?: string | null;
+            autoHealEnabled?: string | null;
+            autoHealExcludedContainers?: string | null;
+            autoHealInterval?: string | null;
+            autoHealMaxRestarts?: string | null;
+            autoHealRestartWindow?: string | null;
+            autoInjectEnv?: string | null;
+            autoUpdate?: string | null;
+            autoUpdateExcludedContainers?: string | null;
+            autoUpdateInterval?: string | null;
+            avatarMaxUploadSizeMb?: string | null;
+            baseServerUrl?: string | null;
+            buildProvider?: string | null;
+            buildTimeout?: string | null;
+            buildsDirectory?: string | null;
+            defaultDeployPullPolicy?: string | null;
+            defaultShell?: string | null;
+            deployWaitTimeout?: string | null;
+            depotProjectId?: string | null;
+            depotToken?: string | null;
+            diskUsagePath?: string | null;
+            dockerApiTimeout?: string | null;
+            dockerClientRefreshInterval?: string | null;
+            dockerHost?: string | null;
+            dockerImagePullTimeout?: string | null;
+            enableGravatar?: string | null;
+            environmentHealthInterval?: string | null;
+            experimentalFeaturesEnabled?: string | null;
+            /** @enum {string|null} */
+            featureVulnerabilityManagementEnabled?: "true" | "false" | null;
+            followProjectSymlinks?: string | null;
+            gitOperationTimeout?: string | null;
+            gitSyncMaxBinarySizeMb?: string | null;
+            gitSyncMaxFiles?: string | null;
+            gitSyncMaxTotalSizeMb?: string | null;
+            httpClientTimeout?: string | null;
+            imageAutoPatchEnabled?: string | null;
+            imageAutoPatchInterval?: string | null;
+            imageEventWatcherEnabled?: string | null;
+            imagePatchAllPlatforms?: string | null;
+            imagePatchSuffix?: string | null;
+            imagePatchTimeoutSec?: string | null;
+            lifecycleDefaultRunnerImage?: string | null;
+            lifecycleEnabled?: string | null;
+            lifecycleMaxTimeoutSec?: string | null;
+            maxConcurrentActivities?: string | null;
+            maxImageUploadSize?: string | null;
+            oidcAutoRedirectToProvider?: string | null;
+            oidcClientId?: string | null;
+            oidcClientSecret?: string | null;
+            oidcEnabled?: string | null;
+            oidcGroupsClaim?: string | null;
+            oidcIssuerUrl?: string | null;
+            oidcMergeAccounts?: string | null;
+            oidcProviderLogoUrl?: string | null;
+            oidcProviderName?: string | null;
+            oidcScopes?: string | null;
+            oidcSkipTlsVerify?: string | null;
+            pollingEnabled?: string | null;
+            pollingInterval?: string | null;
+            projectsDirectory?: string | null;
+            proxyRequestTimeout?: string | null;
+            pruneBuildCacheMode?: string | null;
+            pruneBuildCacheUntil?: string | null;
+            pruneContainerMode?: string | null;
+            pruneContainerUntil?: string | null;
+            pruneImageMode?: string | null;
+            pruneImageUntil?: string | null;
+            pruneNetworkMode?: string | null;
+            pruneNetworkUntil?: string | null;
+            pruneVolumeMode?: string | null;
+            registryTagTimeout?: string | null;
+            registryTimeout?: string | null;
+            scheduledPruneEnabled?: string | null;
+            scheduledPruneInterval?: string | null;
+            swarmStackSourcesDirectory?: string | null;
+            templatesDirectory?: string | null;
+            toolsImageRegistry?: string | null;
+            trivyConcurrentScanContainers?: string | null;
+            trivyConfig?: string | null;
+            trivyCpuLimit?: string | null;
+            trivyDbRegistry?: string | null;
+            trivyIgnore?: string | null;
+            trivyIgnoreUnfixed?: string | null;
+            trivyMemoryLimitMb?: string | null;
+            trivyNetwork?: string | null;
+            trivyPrivileged?: string | null;
+            trivyResourceLimitsEnabled?: string | null;
+            trivyScanTimeout?: string | null;
+            trivySecurityOpts?: string | null;
+            trivyServerEnabled?: string | null;
+            trivyServerToken?: string | null;
+            trivyServerUrl?: string | null;
+            updateCheckRegistry?: string | null;
+            volumeHelperIdleTimeout?: string | null;
+            vulnerabilityScanEnabled?: string | null;
+            vulnerabilityScanInterval?: string | null;
+            vulnerabilityThreatIntelEnabled?: string | null;
+        };
+        StepUpFinishBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/StepUpFinishBody.json
+             */
+            readonly $schema?: string;
+            credential: {
+                [key: string]: unknown;
+            };
+            transactionId: string;
+        };
+        StepUpGrant: {
+            /** Format: date-time */
+            expiresAt: string;
+            token: string;
         };
         SwarmConfigCreateRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmConfigCreateRequest.json
+             * @example /api/schemas/SwarmConfigCreateRequest.json
              */
             readonly $schema?: string;
             /** @description Config specification */
@@ -10484,31 +14026,46 @@ export interface components {
             updatedAt: string;
             version: components["schemas"]["DockerSwarmVersion"];
         };
-        SwarmConfigUpdateRequest: {
+        SwarmNodeAgentBindingRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmConfigUpdateRequest.json
+             * @example /api/schemas/SwarmNodeAgentBindingRequest.json
              */
             readonly $schema?: string;
-            /** @description Updated config specification */
-            spec: unknown;
-            /** Format: int64 */
-            version?: number;
-        };
-        SwarmNodeAgentDeployment: {
-            agent: components["schemas"]["SwarmNodeAgentStatus"];
-            /** @description Docker compose YAML snippet */
-            dockerCompose: string;
-            /** @description Docker run command snippet */
-            dockerRun: string;
             environmentId: string;
-            /** @description Optional Arcane-generated mTLS deployment assets for edge agents */
-            mtls?: components["schemas"]["DeploymentSnippetMTLS"];
+            rebind?: boolean;
+            replaceDeployment?: boolean;
+        };
+        SwarmNodeAgentCandidate: {
+            environmentId: string;
+            environmentName: string;
+            environmentType: string;
+        };
+        SwarmNodeAgentReconcileRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/SwarmNodeAgentReconcileRequest.json
+             */
+            readonly $schema?: string;
+        };
+        SwarmNodeAgentReconcileResponse: {
+            results: components["schemas"]["SwarmNodeAgentReconcileResult"][] | null;
+        };
+        SwarmNodeAgentReconcileResult: {
+            candidates?: components["schemas"]["SwarmNodeAgentCandidate"][] | null;
+            environmentId?: string;
+            nodeId: string;
+            state: string;
         };
         SwarmNodeAgentStatus: {
+            bindingKind?: string;
+            candidates?: components["schemas"]["SwarmNodeAgentCandidate"][] | null;
             connected?: boolean;
             environmentId?: string;
+            environmentName?: string;
+            environmentType?: string;
             /** Format: date-time */
             lastHeartbeat?: string;
             /** Format: date-time */
@@ -10516,13 +14073,6 @@ export interface components {
             reportedHostname?: string;
             reportedNodeId?: string;
             state: string;
-        };
-        SwarmNodeIdentity: {
-            engineVersion: string;
-            hostname: string;
-            role: string;
-            swarmActive: boolean;
-            swarmNodeId: string;
         };
         SwarmNodeSummary: {
             address?: string;
@@ -10536,6 +14086,7 @@ export interface components {
             labels?: {
                 [key: string]: string;
             };
+            managerAddress?: string;
             managerStatus?: string;
             platform?: string;
             reachability?: string;
@@ -10551,61 +14102,17 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmNodeUpdateRequest.json
+             * @example /api/schemas/SwarmNodeUpdateRequest.json
              */
             readonly $schema?: string;
-            availability?: string;
+            availability?: string | null;
             labels?: {
                 [key: string]: string;
             };
-            name?: string;
-            role?: string;
+            name?: string | null;
+            role?: string | null;
             /** Format: int64 */
             version?: number;
-        };
-        SwarmPaginatedResponseNodeSummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmPaginatedResponseNodeSummary.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["SwarmNodeSummary"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
-        };
-        SwarmPaginatedResponseServiceSummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmPaginatedResponseServiceSummary.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["SwarmServiceSummary"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
-        };
-        SwarmPaginatedResponseStackSummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmPaginatedResponseStackSummary.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["SwarmStackSummary"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
-        };
-        SwarmPaginatedResponseTaskSummary: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmPaginatedResponseTaskSummary.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["SwarmTaskSummary"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
         };
         SwarmRuntimeStatus: {
             enabled: boolean;
@@ -10614,7 +14121,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmSecretCreateRequest.json
+             * @example /api/schemas/SwarmSecretCreateRequest.json
              */
             readonly $schema?: string;
             /** @description Secret specification */
@@ -10629,18 +14136,6 @@ export interface components {
             updatedAt: string;
             version: components["schemas"]["DockerSwarmVersion"];
         };
-        SwarmSecretUpdateRequest: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmSecretUpdateRequest.json
-             */
-            readonly $schema?: string;
-            /** @description Updated secret specification */
-            spec: unknown;
-            /** Format: int64 */
-            version?: number;
-        };
         SwarmServiceCreateOptions: {
             encodedRegistryAuth?: string;
             queryRegistry?: boolean;
@@ -10649,7 +14144,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmServiceCreateRequest.json
+             * @example /api/schemas/SwarmServiceCreateRequest.json
              */
             readonly $schema?: string;
             /** @description Additional create options */
@@ -10735,7 +14230,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmServiceScaleRequest.json
+             * @example /api/schemas/SwarmServiceScaleRequest.json
              */
             readonly $schema?: string;
             /** Format: int64 */
@@ -10773,7 +14268,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmServiceUpdateRequest.json
+             * @example /api/schemas/SwarmServiceUpdateRequest.json
              */
             readonly $schema?: string;
             options?: components["schemas"]["SwarmServiceUpdateOptions"];
@@ -10788,17 +14283,17 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmStackDeployRequest.json
+             * @example /api/schemas/SwarmStackDeployRequest.json
              */
             readonly $schema?: string;
             composeContent: string;
             envContent?: string;
             files?: components["schemas"]["SwarmSyncFile"][] | null;
             name: string;
+            overrideContent?: string;
             prune?: boolean;
             resolveImage?: string;
             withRegistryAuth?: boolean;
-            workingDir?: string;
         };
         SwarmStackDeployResponse: {
             name: string;
@@ -10817,12 +14312,13 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmStackRenderConfigRequest.json
+             * @example /api/schemas/SwarmStackRenderConfigRequest.json
              */
             readonly $schema?: string;
             composeContent: string;
             envContent?: string;
             name: string;
+            overrideContent?: string;
         };
         SwarmStackRenderConfigResponse: {
             configs: string[] | null;
@@ -10839,17 +14335,19 @@ export interface components {
             envContent?: string;
             files?: components["schemas"]["SwarmSyncFile"][] | null;
             name: string;
+            overrideContent?: string;
         };
         SwarmStackSourceUpdateRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmStackSourceUpdateRequest.json
+             * @example /api/schemas/SwarmStackSourceUpdateRequest.json
              */
             readonly $schema?: string;
             composeContent: string;
             envContent?: string;
             files?: components["schemas"]["SwarmSyncFile"][] | null;
+            overrideContent?: string;
         };
         SwarmStackSummary: {
             /** Format: date-time */
@@ -10875,7 +14373,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmSwarmInitRequest.json
+             * @example /api/schemas/SwarmSwarmInitRequest.json
              */
             readonly $schema?: string;
             advertiseAddr?: string;
@@ -10895,11 +14393,44 @@ export interface components {
         SwarmSwarmInitResponse: {
             nodeId: string;
         };
+        SwarmSwarmJoinCandidate: {
+            environmentId: string;
+            environmentName: string;
+            environmentType: string;
+            status: string;
+        };
+        SwarmSwarmJoinEnvironmentResult: {
+            environmentId: string;
+            error?: string;
+            nodeId?: string;
+            state: string;
+        };
+        SwarmSwarmJoinEnvironmentTarget: {
+            advertiseAddr?: string;
+            availability?: string;
+            dataPathAddr?: string;
+            environmentId: string;
+            listenAddr?: string;
+            role: string;
+        };
+        SwarmSwarmJoinEnvironmentsRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/SwarmSwarmJoinEnvironmentsRequest.json
+             */
+            readonly $schema?: string;
+            remoteAddrs: string[] | null;
+            targets: components["schemas"]["SwarmSwarmJoinEnvironmentTarget"][] | null;
+        };
+        SwarmSwarmJoinEnvironmentsResponse: {
+            results: components["schemas"]["SwarmSwarmJoinEnvironmentResult"][] | null;
+        };
         SwarmSwarmJoinRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmSwarmJoinRequest.json
+             * @example /api/schemas/SwarmSwarmJoinRequest.json
              */
             readonly $schema?: string;
             advertiseAddr?: string;
@@ -10917,7 +14448,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmSwarmLeaveRequest.json
+             * @example /api/schemas/SwarmSwarmLeaveRequest.json
              */
             readonly $schema?: string;
             force?: boolean;
@@ -10926,7 +14457,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmSwarmRotateJoinTokensRequest.json
+             * @example /api/schemas/SwarmSwarmRotateJoinTokensRequest.json
              */
             readonly $schema?: string;
             rotateManagerToken?: boolean;
@@ -10939,7 +14470,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmSwarmUnlockRequest.json
+             * @example /api/schemas/SwarmSwarmUnlockRequest.json
              */
             readonly $schema?: string;
             key: string;
@@ -10948,7 +14479,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SwarmSwarmUpdateRequest.json
+             * @example /api/schemas/SwarmSwarmUpdateRequest.json
              */
             readonly $schema?: string;
             rotateManagerToken?: boolean;
@@ -10986,7 +14517,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SystemConvertDockerRunRequest.json
+             * @example /api/schemas/SystemConvertDockerRunRequest.json
              */
             readonly $schema?: string;
             dockerRunCommand: string;
@@ -10995,7 +14526,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SystemConvertDockerRunResponse.json
+             * @example /api/schemas/SystemConvertDockerRunResponse.json
              */
             readonly $schema?: string;
             dockerCompose: string;
@@ -11007,7 +14538,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SystemDiagnostics.json
+             * @example /api/schemas/SystemDiagnostics.json
              */
             readonly $schema?: string;
             gc: components["schemas"]["SystemGCInfo"];
@@ -11026,23 +14557,27 @@ export interface components {
             pauseTotalNs: number;
             recentPausesNs: number[] | null;
         };
+        SystemGoroutineLeakReport: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/SystemGoroutineLeakReport.json
+             */
+            readonly $schema?: string;
+            /** Format: int64 */
+            count: number;
+            profile: string;
+            /** Format: date-time */
+            scannedAt: string;
+        };
         SystemHealthResponse: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SystemHealthResponse.json
+             * @example /api/schemas/SystemHealthResponse.json
              */
             readonly $schema?: string;
             status: string;
-        };
-        SystemLogEntry: {
-            attrs?: {
-                [key: string]: unknown;
-            };
-            level: string;
-            message: string;
-            /** Format: date-time */
-            time: string;
         };
         SystemMemoryInfo: {
             /** Format: int64 */
@@ -11084,7 +14619,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/SystemPruneAllRequest.json
+             * @example /api/schemas/SystemPruneAllRequest.json
              */
             readonly $schema?: string;
             buildCache?: components["schemas"]["SystemPruneBuildCacheOptions"];
@@ -11138,6 +14673,10 @@ export interface components {
             gomaxprocs: number;
             /** Format: int64 */
             goroutines: number;
+            /** Format: date-time */
+            leakScannedAt?: string;
+            /** Format: int64 */
+            leakedGoroutines: number;
             /** Format: int64 */
             numCgoCall: number;
             /** Format: int64 */
@@ -11181,7 +14720,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/TemplateCreateRegistryRequest.json
+             * @example /api/schemas/TemplateCreateRegistryRequest.json
              */
             readonly $schema?: string;
             description: string;
@@ -11193,7 +14732,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/TemplateCreateRequest.json
+             * @example /api/schemas/TemplateCreateRequest.json
              */
             readonly $schema?: string;
             content: string;
@@ -11206,17 +14745,6 @@ export interface components {
             envTemplate: string;
             swarmStackEnvTemplate: string;
             swarmStackTemplate: string;
-        };
-        TemplatePaginatedResponse: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/TemplatePaginatedResponse.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["TemplateTemplate"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
         };
         TemplateRemoteRegistry: {
             $schema?: string;
@@ -11242,7 +14770,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/TemplateSaveDefaultTemplatesRequest.json
+             * @example /api/schemas/TemplateSaveDefaultTemplatesRequest.json
              */
             readonly $schema?: string;
             composeContent: string;
@@ -11279,7 +14807,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/TemplateUpdateRegistryRequest.json
+             * @example /api/schemas/TemplateUpdateRegistryRequest.json
              */
             readonly $schema?: string;
             description: string;
@@ -11291,13 +14819,23 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/TemplateUpdateRequest.json
+             * @example /api/schemas/TemplateUpdateRequest.json
              */
             readonly $schema?: string;
             content: string;
             description: string;
             envContent: string;
             name: string;
+        };
+        TriggerUpgradeBody: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/TriggerUpgradeBody.json
+             */
+            readonly $schema?: string;
+            /** @description Release version to upgrade to; overrides this instance's own version check */
+            targetVersion?: string;
         };
         Ulimit: {
             /** Format: int64 */
@@ -11326,46 +14864,11 @@ export interface components {
             /** Format: int64 */
             parallelism?: number;
         };
-        UpdateContainerRegistryRequest: {
+        UpdateMyProfileBody: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UpdateContainerRegistryRequest.json
-             */
-            readonly $schema?: string;
-            awsAccessKeyId: string | null;
-            awsRegion: string | null;
-            awsSecretAccessKey: string | null;
-            description: string | null;
-            enabled: boolean | null;
-            insecure: boolean | null;
-            registryType: string | null;
-            token: string | null;
-            url: string | null;
-            username: string | null;
-        };
-        UpdateGitRepositoryRequest: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UpdateGitRepositoryRequest.json
-             */
-            readonly $schema?: string;
-            authType?: string;
-            description?: string;
-            enabled?: boolean;
-            name?: string;
-            sshHostKeyVerification?: string;
-            sshKey?: string;
-            token?: string;
-            url?: string;
-            username?: string;
-        };
-        UpdateMyProfileInputBody: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UpdateMyProfileInputBody.json
+             * @example /api/schemas/UpdateMyProfileBody.json
              */
             readonly $schema?: string;
             displayName?: string;
@@ -11373,22 +14876,15 @@ export interface components {
             /** Format: int64 */
             fontSize?: number;
             locale?: string;
-        };
-        UpdateOidcRoleMappingOutputBody: {
-            /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UpdateOidcRoleMappingOutputBody.json
-             */
-            readonly $schema?: string;
-            data: components["schemas"]["RoleOidcRoleMapping"];
-            success: boolean;
+            preferences?: components["schemas"]["UserPreferences"];
+            /** @enum {string} */
+            timeFormat?: "auto" | "12h" | "24h";
         };
         UpdateProjectServicesInputBody: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UpdateProjectServicesInputBody.json
+             * @example /api/schemas/UpdateProjectServicesInputBody.json
              */
             readonly $schema?: string;
             /** @description Service names to update; empty updates all services */
@@ -11398,7 +14894,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UpdaterOptions.json
+             * @example /api/schemas/UpdaterOptions.json
              */
             readonly $schema?: string;
             dryRun?: boolean;
@@ -11450,22 +14946,56 @@ export interface components {
             /** Format: int64 */
             updatingProjects: number;
         };
-        UpgradeCheckResultData: {
+        UploadConsumeRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UpgradeCheckResultData.json
+             * @example /api/schemas/UploadConsumeRequest.json
              */
             readonly $schema?: string;
-            canUpgrade: boolean;
-            error: boolean;
-            message: string;
+            /** @description ID of a complete upload session */
+            uploadId: string;
+        };
+        UploadCreateSessionRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/UploadCreateSessionRequest.json
+             */
+            readonly $schema?: string;
+            /**
+             * Format: int64
+             * @description Chunk size in bytes; server default and bounds apply
+             */
+            chunkSize?: number;
+            /** @description Original filename; validated per kind */
+            filename: string;
+            /**
+             * Format: int64
+             * @description Total file size in bytes
+             */
+            size: number;
+        };
+        UploadSession: {
+            /** Format: int64 */
+            chunkSize: number;
+            complete: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            filename: string;
+            id: string;
+            kind: string;
+            receivedChunks: number[] | null;
+            /** Format: int64 */
+            size: number;
+            /** Format: int64 */
+            totalChunks: number;
         };
         UserCreateUser: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UserCreateUser.json
+             * @example /api/schemas/UserCreateUser.json
              */
             readonly $schema?: string;
             /**
@@ -11486,21 +15016,59 @@ export interface components {
             /** @description Password of the user */
             password: string;
             /**
-             * @description Username of the user
+             * @description Preferred time display format
+             * @example auto
+             * @enum {string}
+             */
+            timeFormat?: "auto" | "12h" | "24h";
+            /**
+             * @description Username of the user; may not contain @
              * @example johndoe
              */
             username: string;
         };
-        UserPaginatedResponse: {
+        UserPreferences: {
+            /** @description Primary accent color, or 'default' */
+            accentColor?: string;
+            /** @description Enable decorative interface animations */
+            animationsEnabled?: boolean;
             /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UserPaginatedResponse.json
+             * @description Application theme preset
+             * @enum {string}
              */
-            readonly $schema?: string;
-            data: components["schemas"]["UserUser"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
+            applicationTheme?: "default" | "graphite" | "carbon" | "ocean" | "amber" | "github" | "nord" | "everforest" | "rosepine";
+            /** @description Route opened after signing in */
+            defaultLandingPage?: string;
+            /**
+             * @description Initial layout of the project editor; auto keeps workspace detection
+             * @enum {string}
+             */
+            defaultProjectEditorLayout?: "auto" | "classic" | "tree";
+            /** @description Apply blur and glass effects to UI surfaces */
+            glassEffectsEnabled?: boolean;
+            /**
+             * @description Catalog used to resolve project and container icon slugs
+             * @enum {string}
+             */
+            iconCatalog?: "selfhst" | "dashboard-icons";
+            /** @description Enable keyboard shortcuts and shortcut hints */
+            keyboardShortcutsEnabled?: boolean;
+            /**
+             * @description Mobile navigation style
+             * @enum {string}
+             */
+            mobileNavigationMode?: "floating" | "docked";
+            /** @description Show text labels in mobile navigation */
+            mobileNavigationShowLabels?: boolean;
+            /** @description Use true-black backgrounds in dark mode */
+            oledMode?: boolean;
+            /** @description Expand the desktop sidebar on hover */
+            sidebarHoverExpansion?: boolean;
+            /**
+             * @description Light/dark mode preference
+             * @enum {string}
+             */
+            themeMode?: "light" | "dark" | "system";
         };
         UserRoleAssignmentSummary: {
             /** @description Environment ID this assignment is scoped to; omit for a global assignment */
@@ -11517,19 +15085,24 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/UserUpdateUser.json
+             * @example /api/schemas/UserUpdateUser.json
              */
             readonly $schema?: string;
             /** @description Display name of the user */
-            displayName?: string;
+            displayName?: string | null;
             /** @description Email address of the user */
-            email?: string;
+            email?: string | null;
             /** @description Locale preference of the user */
-            locale?: string;
+            locale?: string | null;
             /** @description New password for the user */
-            password?: string;
-            /** @description Username of the user */
-            username?: string;
+            password?: string | null;
+            /**
+             * @description Preferred time display format
+             * @enum {string|null}
+             */
+            timeFormat?: "auto" | "12h" | "24h" | null;
+            /** @description Username of the user; may not contain @ */
+            username?: string | null;
         };
         UserUser: {
             /** @description URL to the user's custom avatar image; omitted when using the default profile picture */
@@ -11561,6 +15134,8 @@ export interface components {
             id: string;
             /** @description Whether the user effectively holds global administrator access */
             isGlobalAdmin: boolean;
+            /** @description Date and time of the user's most recent sign-in; omitted when the user has never signed in */
+            lastLogin?: string;
             /**
              * @description Locale preference of the user
              * @example en-US
@@ -11572,10 +15147,18 @@ export interface components {
             permissionsByEnv: {
                 [key: string]: string[] | null;
             };
+            /** @description Personal display and UI preferences */
+            preferences: components["schemas"]["UserPreferences"];
             /** @description Whether the user must change their password */
             requiresPasswordChange: boolean;
             /** @description Role assignments held by the user */
             roleAssignments: components["schemas"]["UserRoleAssignmentSummary"][] | null;
+            /**
+             * @description Preferred time display format
+             * @example auto
+             * @enum {string}
+             */
+            timeFormat: "auto" | "12h" | "24h";
             /** @description Date and time when the user was last updated */
             updatedAt?: string;
             /**
@@ -11589,7 +15172,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/VersionCheck.json
+             * @example /api/schemas/VersionCheck.json
              */
             readonly $schema?: string;
             currentVersion: string;
@@ -11601,7 +15184,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/VersionInfo.json
+             * @example /api/schemas/VersionInfo.json
              */
             readonly $schema?: string;
             buildTime?: string;
@@ -11627,30 +15210,88 @@ export interface components {
             activityId?: string;
             /** Format: date-time */
             createdAt: string;
+            destination: string;
+            error?: string;
+            format: string;
             id: string;
+            localSnapshotId?: string;
+            policyId?: string;
+            remoteAvailable?: boolean;
+            remoteInstanceId?: string;
+            remoteSnapshotId?: string;
+            s3DestinationId?: string;
+            s3DestinationName?: string;
             /** Format: int64 */
             size: number;
+            status: string;
+            trigger: string;
+            type: string;
             /** Format: date-time */
             updatedAt?: string;
             volumeName: string;
         };
-        VolumeBackupPaginatedResponse: {
+        VolumeBackupEntry: {
+            activityId?: string;
+            /** @description When the backup was created */
+            createdAt: string;
+            /** @description Requested backup storage target */
+            destination: string;
+            /** @description Backup error when the run failed */
+            error?: string;
+            /** @description Storage format of the backup: legacy tar.gz archive or Rustic snapshot */
+            format: string;
+            /** @description Unique identifier of the backup */
+            id: string;
+            /** @description Snapshot ID in the local Rustic repository */
+            localSnapshotId?: string;
+            /** @description Backup policy that created the backup */
+            policyId?: string;
+            remoteAvailable?: boolean;
+            /** @description Snapshot ID in the S3 Rustic repository */
+            remoteSnapshotId?: string;
+            /** @description S3 destination used by the backup */
+            s3DestinationId?: string;
+            /** @description Name of the S3 destination used by the backup */
+            s3DestinationName?: string;
             /**
-             * Format: uri
-             * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/VolumeBackupPaginatedResponse.json
+             * Format: int64
+             * @description Total size of the backup contents
              */
-            readonly $schema?: string;
-            data: components["schemas"]["VolumeBackup"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
-            warnings?: string[] | null;
+            size: number;
+            /** @description Backup result status */
+            status: string;
+            /** @description How the backup was started */
+            trigger: string;
+            /** @description Whether the backup was system-managed or volume-managed */
+            type: string;
+            /** @description Name of the volume */
+            volumeName: string;
+        };
+        VolumeBackupPolicy: {
+            enabled: boolean;
+            id: string;
+            lastRun?: components["schemas"]["VolumeBackupEntry"];
+            localEnabled: boolean;
+            /** Format: int64 */
+            retentionCount: number;
+            s3Available: boolean;
+            s3Bucket?: string;
+            s3DestinationId?: string;
+            s3DestinationName?: string;
+            s3Enabled: boolean;
+            schedule: string;
+            stopContainers: boolean;
+            volumeName: string;
+        };
+        VolumeBackupPolicyCollection: {
+            policies: components["schemas"]["VolumeBackupPolicy"][] | null;
+            s3Available: boolean;
         };
         VolumeCreate: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/VolumeCreate.json
+             * @example /api/schemas/VolumeCreate.json
              */
             readonly $schema?: string;
             /** @description Volume driver (e.g., local, nfs) */
@@ -11666,66 +15307,75 @@ export interface components {
             /** @description Name of the volume */
             name: string;
         };
-        VolumeFileEntry: {
-            /** @description Whether this entry is a directory */
-            isDirectory: boolean;
-            /** @description Whether this entry is a symbolic link */
-            isSymlink: boolean;
-            /** @description Target of the symbolic link */
-            linkTarget?: string;
-            /**
-             * Format: date-time
-             * @description Last modification time
-             */
-            modTime: string;
-            /** @description File mode/permissions */
-            mode: string;
-            /** @description Name of the file or directory */
-            name: string;
-            /** @description Full path to the file */
-            path: string;
-            /**
-             * Format: int64
-             * @description Size of the file in bytes
-             */
-            size: number;
-        };
-        VolumePaginatedResponse: {
+        VolumeCreateBackupRequest: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/VolumePaginatedResponse.json
+             * @example /api/schemas/VolumeCreateBackupRequest.json
              */
             readonly $schema?: string;
-            counts: components["schemas"]["VolumeUsageCountsData"];
-            data: components["schemas"]["VolumeVolume"][] | null;
-            pagination: components["schemas"]["BasePaginationResponse"];
-            success: boolean;
+            /** @description Optional destination override for this manual backup */
+            destination?: string;
+            /** @description Optional backup policy whose settings should be used */
+            policyId?: string;
+            /** @description Saved S3 destination for a manual remote backup */
+            s3DestinationId?: string;
         };
-        VolumePruneReportData: {
-            activityId?: string;
-            /** Format: int64 */
-            spaceReclaimed: number;
-            volumesDeleted?: string[] | null;
+        VolumeDiscoverBackupsRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/VolumeDiscoverBackupsRequest.json
+             */
+            readonly $schema?: string;
+            /** @description S3 destination to scan for existing volume backups */
+            s3DestinationId: string;
         };
-        VolumeSizeInfo: {
+        VolumeDiscoverBackupsResponse: {
+            /**
+             * Format: int64
+             * @description Number of newly discovered volume backups
+             */
+            count: number;
+            /** @description Per-repository failures encountered during discovery */
+            errors?: string[] | null;
+        };
+        VolumeRename: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/VolumeRename.json
+             */
+            readonly $schema?: string;
+            /** @description New volume name */
             name: string;
-            /** Format: int64 */
-            refCount: number;
-            /** Format: int64 */
-            size: number;
         };
-        VolumeUsageCountsData: {
+        VolumeUpdateBackupPolicies: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/VolumeUpdateBackupPolicies.json
+             */
+            readonly $schema?: string;
+            policies: components["schemas"]["BackupUpdateBackupPolicy"][] | null;
+        };
+        VolumeUploadBackupRequest: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/VolumeUploadBackupRequest.json
+             */
+            readonly $schema?: string;
+            /** @description S3 destination for the uploaded backup */
+            s3DestinationId: string;
+        };
+        VolumeUsageCounts: {
             /** Format: int64 */
             inuse: number;
             /** Format: int64 */
             total: number;
             /** Format: int64 */
             unused: number;
-        };
-        VolumeUsageResponse: {
-            containers: string[] | null;
-            inUse: boolean;
         };
         VolumeVolume: {
             activityId?: string;
@@ -11747,6 +15397,24 @@ export interface components {
             size: number;
             usageData?: components["schemas"]["DockerVolumeUsageData"];
         };
+        VulnerabilityBulkIgnoreResponse: {
+            /** Format: int64 */
+            affectedCount: number;
+        };
+        VulnerabilityBulkVulnerabilityFilters: {
+            /**
+             * Format: uri
+             * @description A URL to the JSON Schema for this object.
+             * @example /api/schemas/VulnerabilityBulkVulnerabilityFilters.json
+             */
+            readonly $schema?: string;
+            fixAvailable?: boolean;
+            /** @example nginx */
+            imageName?: string;
+            search?: string;
+            /** @example CRITICAL,HIGH */
+            severity?: string;
+        };
         VulnerabilityCVSSInfo: {
             /** Format: double */
             v2Score?: number;
@@ -11766,7 +15434,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/VulnerabilityIgnorePayload.json
+             * @example /api/schemas/VulnerabilityIgnorePayload.json
              */
             readonly $schema?: string;
             /** @example user-123 */
@@ -11794,13 +15462,144 @@ export interface components {
             reason?: string;
             vulnerabilityId: string;
         };
+        VulnerabilityPackageInsight: {
+            /** Format: int64 */
+            count: number;
+            fixedVersion?: string;
+            installedVersion: string;
+            pkgName: string;
+            severity: string;
+        };
+        VulnerabilityRiskDrivers: {
+            /** Format: int64 */
+            exposedCriticalHigh: number;
+            /** Format: int64 */
+            findings: number;
+            /** Format: int64 */
+            fixable: number;
+            /** Format: int64 */
+            highEpss: number;
+            /** Format: int64 */
+            imagesScanned: number;
+            /** Format: int64 */
+            imagesTotal: number;
+            /** Format: int64 */
+            knownExploited: number;
+            /** Format: int64 */
+            overdueKnownExploited: number;
+            /** Format: int64 */
+            scoredImages: number;
+        };
+        VulnerabilityRiskExposureBreakdown: {
+            /** Format: int64 */
+            running: number;
+            /** Format: int64 */
+            stopped: number;
+            /** Format: int64 */
+            unknown: number;
+            /** Format: int64 */
+            unused: number;
+        };
+        VulnerabilityRiskFinding: {
+            /** Format: double */
+            cvss: number;
+            /** Format: double */
+            epss?: number;
+            fixedVersion?: string;
+            /** Format: int64 */
+            imagesAffected: number;
+            kevDueDate?: string;
+            knownExploited: boolean;
+            pkgName: string;
+            ransomware: boolean;
+            /** Format: double */
+            risk: number;
+            /** Format: int64 */
+            runningImagesAffected: number;
+            severity: string;
+            title?: string;
+            vulnerabilityId: string;
+        };
+        VulnerabilityRiskImage: {
+            /** Format: int64 */
+            critical: number;
+            exposure: string;
+            /** Format: int64 */
+            findings: number;
+            /** Format: int64 */
+            fixable: number;
+            /** Format: int64 */
+            high: number;
+            imageId: string;
+            imageName: string;
+            /** Format: int64 */
+            knownExploited: number;
+            riskBand: string;
+            /** Format: int64 */
+            riskScore: number;
+            /** Format: int64 */
+            runningContainers: number;
+            scoreStatus: string;
+        };
+        VulnerabilityRiskOverview: {
+            /** Format: date-time */
+            computedAt: string;
+            /** Format: int64 */
+            delta7d?: number;
+            drivers: components["schemas"]["VulnerabilityRiskDrivers"];
+            drivers7dAgo?: components["schemas"]["VulnerabilityRiskDrivers"];
+            exposure: components["schemas"]["VulnerabilityRiskExposureBreakdown"];
+            prevalentFindings: components["schemas"]["VulnerabilityRiskFinding"][] | null;
+            riskBand: string;
+            /** Format: int64 */
+            riskScore: number;
+            riskiestFindings: components["schemas"]["VulnerabilityRiskFinding"][] | null;
+            riskiestImages: components["schemas"]["VulnerabilityRiskImage"][] | null;
+            scoreDriver?: components["schemas"]["VulnerabilityRiskScoreDriver"];
+            scoreStatus: string;
+            summary: components["schemas"]["VulnerabilitySeveritySummary"];
+            threatIntel: components["schemas"]["VulnerabilityThreatIntelStatus"];
+            trend: components["schemas"]["VulnerabilityRiskTrendPoint"][] | null;
+        };
+        VulnerabilityRiskScoreDriver: {
+            exposure: string;
+            fixedVersion: string;
+            imageName: string;
+            knownExploited: boolean;
+            pkgName: string;
+            /** Format: double */
+            risk: number;
+            vulnerabilityId: string;
+        };
+        VulnerabilityRiskTrendPoint: {
+            date: string;
+            /** Format: int64 */
+            riskScore: number;
+        };
+        VulnerabilityScanInsights: {
+            exposure: string;
+            /** Format: int64 */
+            fixableCount: number;
+            /** Format: double */
+            highestCvss: number;
+            highestVulnerabilityId?: string;
+            /** Format: int64 */
+            knownExploitedCount: number;
+            riskBand: string;
+            /** Format: int64 */
+            riskScore: number;
+            scoreStatus: string;
+            topPackages: components["schemas"]["VulnerabilityPackageInsight"][] | null;
+        };
         VulnerabilityScanResult: {
             activityId?: string;
             /** Format: int64 */
             duration?: number;
             error?: string;
+            hasReport?: boolean;
             imageId: string;
             imageName: string;
+            insights?: components["schemas"]["VulnerabilityScanInsights"];
             scanPhase?: string;
             /** Format: date-time */
             scanTime: string;
@@ -11813,7 +15612,7 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/VulnerabilityScanSummariesRequest.json
+             * @example /api/schemas/VulnerabilityScanSummariesRequest.json
              */
             readonly $schema?: string;
             imageIds: string[] | null;
@@ -11846,7 +15645,14 @@ export interface components {
             /** Format: int64 */
             unknown: number;
         };
+        VulnerabilityThreatIntelStatus: {
+            enabled: boolean;
+            /** Format: date-time */
+            lastSyncedAt?: string;
+            stale: boolean;
+        };
         VulnerabilityVulnerability: {
+            class?: string;
             cvss?: components["schemas"]["VulnerabilityCVSSInfo"];
             description?: string;
             fixedVersion?: string;
@@ -11859,12 +15665,16 @@ export interface components {
             references?: string[] | null;
             severity: string;
             title?: string;
+            type?: string;
             vulnerabilityId: string;
         };
         VulnerabilityVulnerabilityWithImage: {
+            class?: string;
             cvss?: components["schemas"]["VulnerabilityCVSSInfo"];
             description?: string;
             fixedVersion?: string;
+            ignoreId?: string;
+            ignored?: boolean;
             imageId: string;
             imageName: string;
             installedVersion: string;
@@ -11876,13 +15686,14 @@ export interface components {
             references?: string[] | null;
             severity: string;
             title?: string;
+            type?: string;
             vulnerabilityId: string;
         };
         WebhookCreateInput: {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/WebhookCreateInput.json
+             * @example /api/schemas/WebhookCreateInput.json
              */
             readonly $schema?: string;
             /**
@@ -11953,11 +15764,59 @@ export interface components {
             /**
              * Format: uri
              * @description A URL to the JSON Schema for this object.
-             * @example https://arcane.randomsynergy.xyz:3552/api/schemas/WebhookUpdateInput.json
+             * @example /api/schemas/WebhookUpdateInput.json
              */
             readonly $schema?: string;
             /** @description Whether the webhook is active */
             enabled: boolean;
+        };
+        WorkspaceFileContent: {
+            content?: string;
+            editable: boolean;
+            mimeType: string;
+            name: string;
+            path: string;
+            /** @enum {string} */
+            readOnlyReason?: "binary" | "too_large" | "symlink" | "special" | "gitops_managed";
+            relativePath: string;
+            /** Format: int64 */
+            size: number;
+        };
+        WorkspaceFileEntry: {
+            /** @description Whether this entry can be edited */
+            editable: boolean;
+            /** @description Whether this entry is a directory */
+            isDirectory: boolean;
+            /** @description Whether this entry is a symbolic link */
+            isSymlink: boolean;
+            /** @description Target of the symbolic link */
+            linkTarget?: string;
+            /**
+             * Format: date-time
+             * @description Last modification time
+             */
+            modTime: string;
+            /** @description File mode/permissions */
+            mode?: string;
+            /** @description Name of the file or directory */
+            name: string;
+            /** @description Full path to the file */
+            path: string;
+            /** @enum {string} */
+            readOnlyReason?: "binary" | "too_large" | "symlink" | "special" | "gitops_managed";
+            /** @description Path relative to the workspace root */
+            relativePath: string;
+            /**
+             * Format: int64
+             * @description Size of the file in bytes
+             */
+            size: number;
+        };
+        WorkspaceWorkspace: {
+            activityId?: string;
+            fileTreeRevision: string;
+            fileTreeTruncated: boolean;
+            files: components["schemas"]["WorkspaceFileEntry"][] | null;
         };
     };
     responses: never;
@@ -11968,36 +15827,6 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    "stream-all-activities": {
-        parameters: {
-            query?: {
-                /** @description Snapshot limit per environment */
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
     "list-api-keys": {
         parameters: {
             query?: {
@@ -12024,7 +15853,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiKeyPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedApikeyApiKey"];
                 };
             };
             /** @description Error */
@@ -12057,7 +15886,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseApiKeyCreatedDto"];
+                    "application/json": components["schemas"]["BaseApiResponseApikeyApiKeyCreatedDto"];
                 };
             };
             /** @description Error */
@@ -12089,7 +15918,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseApiKey"];
+                    "application/json": components["schemas"]["BaseApiResponseApikeyApiKey"];
                 };
             };
             /** @description Error */
@@ -12125,7 +15954,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseApiKey"];
+                    "application/json": components["schemas"]["BaseApiResponseApikeyApiKey"];
                 };
             };
             /** @description Error */
@@ -12158,6 +15987,197 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "register-apns-device": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApnsRegisterDeviceRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseApnsDevice"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "delete-apns-device": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Device ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-apns-device": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Device ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApnsUpdateDeviceRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseApnsDevice"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "test-apns-device": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Device ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "create-apns-pairing-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseApnsPairingToken"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-apns-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseApnsStatus"];
                 };
             };
             /** @description Error */
@@ -12210,6 +16230,10 @@ export interface operations {
                 full?: boolean;
                 /** @description Optional accent color override for preview (e.g., 'oklch(0.65 0.2 150)') */
                 color?: string;
+                /** @description Return trace-and-fill animated logo variant */
+                animated?: boolean;
+                /** @description Loop the animated icon indefinitely (loader mode; animated icon only) */
+                loop?: boolean;
             };
             header?: never;
             path?: never;
@@ -12390,7 +16414,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseLoginResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseAuthAuthenticationResponse"];
                 };
             };
             /** @description Error */
@@ -12449,7 +16473,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseUser"];
+                    "application/json": components["schemas"]["BaseApiResponseUserUser"];
                 };
             };
             /** @description Error */
@@ -12478,7 +16502,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListApiKey"];
+                    "application/json": components["schemas"]["BaseApiResponseListApikeyApiKey"];
                 };
             };
             /** @description Error */
@@ -12511,7 +16535,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseApiKeyCreatedDto"];
+                    "application/json": components["schemas"]["BaseApiResponseApikeyApiKeyCreatedDto"];
                 };
             };
             /** @description Error */
@@ -12579,7 +16603,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseUser"];
+                    "application/json": components["schemas"]["BaseApiResponseUserUser"];
                 };
             };
             /** @description Error */
@@ -12608,7 +16632,418 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseUser"];
+                    "application/json": components["schemas"]["BaseApiResponseUserUser"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-passkey-mfa-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMFAStatus"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "disable-passkey-mfa": {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Step-Up-Token"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "enable-passkey-mfa": {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Step-Up-Token"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseRecoveryCodesResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "regenerate-passkey-recovery-codes": {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Step-Up-Token"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseRecoveryCodesResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "list-my-passkeys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseListPasskeySummary"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-passkey-capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponsePasskeyCapabilities"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "begin-passkey-step-up": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponsePasskeyBeginResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "finish-passkey-step-up": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StepUpFinishBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseStepUpGrant"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "password-step-up": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PasswordReauthBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseStepUpGrant"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "begin-passkey-registration": {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Step-Up-Token"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponsePasskeyBeginResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "finish-passkey-registration": {
+        parameters: {
+            query?: never;
+            header?: {
+                "User-Agent"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PasskeyCredentialBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponsePasskeySummary"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "rename-my-passkey": {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Step-Up-Token"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RenamePasskeyBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponsePasskeySummary"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "delete-my-passkey": {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Step-Up-Token"?: string;
+            };
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
             };
             /** @description Error */
@@ -12631,7 +17066,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UpdateMyProfileInputBody"];
+                "application/json": components["schemas"]["UpdateMyProfileBody"];
             };
         };
         responses: {
@@ -12641,7 +17076,270 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseUser"];
+                    "application/json": components["schemas"]["BaseApiResponseUserUser"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "begin-passkey-mfa": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MfaBeginBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseAuthMFAChallenge"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "finish-passkey-mfa": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MfaFinishBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    "Set-Cookie"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseAuthAuthenticationResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "use-passkey-recovery-code": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecoveryBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    "Set-Cookie"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseAuthAuthenticationResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-passkey-login-availability": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseAuthPasskeyLoginAvailability"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "begin-passkey-login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponsePasskeyBeginResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "finish-passkey-login": {
+        parameters: {
+            query?: never;
+            header?: {
+                "User-Agent"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PasskeyCredentialBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    "Set-Cookie"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseAuthAuthenticationResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "exchange-mobile-passkey-login": {
+        parameters: {
+            query?: never;
+            header?: {
+                "User-Agent"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MobilePasskeyExchangeBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseAuthAuthenticationResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "finish-mobile-passkey-login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MobilePasskeyFinishBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseAuthMobilePasskeyCompletion"];
                 };
             };
             /** @description Error */
@@ -12710,7 +17408,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseTokenRefreshResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseAuthTokenRefreshResponse"];
                 };
             };
             /** @description Error */
@@ -12753,6 +17451,911 @@ export interface operations {
             };
         };
     };
+    "list-system-backups": {
+        parameters: {
+            query?: {
+                search?: string;
+                sort?: string;
+                order?: string;
+                start?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BasePaginatedBackupSystemBackupRun"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "create-system-backup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupCreateSystemBackupRequest"];
+            };
+        };
+        responses: {
+            /** @description Accepted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupSystemBackupRun"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "discover-system-backups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupDiscoverSystemBackupsRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseInt"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "list-backup-history": {
+        parameters: {
+            query?: {
+                search?: string;
+                sort?: string;
+                order?: string;
+                start?: number;
+                limit?: number;
+                type?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BasePaginatedBackupHistoryEntry"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-system-backup-policies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupSystemBackupPolicyCollection"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-system-backup-policies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupUpdateSystemBackupPolicies"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupSystemBackupPolicyCollection"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "set-system-backup-recovery-key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupSystemBackupRecoveryKey"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupSystemBackupRecoveryKeyStatus"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "generate-system-backup-recovery-key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupSystemBackupRecoveryKey"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "list-s3-destinations": {
+        parameters: {
+            query?: {
+                /** @description Search query */
+                search?: string;
+                /** @description Column to sort by */
+                sort?: string;
+                /** @description Sort direction */
+                order?: string;
+                /** @description Start index */
+                start?: number;
+                /** @description Limit */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BasePaginatedBackupS3Destination"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "create-s3-destination": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupCreateS3Destination"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupS3Destination"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "list-all-s3-destinations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupS3Destination"][] | null;
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "sync-s3-destinations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupS3DestinationSyncRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "test-s3-destination-configuration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupCreateS3Destination"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-s3-destination": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description S3 destination ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseBackupS3Destination"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-s3-destination": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description S3 destination ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupCreateS3Destination"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupS3Destination"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "delete-s3-destination": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description S3 destination ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-s3-destination-usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description S3 destination ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["S3DestinationUsageOutputInternalBody"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "test-s3-destination": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description S3 destination ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["BackupCreateS3Destination"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-system-volume-backup-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupSystemVolumeBackupPolicyCollection"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-system-volume-backup-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupUpdateSystemVolumeBackupPolicies"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupSystemVolumeBackupPolicyCollection"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "list-system-volume-backup-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupSystemVolumeBackupOption"][] | null;
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "run-system-volume-backups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["BackupRunSystemVolumeBackupsRequest"];
+            };
+        };
+        responses: {
+            /** @description Accepted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupBackupRunAccepted"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "delete-system-backup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupDeleteSystemBackupRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "browse-system-backup-files": {
+        parameters: {
+            query?: {
+                /** @description Folder path relative to the backup root */
+                path?: string;
+                /** @description Case-insensitive full-path search */
+                search?: string;
+                /** @description Start index for the page */
+                start?: number;
+                /** @description Requested page size */
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupSystemBackupRecoveryKey"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BasePaginatedBackupBackupFileEntry"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "restore-system-backup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupRestoreSystemBackupRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "restore-system-backup-files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupRestoreSystemBackupFilesRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "upload-system-backup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BackupUploadSystemBackupRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BackupSystemBackupRun"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     listContainerRegistries: {
         parameters: {
             query?: {
@@ -12779,7 +18382,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerRegistryPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedContainerregistryContainerRegistry"];
                 };
             };
             /** @description Error */
@@ -12802,7 +18405,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateContainerRegistryRequest"];
+                "application/json": components["schemas"]["ContainerregistryCreateContainerRegistryRequest"];
             };
         };
         responses: {
@@ -12812,7 +18415,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseContainerRegistry"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerregistryContainerRegistry"];
                 };
             };
             /** @description Error */
@@ -12841,7 +18444,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponsePullUsageResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerregistryPullUsageResponse"];
                 };
             };
             /** @description Error */
@@ -12906,7 +18509,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseContainerRegistry"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerregistryContainerRegistry"];
                 };
             };
             /** @description Error */
@@ -12932,7 +18535,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UpdateContainerRegistryRequest"];
+                "application/json": components["schemas"]["ContainerregistryUpdateContainerRegistryRequest"];
             };
         };
         responses: {
@@ -12942,7 +18545,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseContainerRegistry"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerregistryContainerRegistry"];
                 };
             };
             /** @description Error */
@@ -13075,7 +18678,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GitRepositoryPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedGitopsGitRepository"];
                 };
             };
             /** @description Error */
@@ -13098,7 +18701,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateGitRepositoryRequest"];
+                "application/json": components["schemas"]["GitopsCreateRepositoryRequest"];
             };
         };
         responses: {
@@ -13108,7 +18711,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseGitRepository"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsGitRepository"];
                 };
             };
             /** @description Error */
@@ -13140,7 +18743,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseGitRepository"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsGitRepository"];
                 };
             };
             /** @description Error */
@@ -13166,7 +18769,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UpdateGitRepositoryRequest"];
+                "application/json": components["schemas"]["GitopsUpdateRepositoryRequest"];
             };
         };
         responses: {
@@ -13176,7 +18779,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseGitRepository"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsGitRepository"];
                 };
             };
             /** @description Error */
@@ -13240,7 +18843,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseBranchesResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsBranchesResponse"];
                 };
             };
             /** @description Error */
@@ -13277,7 +18880,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseBrowseResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsBrowseResponse"];
                 };
             };
             /** @description Error */
@@ -13359,36 +18962,6 @@ export interface operations {
             };
         };
     };
-    "stream-all-dashboards": {
-        parameters: {
-            query?: {
-                /** @description Debug mode: force an empty action item list */
-                debugAllGood?: boolean;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
     "get-diagnostics": {
         parameters: {
             query?: never;
@@ -13418,6 +18991,35 @@ export interface operations {
             };
         };
     };
+    "scan-goroutine-leaks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SystemGoroutineLeakReport"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-diagnostics-logs": {
         parameters: {
             query?: never;
@@ -13433,7 +19035,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SystemLogEntry"][] | null;
+                    "application/json": components["schemas"]["Entry"][] | null;
                 };
             };
             /** @description Error */
@@ -13502,7 +19104,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["EnvironmentPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedEnvironmentEnvironment"];
                 };
             };
             /** @description Error */
@@ -13599,7 +19201,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseEnvironment"];
+                    "application/json": components["schemas"]["BaseApiResponseEnvironmentEnvironment"];
                 };
             };
             /** @description Error */
@@ -13635,7 +19237,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseEnvironment"];
+                    "application/json": components["schemas"]["BaseApiResponseEnvironmentEnvironment"];
                 };
             };
             /** @description Error */
@@ -13716,7 +19318,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BasePaginatedActivity"];
+                    "application/json": components["schemas"]["BasePaginatedActivityActivity"];
                 };
             };
             /** @description Error */
@@ -13748,7 +19350,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseClearHistoryResult"];
+                    "application/json": components["schemas"]["BaseApiResponseActivityClearHistoryResult"];
                 };
             };
             /** @description Error */
@@ -13785,7 +19387,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseDetail"];
+                    "application/json": components["schemas"]["BaseApiResponseActivityDetail"];
                 };
             };
             /** @description Error */
@@ -13822,7 +19424,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseActivity"];
+                    "application/json": components["schemas"]["BaseApiResponseActivityActivity"];
                 };
             };
             /** @description Error */
@@ -13858,7 +19460,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseAgentPairResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseEnvironmentAgentPairResponse"];
                 };
             };
             /** @description Error */
@@ -13893,7 +19495,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListFileEntry"];
+                    "application/json": components["schemas"]["BaseApiResponseListWorkspaceFileEntry"];
                 };
             };
             /** @description Error */
@@ -14067,13 +19669,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": {
-                    /**
-                     * Format: binary
-                     * @description File to upload
-                     */
-                    file: string;
-                };
+                "application/json": components["schemas"]["UploadConsumeRequest"];
             };
         };
         responses: {
@@ -14114,10 +19710,14 @@ export interface operations {
                 groupBy?: string;
                 /** @description Include internal containers */
                 includeInternal?: boolean;
+                /** @description Include hidden containers */
+                includeHidden?: boolean;
                 /** @description Filter by update status (has_update, up_to_date, error, unknown) */
                 updates?: string;
                 /** @description Filter standalone containers only (true/false) */
                 standalone?: string;
+                /** @description Filter by label key or key=value */
+                label?: string;
             };
             header?: never;
             path: {
@@ -14134,7 +19734,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerPaginatedResponse"];
+                    "application/json": components["schemas"]["DockerContainerContainerPaginatedResponse"];
                 };
             };
             /** @description Error */
@@ -14170,7 +19770,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerCreatedResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerCreated"];
                 };
             };
             /** @description Error */
@@ -14189,6 +19789,8 @@ export interface operations {
             query?: {
                 /** @description Include internal containers */
                 includeInternal?: boolean;
+                /** @description Include hidden containers */
+                includeHidden?: boolean;
             };
             header?: never;
             path: {
@@ -14205,7 +19807,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerStatusCountsResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerStatusCounts"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "generate-compose": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContainerGenerateComposeRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseContainerGenerateComposeResponse"];
                 };
             };
             /** @description Error */
@@ -14239,7 +19877,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerDetailsResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerDetails"];
                 };
             };
             /** @description Error */
@@ -14278,7 +19916,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerActionResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
             };
             /** @description Error */
@@ -14316,7 +19954,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerActionResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
             };
             /** @description Error */
@@ -14354,7 +19992,79 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseCommitResult"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerCommitResult"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "edit-container": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Container ID */
+                containerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContainerEdit"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseContainerDetails"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-container-edit-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Container ID */
+                containerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseContainerEditConfig"];
                 };
             };
             /** @description Error */
@@ -14391,8 +20101,40 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerActionResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "download-container-logs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Container ID */
+                containerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Error */
             default: {
@@ -14425,7 +20167,41 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerActionResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-container-processes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Container ID */
+                containerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseContainerProcesses"];
                 };
             };
             /** @description Error */
@@ -14459,7 +20235,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerDetailsResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerDetails"];
                 };
             };
             /** @description Error */
@@ -14493,7 +20269,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerActionResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
             };
             /** @description Error */
@@ -14527,7 +20303,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerActionResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
             };
             /** @description Error */
@@ -14561,7 +20337,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerActionResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
             };
             /** @description Error */
@@ -14595,7 +20371,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContainerActionResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
             };
             /** @description Error */
@@ -14611,7 +20387,10 @@ export interface operations {
     };
     "update-container": {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Return an accepted activity immediately instead of waiting for the update */
+                async?: boolean;
+            };
             header?: never;
             path: {
                 /** @description Environment ID */
@@ -14623,22 +20402,32 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Container update completed */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseResult"];
+                    "application/json": {
+                        /** @description Response data */
+                        data: components["schemas"]["UpdaterResult"];
+                        /** @description Whether the request was successful */
+                        success: boolean;
+                    };
                 };
             };
-            /** @description Error */
-            default: {
+            /** @description Container update accepted */
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
+                    "application/json": {
+                        /** @description Response data */
+                        data: components["schemas"]["ActivityActivity"];
+                        /** @description Whether the request was successful */
+                        success: boolean;
+                    };
                 };
             };
         };
@@ -14664,7 +20453,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSnapshot"];
+                    "application/json": components["schemas"]["BaseApiResponseDashboardSnapshot"];
                 };
             };
             /** @description Error */
@@ -14785,6 +20574,14 @@ export interface operations {
                 start?: number;
                 /** @description Items per page */
                 limit?: number;
+                /** @description Filter by direction (deploy or backup) */
+                mode?: string;
+                /** @description Filter by linked project ID */
+                projectId?: string;
+                /** @description Filter by repository ID */
+                repositoryId?: string;
+                /** @description Filter by automatic sync (true or false) */
+                autoSync?: string;
             };
             header?: never;
             path: {
@@ -14801,7 +20598,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GitOpsSyncPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedWithCountsGitopsGitOpsSyncGitopsSyncCounts"];
                 };
             };
             /** @description Error */
@@ -14837,7 +20634,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseGitOpsSync"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsGitOpsSync"];
                 };
             };
             /** @description Error */
@@ -14873,7 +20670,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseImportGitOpsSyncResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsImportGitOpsSyncResponse"];
                 };
             };
             /** @description Error */
@@ -14907,7 +20704,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseGitOpsSync"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsGitOpsSync"];
                 };
             };
             /** @description Error */
@@ -14945,7 +20742,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseGitOpsSync"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsGitOpsSync"];
                 };
             };
             /** @description Error */
@@ -14993,6 +20790,151 @@ export interface operations {
             };
         };
     };
+    listGitOpsBackupHistory: {
+        parameters: {
+            query?: {
+                /** @description Maximum number of revisions */
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Sync ID */
+                syncId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseGitopsBackupHistoryResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    getGitOpsBackupRevision: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Sync ID */
+                syncId: string;
+                /** @description Commit hash */
+                commit: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseGitopsBackupRevision"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    previewGitOpsBackup: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Sync ID */
+                syncId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseGitopsBackupPreview"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    resolveGitOpsBackupConflict: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Sync ID */
+                syncId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GitopsResolveBackupConflictRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseGitopsSyncResult"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     browseGitOpsSyncFiles: {
         parameters: {
             query?: {
@@ -15016,7 +20958,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseBrowseResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsBrowseResponse"];
                 };
             };
             /** @description Error */
@@ -15050,7 +20992,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSyncStatus"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsSyncStatus"];
                 };
             };
             /** @description Error */
@@ -15084,7 +21026,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSyncResult"];
+                    "application/json": components["schemas"]["BaseApiResponseGitopsSyncResult"];
                 };
             };
             /** @description Error */
@@ -15151,7 +21093,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseMapStringUpdateInfo"];
+                    "application/json": components["schemas"]["BaseApiResponseMapStringImageUpdateInfo"];
                 };
             };
             /** @description Error */
@@ -15186,7 +21128,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseImageupdateResponse"];
                 };
             };
             /** @description Error */
@@ -15222,7 +21164,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseBatchResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseImageupdateBatchResponse"];
                 };
             };
             /** @description Error */
@@ -15258,7 +21200,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseBatchResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseImageupdateBatchResponse"];
                 };
             };
             /** @description Error */
@@ -15292,7 +21234,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseImageupdateResponse"];
                 };
             };
             /** @description Error */
@@ -15326,7 +21268,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseImageupdateResponse"];
                 };
             };
             /** @description Error */
@@ -15358,7 +21300,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseImageupdateSummary"];
                 };
             };
             /** @description Error */
@@ -15405,7 +21347,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ImagePaginatedResponse"];
+                    "application/json": components["schemas"]["ImageListResponse"];
                 };
             };
             /** @description Error */
@@ -15486,7 +21428,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ImageBuildPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedImageBuildRecord"];
                 };
             };
             /** @description Error */
@@ -15520,7 +21462,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseBuildRecord"];
+                    "application/json": components["schemas"]["BaseApiResponseImageBuildRecord"];
                 };
             };
             /** @description Error */
@@ -15552,7 +21494,95 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ImageUsageCountsResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseImageUsageCounts"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "list-image-patch-targets": {
+        parameters: {
+            query?: {
+                /** @description Search query */
+                search?: string;
+                /** @description Column to sort by */
+                sort?: string;
+                /** @description Sort direction */
+                order?: string;
+                /** @description Start offset */
+                start?: number;
+                /** @description Limit */
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BasePaginatedImagepatchPatchTarget"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "list-image-patches": {
+        parameters: {
+            query?: {
+                /** @description Search query */
+                search?: string;
+                /** @description Sort field */
+                sort?: string;
+                /** @description Sort order */
+                order?: string;
+                /** @description Start offset */
+                start?: number;
+                /** @description Limit */
+                limit?: number;
+                /** @description Filter by patch status */
+                status?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BasePaginatedImagepatchPatchRecord"];
                 };
             };
             /** @description Error */
@@ -15591,7 +21621,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponsePruneReport"];
+                    "application/json": components["schemas"]["BaseApiResponseImagePruneReport"];
                 };
             };
             /** @description Error */
@@ -15660,7 +21690,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListSearchResult"];
+                    "application/json": components["schemas"]["BaseApiResponseListImageSearchResult"];
                 };
             };
             /** @description Error */
@@ -15686,13 +21716,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": {
-                    /**
-                     * Format: binary
-                     * @description Docker image tar archive
-                     */
-                    file: string;
-                };
+                "application/json": components["schemas"]["UploadConsumeRequest"];
             };
         };
         responses: {
@@ -15702,7 +21726,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseLoadResult"];
+                    "application/json": components["schemas"]["BaseApiResponseImageLoadResult"];
                 };
             };
             /** @description Error */
@@ -15738,7 +21762,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseScanSummariesResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseVulnerabilityScanSummariesResponse"];
                 };
             };
             /** @description Error */
@@ -15772,7 +21796,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseDetailSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseImageDetailSummary"];
                 };
             };
             /** @description Error */
@@ -15823,6 +21847,44 @@ export interface operations {
             };
         };
     };
+    "patch-image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Image ID to patch */
+                imageId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImagepatchPatchOptions"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseImagepatchPatchRecord"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-image-vulnerabilities": {
         parameters: {
             query?: never;
@@ -15843,7 +21905,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseScanResult"];
+                    "application/json": components["schemas"]["BaseApiResponseVulnerabilityScanResult"];
                 };
             };
             /** @description Error */
@@ -15890,7 +21952,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BasePaginatedVulnerability"];
+                    "application/json": components["schemas"]["BasePaginatedVulnerabilityVulnerability"];
                 };
             };
             /** @description Error */
@@ -15924,7 +21986,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseScanResult"];
+                    "application/json": components["schemas"]["BaseApiResponseVulnerabilityScanResult"];
                 };
             };
             /** @description Error */
@@ -15958,7 +22020,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseScanSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseVulnerabilityScanSummary"];
                 };
             };
             /** @description Error */
@@ -15999,7 +22061,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseAttestationList"];
+                    "application/json": components["schemas"]["BaseApiResponseImageAttestationList"];
                 };
             };
             /** @description Error */
@@ -16065,7 +22127,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListHistoryItem"];
+                    "application/json": components["schemas"]["BaseApiResponseListImageHistoryItem"];
                 };
             };
             /** @description Error */
@@ -16171,7 +22233,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseConfig"];
+                    "application/json": components["schemas"]["BaseApiResponseJobscheduleConfig"];
                 };
             };
             /** @description Error */
@@ -16217,14 +22279,12 @@ export interface operations {
             };
         };
     };
-    "run-job": {
+    "restart-job-worker": {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description Environment ID */
                 id: string;
-                /** @description Job ID to run */
                 jobId: string;
             };
             cookie?: never;
@@ -16238,6 +22298,250 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["JobscheduleJobRunResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "run-job": {
+        parameters: {
+            query?: never;
+            header?: {
+                "Idempotency-Key"?: string;
+            };
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Job ID to run */
+                jobId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["JobscheduleSubmitRunInput"];
+            };
+        };
+        responses: {
+            /** @description Accepted */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobscheduleJobRunResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "list-job-runs": {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                id: string;
+                jobId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SchedulerRunList"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-job-run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                jobId: string;
+                runId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SchedulerRun"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "ack-job-run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                jobId: string;
+                runId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SchedulerRun"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "cancel-job-run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                jobId: string;
+                runId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SchedulerRun"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "resolve-job-run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                jobId: string;
+                runId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ResolveRunInputBody"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SchedulerRun"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "retry-job-run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                jobId: string;
+                runId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SchedulerRun"];
                 };
             };
             /** @description Error */
@@ -16282,7 +22586,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NetworkPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedWithCountsNetworkSummaryNetworkUsageCounts"];
                 };
             };
             /** @description Error */
@@ -16318,7 +22622,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NetworkCreatedApiResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseNetworkCreateResponse"];
                 };
             };
             /** @description Error */
@@ -16350,7 +22654,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NetworkCountsApiResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseNetworkUsageCounts"];
                 };
             };
             /** @description Error */
@@ -16382,7 +22686,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NetworkPruneResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseNetworkPruneReport"];
                 };
             };
             /** @description Error */
@@ -16414,7 +22718,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NetworkTopologyApiResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseNetworkTopology"];
                 };
             };
             /** @description Error */
@@ -16451,7 +22755,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NetworkInspectApiResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseNetworkInspect"];
                 };
             };
             /** @description Error */
@@ -16485,7 +22789,83 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NetworkMessageApiResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "connect-network-container": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Network ID */
+                networkId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NetworkConnectContainerRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "disconnect-network-container": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Network ID */
+                networkId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NetworkDisconnectContainerRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
             };
             /** @description Error */
@@ -16657,7 +23037,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseTestResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseNotificationTestResponse"];
                 };
             };
             /** @description Error */
@@ -16700,7 +23080,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PortPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedPortPortMapping"];
                 };
             };
             /** @description Error */
@@ -16733,6 +23113,10 @@ export interface operations {
                 updates?: string;
                 /** @description Archived filter: 'true' (only archived), 'all' (include archived). Default excludes archived. */
                 archived?: string;
+                /** @description Filter by tag names (comma-separated, OR semantics) */
+                tags?: string;
+                /** @description Filter by container label key or key=value on any running service */
+                label?: string;
             };
             header?: never;
             path: {
@@ -16749,7 +23133,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ProjectPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedProjectDetails"];
                 };
             };
             /** @description Error */
@@ -16775,7 +23159,13 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["ProjectCreateProject"];
+                "multipart/form-data": {
+                    files?: string[];
+                    /** @description JSON encoded initial project workspace manifest */
+                    manifest: string;
+                    /** @description JSON encoded project configuration */
+                    project: string;
+                };
             };
         };
         responses: {
@@ -16785,7 +23175,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseCreateReponse"];
+                    "application/json": components["schemas"]["BaseApiResponseProjectCreateReponse"];
                 };
             };
             /** @description Error */
@@ -16817,7 +23207,39 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseStatusCounts"];
+                    "application/json": components["schemas"]["BaseApiResponseProjectStatusCounts"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "list-project-tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseListProjectTagOption"];
                 };
             };
             /** @description Error */
@@ -16851,7 +23273,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseDetails"];
+                    "application/json": components["schemas"]["BaseApiResponseProjectDetails"];
                 };
             };
             /** @description Error */
@@ -16889,7 +23311,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseDetails"];
+                    "application/json": components["schemas"]["BaseApiResponseProjectDetails"];
                 };
             };
             /** @description Error */
@@ -16993,7 +23415,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseDetails"];
+                    "application/json": components["schemas"]["BaseApiResponseProjectDetails"];
                 };
             };
             /** @description Error */
@@ -17079,115 +23501,6 @@ export interface operations {
             };
         };
     };
-    "get-project-file": {
-        parameters: {
-            query?: {
-                /** @description Path to the file relative to the project */
-                relativePath?: string;
-            };
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Project ID */
-                projectId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseApiResponseIncludeFile"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    "get-project-files": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Project ID */
-                projectId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseApiResponseDetails"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    "update-project-include": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Project ID */
-                projectId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ProjectUpdateIncludeFile"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseApiResponseDetails"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
     "pull-project-images": {
         parameters: {
             query?: never;
@@ -17243,9 +23556,7 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
-                };
+                content?: never;
             };
             /** @description Error */
             default: {
@@ -17260,7 +23571,10 @@ export interface operations {
     };
     "restart-project": {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Service names to restart; empty restarts all services */
+                services?: string[] | null;
+            };
             header?: never;
             path: {
                 /** @description Environment ID */
@@ -17312,7 +23626,45 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseDetails"];
+                    "application/json": components["schemas"]["BaseApiResponseProjectDetails"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-project-tag": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Project ID */
+                projectId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProjectUpdateTag"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseProjectUpdateTagResponse"];
                 };
             };
             /** @description Error */
@@ -17454,8 +23806,156 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseDetails"];
+                    "application/json": components["schemas"]["BaseApiResponseProjectDetails"];
                 };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-project-workspace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Project ID */
+                projectId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseWorkspaceWorkspace"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-project-workspace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Project ID */
+                projectId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    files?: string[];
+                    /** @description JSON encoded project workspace manifest */
+                    manifest: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseWorkspaceWorkspace"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-project-workspace-file": {
+        parameters: {
+            query?: {
+                /** @description Path relative to the project workspace root */
+                relativePath?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Project ID */
+                projectId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseWorkspaceFileContent"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "download-project-workspace-file": {
+        parameters: {
+            query?: {
+                /** @description Path relative to the project workspace root */
+                relativePath?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Project ID */
+                projectId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Error */
             default: {
@@ -17522,7 +24022,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListSettingDto"];
+                    "application/json": components["schemas"]["BaseApiResponseListSettingsSettingDto"];
                 };
             };
             /** @description Error */
@@ -17586,7 +24086,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListConfigSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseListSwarmConfigSummary"];
                 };
             };
             /** @description Error */
@@ -17622,7 +24122,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseConfigSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmConfigSummary"];
                 };
             };
             /** @description Error */
@@ -17656,44 +24156,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseConfigSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmConfigSummary"];
                 };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    "update-swarm-config": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Config ID */
-                configId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SwarmConfigUpdateRequest"];
-            };
-        };
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
             /** @description Error */
             default: {
@@ -17758,7 +24222,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSwarmInfo"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmSwarmInfo"];
                 };
             };
             /** @description Error */
@@ -17794,7 +24258,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSwarmInitResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmSwarmInitResponse"];
                 };
             };
             /** @description Error */
@@ -17844,6 +24308,74 @@ export interface operations {
             };
         };
     };
+    "get-swarm-join-candidates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseListSwarmSwarmJoinCandidate"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "join-swarm-environments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SwarmSwarmJoinEnvironmentsRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseSwarmSwarmJoinEnvironmentsResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-swarm-join-tokens": {
         parameters: {
             query?: never;
@@ -17862,7 +24394,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSwarmJoinTokensResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmSwarmJoinTokensResponse"];
                 };
             };
             /** @description Error */
@@ -17977,7 +24509,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SwarmPaginatedResponseNodeSummary"];
+                    "application/json": components["schemas"]["BasePaginatedSwarmNodeSummary"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "reconcile-swarm-node-agents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SwarmNodeAgentReconcileRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseSwarmNodeAgentReconcileResponse"];
                 };
             };
             /** @description Error */
@@ -18011,7 +24579,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseNodeSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmNodeSummary"];
                 };
             };
             /** @description Error */
@@ -18100,6 +24668,78 @@ export interface operations {
             };
         };
     };
+    "put-swarm-node-agent-binding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Node ID */
+                nodeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SwarmNodeAgentBindingRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseSwarmNodeSummary"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "delete-swarm-node-agent-binding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Node ID */
+                nodeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-swarm-node-agent-deployment": {
         parameters: {
             query?: never;
@@ -18125,6 +24765,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BaseApiResponseSwarmNodeAgentDeployment"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "delete-swarm-node-agent-deployment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Node ID */
+                nodeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
                 };
             };
             /** @description Error */
@@ -18237,7 +24911,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SwarmPaginatedResponseTaskSummary"];
+                    "application/json": components["schemas"]["BasePaginatedSwarmTaskSummary"];
                 };
             };
             /** @description Error */
@@ -18269,7 +24943,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListSecretSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseListSwarmSecretSummary"];
                 };
             };
             /** @description Error */
@@ -18305,7 +24979,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSecretSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmSecretSummary"];
                 };
             };
             /** @description Error */
@@ -18339,44 +25013,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSecretSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmSecretSummary"];
                 };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    "update-swarm-secret": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Secret ID */
-                secretId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SwarmSecretUpdateRequest"];
-            };
-        };
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
             /** @description Error */
             default: {
@@ -18452,7 +25090,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SwarmPaginatedResponseServiceSummary"];
+                    "application/json": components["schemas"]["BasePaginatedSwarmServiceSummary"];
                 };
             };
             /** @description Error */
@@ -18488,7 +25126,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseServiceCreateResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmServiceCreateResponse"];
                 };
             };
             /** @description Error */
@@ -18522,7 +25160,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseServiceInspect"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmServiceInspect"];
                 };
             };
             /** @description Error */
@@ -18560,7 +25198,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseServiceUpdateResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmServiceUpdateResponse"];
                 };
             };
             /** @description Error */
@@ -18628,7 +25266,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseServiceUpdateResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmServiceUpdateResponse"];
                 };
             };
             /** @description Error */
@@ -18666,7 +25304,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseServiceUpdateResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmServiceUpdateResponse"];
                 };
             };
             /** @description Error */
@@ -18711,7 +25349,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SwarmPaginatedResponseTaskSummary"];
+                    "application/json": components["schemas"]["BasePaginatedSwarmTaskSummary"];
                 };
             };
             /** @description Error */
@@ -18790,7 +25428,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SwarmPaginatedResponseStackSummary"];
+                    "application/json": components["schemas"]["BasePaginatedSwarmStackSummary"];
                 };
             };
             /** @description Error */
@@ -18826,7 +25464,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseStackDeployResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmStackDeployResponse"];
                 };
             };
             /** @description Error */
@@ -18862,7 +25500,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseStackRenderConfigResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmStackRenderConfigResponse"];
                 };
             };
             /** @description Error */
@@ -18896,7 +25534,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseStackInspect"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmStackInspect"];
                 };
             };
             /** @description Error */
@@ -18975,7 +25613,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SwarmPaginatedResponseServiceSummary"];
+                    "application/json": components["schemas"]["BasePaginatedSwarmServiceSummary"];
                 };
             };
             /** @description Error */
@@ -19009,7 +25647,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseStackSource"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmStackSource"];
                 };
             };
             /** @description Error */
@@ -19047,7 +25685,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseStackSource"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmStackSource"];
                 };
             };
             /** @description Error */
@@ -19092,7 +25730,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SwarmPaginatedResponseTaskSummary"];
+                    "application/json": components["schemas"]["BasePaginatedSwarmTaskSummary"];
                 };
             };
             /** @description Error */
@@ -19124,7 +25762,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseRuntimeStatus"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmRuntimeStatus"];
                 };
             };
             /** @description Error */
@@ -19167,7 +25805,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SwarmPaginatedResponseTaskSummary"];
+                    "application/json": components["schemas"]["BasePaginatedSwarmTaskSummary"];
                 };
             };
             /** @description Error */
@@ -19235,7 +25873,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseSwarmUnlockKeyResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseSwarmSwarmUnlockKeyResponse"];
                 };
             };
             /** @description Error */
@@ -19299,7 +25937,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseActionResult"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerActionResult"];
                 };
             };
             /** @description Error */
@@ -19331,7 +25969,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseActionResult"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerActionResult"];
                 };
             };
             /** @description Error */
@@ -19363,7 +26001,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseActionResult"];
+                    "application/json": components["schemas"]["BaseApiResponseContainerActionResult"];
                 };
             };
             /** @description Error */
@@ -19497,7 +26135,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponsePruneAllResult"];
+                    "application/json": components["schemas"]["BaseApiResponseSystemPruneAllResult"];
                 };
             };
             /** @description Error */
@@ -19521,7 +26159,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["TriggerUpgradeBody"];
+            };
+        };
         responses: {
             /** @description Accepted */
             202: {
@@ -19529,7 +26171,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseTriggerUpgradeData"];
                 };
             };
             /** @description Error */
@@ -19625,75 +26267,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UpgradeCheckResultData"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    getGlobalVariables: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseApiResponseListVariable"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    updateGlobalVariables: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["EnvSummary"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                    "application/json": components["schemas"]["DockerSystemUpgradeCheckResultData"];
                 };
             };
             /** @description Error */
@@ -19729,7 +26303,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseTest"];
+                    "application/json": components["schemas"]["BaseApiResponseEnvironmentTest"];
                 };
             };
             /** @description Error */
@@ -19778,6 +26352,40 @@ export interface operations {
             };
         };
     };
+    "check-project-updates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Project ID */
+                projectId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseProjectUpdateInfo"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "run-updater": {
         parameters: {
             query?: never;
@@ -19800,7 +26408,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseResult"];
+                    "application/json": components["schemas"]["BaseApiResponseUpdaterResult"];
                 };
             };
             /** @description Error */
@@ -19832,7 +26440,147 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseStatus"];
+                    "application/json": components["schemas"]["BaseApiResponseUpdaterStatus"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "create-upload-session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                kind: "image" | "volume-backup" | "build-workspace";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UploadCreateSessionRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseUploadSession"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-upload-session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                kind: "image" | "volume-backup" | "build-workspace";
+                uploadId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseUploadSession"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "delete-upload-session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                kind: "image" | "volume-backup" | "build-workspace";
+                uploadId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseMessageResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "upload-chunk": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                kind: "image" | "volume-backup" | "build-workspace";
+                uploadId: string;
+                index: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/octet-stream": string;
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseUploadSession"];
                 };
             };
             /** @description Error */
@@ -19864,7 +26612,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseInfo"];
+                    "application/json": components["schemas"]["BaseApiResponseVersionInfo"];
                 };
             };
             /** @description Error */
@@ -19911,7 +26659,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["VolumePaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedWithCountsVolumeVolumeVolumeUsageCountsData"];
                 };
             };
             /** @description Error */
@@ -19947,7 +26695,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseVolume"];
+                    "application/json": components["schemas"]["BaseApiResponseVolumeVolume"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "discover-volume-backups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VolumeDiscoverBackupsRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseVolumeDiscoverBackupsResponse"];
                 };
             };
             /** @description Error */
@@ -20061,6 +26845,49 @@ export interface operations {
             };
         };
     };
+    "browse-volume-backup-files": {
+        parameters: {
+            query?: {
+                /** @description Folder path relative to the backup root */
+                path?: string;
+                /** @description Case-insensitive full-path search */
+                search?: string;
+                /** @description Start index for the page */
+                start?: number;
+                /** @description Requested page size */
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Backup ID */
+                backupId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BasePaginatedBackupBackupFileEntry"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "backup-has-path": {
         parameters: {
             query?: {
@@ -20085,6 +26912,44 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BaseApiResponseBackupHasPathResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "upload-retained-volume-backup-to-s3": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Backup ID */
+                backupId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VolumeUploadBackupRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseVolumeBackup"];
                 };
             };
             /** @description Error */
@@ -20217,7 +27082,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseVolume"];
+                    "application/json": components["schemas"]["BaseApiResponseVolumeVolume"];
                 };
             };
             /** @description Error */
@@ -20268,6 +27133,78 @@ export interface operations {
             };
         };
     };
+    "get-volume-backup-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Volume name */
+                volumeName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseVolumeBackupPolicyCollection"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-volume-backup-policy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Volume name */
+                volumeName: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VolumeUpdateBackupPolicies"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseVolumeBackupPolicyCollection"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "list-volume-backups": {
         parameters: {
             query?: {
@@ -20281,6 +27218,8 @@ export interface operations {
                 start?: number;
                 /** @description Limit */
                 limit?: number;
+                /** @description Management origin filter */
+                type?: string;
             };
             header?: never;
             path: {
@@ -20299,7 +27238,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["VolumeBackupPaginatedResponse"];
+                    "application/json": components["schemas"]["DockerVolumeVolumeBackupPaginatedResponse"];
                 };
             };
             /** @description Error */
@@ -20325,15 +27264,19 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["VolumeCreateBackupRequest"];
+            };
+        };
         responses: {
-            /** @description OK */
-            200: {
+            /** @description Accepted */
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseVolumeBackup"];
+                    "application/json": components["schemas"]["BaseApiResponseVolumeBackupEntry"];
                 };
             };
             /** @description Error */
@@ -20361,13 +27304,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": {
-                    /**
-                     * Format: binary
-                     * @description Backup archive (tar.gz)
-                     */
-                    file: string;
-                };
+                "application/json": components["schemas"]["UploadConsumeRequest"];
             };
         };
         responses: {
@@ -20443,7 +27380,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["RestoreBackupFilesInputBody"];
+                "application/json": components["schemas"]["BackupRestoreSelection"];
             };
         };
         responses: {
@@ -20467,226 +27404,32 @@ export interface operations {
             };
         };
     };
-    "browse-volume-directory": {
+    "rename-volume": {
         parameters: {
-            query?: {
-                /** @description Directory path to browse */
-                path?: string;
-            };
+            query?: never;
             header?: never;
             path: {
                 /** @description Environment ID */
                 id: string;
-                /** @description Volume name */
-                volumeName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseApiResponseListFileEntry"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    "delete-volume-file": {
-        parameters: {
-            query?: {
-                /** @description File or directory path to delete */
-                path?: string;
-            };
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Volume name */
-                volumeName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    Data?: components["schemas"]["BaseMessageResponse"];
-                    Success?: boolean;
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    "get-volume-file-content": {
-        parameters: {
-            query?: {
-                /** @description File path */
-                path?: string;
-                /** @description Maximum bytes to read (default 1MB) */
-                maxBytes?: number;
-            };
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Volume name */
-                volumeName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseApiResponseFileContentResponse"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    "download-volume-file": {
-        parameters: {
-            query?: {
-                /** @description File path */
-                path?: string;
-            };
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Volume name */
-                volumeName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    "create-volume-directory": {
-        parameters: {
-            query?: {
-                /** @description Directory path to create */
-                path?: string;
-            };
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Volume name */
-                volumeName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    Data?: components["schemas"]["BaseMessageResponse"];
-                    Success?: boolean;
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["ErrorModel"];
-                };
-            };
-        };
-    };
-    "upload-volume-file": {
-        parameters: {
-            query?: {
-                /** @description Destination path */
-                path?: string;
-            };
-            header?: never;
-            path: {
-                /** @description Environment ID */
-                id: string;
-                /** @description Volume name */
+                /** @description Current volume name */
                 volumeName: string;
             };
             cookie?: never;
         };
         requestBody: {
             content: {
-                "multipart/form-data": {
-                    /**
-                     * Format: binary
-                     * @description File to upload
-                     */
-                    file: string;
-                };
+                "application/json": components["schemas"]["VolumeRename"];
             };
         };
         responses: {
-            /** @description No Content */
-            204: {
+            /** @description OK */
+            200: {
                 headers: {
-                    Data?: components["schemas"]["BaseMessageResponse"];
-                    Success?: boolean;
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseVolumeVolume"];
+                };
             };
             /** @description Error */
             default: {
@@ -20733,6 +27476,154 @@ export interface operations {
             };
         };
     };
+    "get-volume-workspace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Volume name */
+                volumeName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseWorkspaceWorkspace"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "update-volume-workspace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Volume name */
+                volumeName: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    files?: string[];
+                    /** @description JSON encoded volume workspace manifest */
+                    manifest: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseWorkspaceWorkspace"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-volume-workspace-file": {
+        parameters: {
+            query?: {
+                /** @description Path relative to the volume workspace root */
+                relativePath?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Volume name */
+                volumeName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseWorkspaceFileContent"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "download-volume-workspace-file": {
+        parameters: {
+            query?: {
+                /** @description Path relative to the volume workspace root */
+                relativePath?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+                /** @description Volume name */
+                volumeName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "list-environment-vulnerabilities": {
         parameters: {
             query?: {
@@ -20750,6 +27641,10 @@ export interface operations {
                 severity?: string;
                 /** @description Filter by image/repo name (substring) */
                 imageName?: string;
+                /** @description Show only ignored vulnerabilities instead of active ones */
+                ignored?: boolean;
+                /** @description Show only vulnerabilities with a fixed version */
+                fixAvailable?: boolean;
             };
             header?: never;
             path: {
@@ -20766,8 +27661,53 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BasePaginatedVulnerabilityWithImage"];
+                    "application/json": components["schemas"]["BasePaginatedVulnerabilityVulnerabilityWithImage"];
                 };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "export-environment-vulnerabilities": {
+        parameters: {
+            query?: {
+                /** @description Search query */
+                search?: string;
+                /** @description Sort field */
+                sort?: string;
+                /** @description Sort order */
+                order?: string;
+                /** @description Comma-separated severity filter */
+                severity?: string;
+                /** @description Filter by image/repo name (substring) */
+                imageName?: string;
+                /** @description Export only ignored vulnerabilities instead of active ones */
+                ignored?: boolean;
+                /** @description Export only vulnerabilities with a fixed version */
+                fixAvailable?: boolean;
+            };
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Error */
             default: {
@@ -20802,7 +27742,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseIgnoredVulnerability"];
+                    "application/json": components["schemas"]["BaseApiResponseVulnerabilityIgnoredVulnerability"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "bulk-ignore-vulnerabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VulnerabilityBulkVulnerabilityFilters"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseVulnerabilityBulkIgnoreResponse"];
                 };
             };
             /** @description Error */
@@ -20879,7 +27855,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BasePaginatedIgnoredVulnerability"];
+                    "application/json": components["schemas"]["BasePaginatedVulnerabilityIgnoredVulnerability"];
                 };
             };
             /** @description Error */
@@ -20915,6 +27891,38 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BaseApiResponseListString"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "get-environment-vulnerability-overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseVulnerabilityRiskOverview"];
                 };
             };
             /** @description Error */
@@ -20978,7 +27986,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseEnvironmentVulnerabilitySummary"];
+                    "application/json": components["schemas"]["BaseApiResponseVulnerabilityEnvironmentVulnerabilitySummary"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    "bulk-unignore-vulnerabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Environment ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VulnerabilityBulkVulnerabilityFilters"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseVulnerabilityBulkIgnoreResponse"];
                 };
             };
             /** @description Error */
@@ -21010,7 +28054,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListSummary"];
+                    "application/json": components["schemas"]["BaseApiResponseListWebhookSummary"];
                 };
             };
             /** @description Error */
@@ -21046,7 +28090,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseCreated"];
+                    "application/json": components["schemas"]["BaseApiResponseWebhookCreated"];
                 };
             };
             /** @description Error */
@@ -21147,7 +28191,7 @@ export interface operations {
                 limit?: number;
                 /** @description Filter by severity */
                 severity?: string;
-                /** @description Filter by event type */
+                /** @description Filter by event type (exact type or category prefix, comma-separated) */
                 type?: string;
             };
             header?: never;
@@ -21162,7 +28206,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["EventPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedEventEvent"];
                 };
             };
             /** @description Error */
@@ -21191,7 +28235,7 @@ export interface operations {
                 limit?: number;
                 /** @description Filter by severity */
                 severity?: string;
-                /** @description Filter by event type */
+                /** @description Filter by event type (exact type or category prefix, comma-separated) */
                 type?: string;
             };
             header?: never;
@@ -21209,7 +28253,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["EventPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedEventEvent"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    getEventStats: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseEventSeverityCounts"];
                 };
             };
             /** @description Error */
@@ -21281,7 +28354,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BasePaginatedFederatedCredential"];
+                    "application/json": components["schemas"]["BasePaginatedFederatedFederatedCredential"];
                 };
             };
             /** @description Error */
@@ -21314,7 +28387,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseFederatedCredential"];
+                    "application/json": components["schemas"]["BaseApiResponseFederatedFederatedCredential"];
                 };
             };
             /** @description Error */
@@ -21346,7 +28419,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseFederatedCredential"];
+                    "application/json": components["schemas"]["BaseApiResponseFederatedFederatedCredential"];
                 };
             };
             /** @description Error */
@@ -21382,7 +28455,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseFederatedCredential"];
+                    "application/json": components["schemas"]["BaseApiResponseFederatedFederatedCredential"];
                 };
             };
             /** @description Error */
@@ -21539,7 +28612,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseDispatchResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseNotificationDispatchResponse"];
                 };
             };
             /** @description Error */
@@ -21582,7 +28655,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AuthOidcCallbackResponse"];
+                    "application/json": components["schemas"]["AuthAuthenticationResponse"];
                 };
             };
             /** @description Error */
@@ -21678,11 +28751,10 @@ export interface operations {
             /** @description OK */
             200: {
                 headers: {
-                    "Set-Cookie"?: string;
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AuthOidcDeviceTokenResponse"];
+                    "application/json": components["schemas"]["AuthAuthenticationResponse"];
                 };
             };
             /** @description Error */
@@ -21711,7 +28783,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListOidcRoleMappingsOutputBody"];
+                    "application/json": components["schemas"]["BaseApiResponseListRoleOidcRoleMapping"];
                 };
             };
             /** @description Error */
@@ -21744,7 +28816,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CreateOidcRoleMappingOutputBody"];
+                    "application/json": components["schemas"]["BaseApiResponseRoleOidcRoleMapping"];
                 };
             };
             /** @description Error */
@@ -21780,7 +28852,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UpdateOidcRoleMappingOutputBody"];
+                    "application/json": components["schemas"]["BaseApiResponseRoleOidcRoleMapping"];
                 };
             };
             /** @description Error */
@@ -21921,7 +28993,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["RolePaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedRoleRole"];
                 };
             };
             /** @description Error */
@@ -21954,7 +29026,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseRole"];
+                    "application/json": components["schemas"]["BaseApiResponseRoleRole"];
                 };
             };
             /** @description Error */
@@ -21983,7 +29055,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponsePermissionsManifest"];
+                    "application/json": components["schemas"]["BaseApiResponseRolePermissionsManifest"];
                 };
             };
             /** @description Error */
@@ -22015,7 +29087,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseRole"];
+                    "application/json": components["schemas"]["BaseApiResponseRoleRole"];
                 };
             };
             /** @description Error */
@@ -22051,7 +29123,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseRole"];
+                    "application/json": components["schemas"]["BaseApiResponseRoleRole"];
                 };
             };
             /** @description Error */
@@ -22159,6 +29231,40 @@ export interface operations {
             };
         };
     };
+    streamClient: {
+        parameters: {
+            query?: {
+                /** @description Comma-separated channels to subscribe to: environments, dashboard, activities, events, version */
+                channels?: string;
+                /** @description Debug mode for the dashboard channel: force an empty action item list */
+                debugAllGood?: boolean;
+                /** @description Maximum activities to include in each activities-channel snapshot */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
     "get-swarm-node-identity": {
         parameters: {
             query?: never;
@@ -22216,7 +29322,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TemplatePaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedTemplateTemplate"];
                 };
             };
             /** @description Error */
@@ -22249,7 +29355,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseTemplate"];
+                    "application/json": components["schemas"]["BaseApiResponseTemplateTemplate"];
                 };
             };
             /** @description Error */
@@ -22278,7 +29384,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListTemplate"];
+                    "application/json": components["schemas"]["BaseApiResponseListTemplateTemplate"];
                 };
             };
             /** @description Error */
@@ -22307,7 +29413,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseDefaultTemplatesResponse"];
+                    "application/json": components["schemas"]["BaseApiResponseTemplateDefaultTemplatesResponse"];
                 };
             };
             /** @description Error */
@@ -22372,7 +29478,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseRemoteRegistry"];
+                    "application/json": components["schemas"]["BaseApiResponseTemplateRemoteRegistry"];
                 };
             };
             /** @description Error */
@@ -22401,7 +29507,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListTemplateRegistry"];
+                    "application/json": components["schemas"]["BaseApiResponseListTemplateTemplateRegistry"];
                 };
             };
             /** @description Error */
@@ -22434,7 +29540,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseTemplateRegistry"];
+                    "application/json": components["schemas"]["BaseApiResponseTemplateTemplateRegistry"];
                 };
             };
             /** @description Error */
@@ -22534,7 +29640,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseTemplate"];
+                    "application/json": components["schemas"]["BaseApiResponseTemplateTemplate"];
                 };
             };
             /** @description Error */
@@ -22570,7 +29676,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseTemplate"];
+                    "application/json": components["schemas"]["BaseApiResponseTemplateTemplate"];
                 };
             };
             /** @description Error */
@@ -22634,7 +29740,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseTemplateContent"];
+                    "application/json": components["schemas"]["BaseApiResponseTemplateTemplateContent"];
                 };
             };
             /** @description Error */
@@ -22666,7 +29772,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseTemplate"];
+                    "application/json": components["schemas"]["BaseApiResponseTemplateTemplate"];
                 };
             };
             /** @description Error */
@@ -22706,7 +29812,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UserPaginatedResponse"];
+                    "application/json": components["schemas"]["BasePaginatedUserUser"];
                 };
             };
             /** @description Error */
@@ -22739,7 +29845,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseUser"];
+                    "application/json": components["schemas"]["BaseApiResponseUserUser"];
                 };
             };
             /** @description Error */
@@ -22771,7 +29877,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseUser"];
+                    "application/json": components["schemas"]["BaseApiResponseUserUser"];
                 };
             };
             /** @description Error */
@@ -22807,7 +29913,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseUser"];
+                    "application/json": components["schemas"]["BaseApiResponseUserUser"];
                 };
             };
             /** @description Error */
@@ -22906,7 +30012,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListRoleAssignment"];
+                    "application/json": components["schemas"]["BaseApiResponseListRoleRoleAssignment"];
                 };
             };
             /** @description Error */
@@ -22942,7 +30048,195 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseApiResponseListRoleAssignment"];
+                    "application/json": components["schemas"]["BaseApiResponseListRoleRoleAssignment"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    listVariables: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseListEnvGlobalVariable"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    createVariable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvCreateGlobalVariableRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseEnvGlobalVariableMutationResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    syncVariables: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseListEnvEnvironmentSyncStatus"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    getVariableSyncStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseListEnvEnvironmentSyncStatus"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    updateVariable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Variable ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnvUpdateGlobalVariableRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseEnvGlobalVariableMutationResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    deleteVariable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Variable ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseApiResponseEnvGlobalVariableMutationResponse"];
                 };
             };
             /** @description Error */
