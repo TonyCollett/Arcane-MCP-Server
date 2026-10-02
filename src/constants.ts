@@ -93,9 +93,6 @@ export const RETRYABLE_STATUS_CODES = [429, 502, 503, 504];
 /** Current MCP protocol version */
 export const MCP_PROTOCOL_VERSION = "2025-11-25";
 
-/** Supported MCP protocol versions */
-export const SUPPORTED_MCP_VERSIONS = ["2025-11-25", "2025-03-26"] as const;
-
 // ============= Defaults =============
 
 /** Default pagination limit */

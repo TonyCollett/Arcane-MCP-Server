@@ -16,7 +16,6 @@ import { startConfigWatcher, type ConfigWatcherHandle } from "./utils/config-wat
 import { logger } from "./utils/logger.js";
 import {
   MCP_PROTOCOL_VERSION,
-  SUPPORTED_MCP_VERSIONS,
   SESSION_TIMEOUT_MS,
   SESSION_CLEANUP_INTERVAL_MS,
   MAX_SESSIONS,
@@ -110,36 +109,6 @@ function validateOrigin(req: Request, res: Response, next: NextFunction): void {
   }
 }
 
-/**
- * Validate MCP-Protocol-Version header
- * Per MCP 2025-11-25 spec: Server MUST respond with 400 if unsupported version
- */
-function validateProtocolVersion(req: Request, res: Response, next: NextFunction): void {
-  const protocolVersion = req.headers["mcp-protocol-version"] as string | undefined;
-
-  // Allow requests without version header (for backwards compatibility with 2025-03-26)
-  // Per spec: if no header, assume 2025-03-26
-  if (!protocolVersion) {
-    next();
-    return;
-  }
-
-  // Check if we support this version
-  if ((SUPPORTED_MCP_VERSIONS as readonly string[]).includes(protocolVersion)) {
-    next();
-    return;
-  }
-
-  logger.warn(`Unsupported MCP protocol version: ${protocolVersion}`);
-  res.status(400).json({
-    jsonrpc: "2.0",
-    error: {
-      code: -32600,
-      message: `Unsupported MCP protocol version: ${protocolVersion}. Supported: ${SUPPORTED_MCP_VERSIONS.join(", ")}`,
-    },
-  });
-}
-
 export async function startTcpServer(): Promise<void> {
   loadConfig();
   const config = getConfig();
@@ -187,9 +156,10 @@ export async function startTcpServer(): Promise<void> {
     return entry.count <= RATE_LIMIT;
   }
 
-  // Apply MCP security middleware to /mcp endpoint
+  // Apply MCP security middleware to /mcp endpoint. MCP-Protocol-Version is
+  // left to the SDK transport: it negotiates on initialize and only validates
+  // the header on subsequent requests, which is what the spec requires.
   app.use("/mcp", validateOrigin);
-  app.use("/mcp", validateProtocolVersion);
 
   // MCP endpoint
   app.all("/mcp", async (req: Request, res: Response) => {
