@@ -44,6 +44,7 @@ When the user says something general, map it to the right tool sequence:
 | "Clean up" / "Free space" | See Cleanup workflow below |
 | "Show me the ports" | `arcane_port_list` |
 | "Connect a new registry" | `arcane_registry_create` |
+| "What tags are in my registry?" | `arcane_registry_list_repositories` → `arcane_registry_list_tags` |
 
 ## Core Workflows
 

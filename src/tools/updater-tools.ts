@@ -28,15 +28,17 @@ export function registerUpdaterTools(server: McpServer, registry?: ToolRegistry)
       dryRun: z.boolean().optional().default(false).describe("Simulate without actually updating"),
       forceUpdate: z.boolean().optional().default(false).describe("Update even if no new image was detected"),
       resourceIds: z.array(z.string()).optional().describe("Limit the run to specific container/project IDs"),
+      automatic: z.boolean().optional().default(false).describe("Behave like a scheduled run: honor updater opt-out labels and excluded containers (Arcane v2.17+)"),
     },
     },
-    toolHandler(async ({ environmentId, dryRun, forceUpdate, resourceIds }, client) => {
+    toolHandler(async ({ environmentId, dryRun, forceUpdate, resourceIds, automatic }, client) => {
       const body: Record<string, unknown> = { dryRun, forceUpdate };
       if (resourceIds && resourceIds.length > 0) body.resourceIds = resourceIds;
 
       const response = await client.post<{ data: UpdaterResult }>(
         `/environments/${environmentId}/updater/run`,
-        body
+        body,
+        automatic ? { automatic: true } : undefined
       );
 
       const r = response.data;

@@ -7,6 +7,7 @@ import { z } from "zod";
 import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
 import { LOGIN_STATUS_MFA_REQUIRED } from "../constants.js";
+import { getAuthManager } from "../auth/auth-manager.js";
 
 export function registerAuthTools(server: McpServer, registry?: ToolRegistry): void {
   const register = moduleRegistrar(server, registry, "auth");
@@ -60,7 +61,13 @@ export function registerAuthTools(server: McpServer, registry?: ToolRegistry): v
       },
     },
     toolHandler(async (_params, client) => {
-      await client.post("/auth/logout");
+      // Arcane v2.17+ revokes the session named by the refresh token; the MCP
+      // holds it in memory (no cookie), so send it in the body when we have one.
+      const authManager = getAuthManager();
+      const refreshToken = authManager.getRefreshToken();
+      await client.post("/auth/logout", refreshToken ? { refreshToken } : undefined);
+      // Drop the cached JWT so the next call logs in fresh instead of reusing a revoked token
+      authManager.clearTokens();
       return "Logged out successfully.";
     })
   );

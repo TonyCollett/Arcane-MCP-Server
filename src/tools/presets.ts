@@ -210,7 +210,7 @@ export const PRESET_DESCRIPTIONS: Record<PresetName, string> = {
   "read-only": "Status & observability only — list/get/inspect across all modules (~60 tools).",
   "minimal": "Smallest viable footprint — dashboard + container list/get/counts (5 tools).",
   "deploy": "CI / deploy assistants — projects, gitops, templates, registries, build (~40 tools).",
-  "full": "All 180 tools enabled (default for upgrades).",
+  "full": "All 183 tools enabled (default for upgrades).",
   "custom": "Manual module + tool overrides only.",
 };
 

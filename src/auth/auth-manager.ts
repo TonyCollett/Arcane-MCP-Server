@@ -209,6 +209,13 @@ export class AuthManager {
   }
 
   /**
+   * Current JWT refresh token, if logged in with username/password
+   */
+  getRefreshToken(): string | undefined {
+    return this.jwtTokens?.refreshToken;
+  }
+
+  /**
    * Clear all stored tokens (logout)
    */
   clearTokens(): void {

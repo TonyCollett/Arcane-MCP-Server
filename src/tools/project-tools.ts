@@ -28,6 +28,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
       inputSchema: {
       environmentId: z.string().describe("Environment ID"),
       search: z.string().optional().describe("Search query to filter projects"),
+      name: z.string().optional().describe("Filter by exact project name (comma-separated for several; Arcane v2.17+)"),
       status: z.string().optional().describe("Filter by status (comma-separated: running,stopped,partially running)"),
       updates: z.enum(["has_update", "up_to_date", "error", "unknown"]).optional().describe("Filter by image update status — 'has_update' lists only projects with pending updates"),
       sort: z.string().optional().describe("Column to sort by"),
@@ -36,11 +37,11 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
       limit: z.number().optional().default(20).describe("Items per page (-1 for all)"),
     },
     },
-    toolHandler(async ({ environmentId, search, status, updates, sort, order, start, limit }, client) => {
+    toolHandler(async ({ environmentId, search, name, status, updates, sort, order, start, limit }, client) => {
       const response = await client.get<{
         data: Project[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/projects`, { search, status, updates, sort, order, start, limit });
+      }>(`/environments/${environmentId}/projects`, { search, name, status, updates, sort, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return updates ? `No projects with update status "${updates}" found.` : "No projects found.";

@@ -348,6 +348,30 @@ export interface ContainerRegistry {
   updatedAt?: string;
 }
 
+/** Repository in a registry catalog (Arcane v2.15+) */
+export interface RegistryRepository {
+  name: string;
+}
+
+export interface RegistryTagPlatform {
+  os: string;
+  architecture: string;
+  variant?: string;
+  digest?: string;
+  size?: number;
+}
+
+/** Tag of a registry repository with its manifest details (Arcane v2.15+) */
+export interface RegistryRepositoryTag {
+  name: string;
+  digest?: string;
+  mediaType?: string;
+  size: number;
+  created?: string;
+  platforms: RegistryTagPlatform[];
+  error?: string;
+}
+
 // === Swarm ===
 
 export interface SwarmService {

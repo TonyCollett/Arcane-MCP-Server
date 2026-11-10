@@ -197,9 +197,10 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
         restart: z.enum(["no", "always", "unless-stopped", "on-failure"]).optional().describe("Restart policy"),
         network: z.string().optional().describe("Network to connect to"),
         command: z.array(z.string()).optional().describe("Command to run"),
+        hostname: z.string().optional().describe("Container hostname (defaults to the short container ID)"),
       },
     },
-    toolHandler(async ({ environmentId, name, image, ports, env, volumes, restart, network, command }, client) => {
+    toolHandler(async ({ environmentId, name, image, ports, env, volumes, restart, network, command, hostname }, client) => {
       // Map the friendly inputs onto Arcane's ContainerCreate shape:
       // env/volumes are string arrays, ports go through hostConfig.portBindings ("80/tcp" → [{ hostPort }])
       const portBindings: Record<string, Array<{ hostPort: string }>> = {};
@@ -218,6 +219,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
           restartPolicy: restart,
           networks: network ? [network] : undefined,
           command,
+          hostname: hostname || undefined,
           hostConfig: ports?.length ? { portBindings } : undefined,
         }
       );

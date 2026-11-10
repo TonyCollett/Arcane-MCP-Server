@@ -6,7 +6,12 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
-import type { ContainerRegistry } from "../types/arcane-types.js";
+import { formatSize } from "../utils/format.js";
+import type {
+  ContainerRegistry,
+  RegistryRepository,
+  RegistryRepositoryTag,
+} from "../types/arcane-types.js";
 
 export function registerRegistryTools(server: McpServer, registry?: ToolRegistry): void {
   const register = moduleRegistrar(server, registry, "registry");
@@ -243,6 +248,123 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
     toolHandler(async (_params, client) => {
       await client.post("/container-registries/sync", { registries: [] });
       return "Registry sync initiated.";
+    })
+  );
+
+  // arcane_registry_list_repositories
+  register(
+    "arcane_registry_list_repositories",
+    {
+      title: "List registry repositories",
+      description: "List the repositories stored in a container registry via its catalog API (Arcane v2.15+). Returns repository names usable with arcane_registry_list_tags.",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true,
+      },
+      inputSchema: {
+      registryId: z.string().describe("Registry ID"),
+      search: z.string().optional().describe("Filter repositories by name"),
+      order: z.enum(["asc", "desc"]).optional().default("asc").describe("Sort direction"),
+      start: z.number().optional().default(0).describe("Pagination start"),
+      limit: z.number().optional().default(20).describe("Items per page"),
+    },
+    },
+    toolHandler(async ({ registryId, search, order, start, limit }, client) => {
+      const response = await client.get<{
+        data: RegistryRepository[];
+        pagination: { totalItems: number };
+      }>(`/container-registries/${registryId}/repositories`, { search, order, start, limit });
+
+      if (!response.data || response.data.length === 0) {
+        return search ? `No repositories matching "${search}".` : "No repositories found in this registry.";
+      }
+
+      const lines = [`Found ${response.pagination?.totalItems ?? response.data.length} repositories:\n`];
+      for (const repo of response.data) {
+        lines.push(`  ${repo.name}`);
+      }
+      return lines.join("\n");
+    })
+  );
+
+  // arcane_registry_list_tags
+  register(
+    "arcane_registry_list_tags",
+    {
+      title: "List repository tags",
+      description: "List the tags of a registry repository with digest, size, creation date and platforms (Arcane v2.15+)",
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true,
+      },
+      inputSchema: {
+      registryId: z.string().describe("Registry ID"),
+      repository: z.string().min(1).describe("Repository name without the registry host (e.g. team/api)"),
+      search: z.string().optional().describe("Filter tags by name"),
+      order: z.enum(["asc", "desc"]).optional().default("asc").describe("Sort direction"),
+      start: z.number().optional().default(0).describe("Pagination start"),
+      limit: z.number().optional().default(20).describe("Items per page"),
+    },
+    },
+    toolHandler(async ({ registryId, repository, search, order, start, limit }, client) => {
+      const response = await client.get<{
+        data: RegistryRepositoryTag[];
+        pagination: { totalItems: number };
+      }>(`/container-registries/${registryId}/tags`, { repository, search, order, start, limit });
+
+      if (!response.data || response.data.length === 0) {
+        return search ? `No tags matching "${search}" in ${repository}.` : `No tags found in ${repository}.`;
+      }
+
+      const lines = [`${repository}: ${response.pagination?.totalItems ?? response.data.length} tags\n`];
+      for (const tag of response.data) {
+        lines.push(`${tag.name}`);
+        if (tag.error) {
+          lines.push(`    Error: ${tag.error}`);
+          lines.push("");
+          continue;
+        }
+        if (tag.digest) lines.push(`    Digest: ${tag.digest}`);
+        lines.push(`    Size: ${formatSize(tag.size, true)}`);
+        if (tag.created) lines.push(`    Created: ${tag.created}`);
+        if (tag.platforms?.length) {
+          const platforms = tag.platforms.map((p) => `${p.os}/${p.architecture}${p.variant ? `/${p.variant}` : ""}`);
+          lines.push(`    Platforms: ${platforms.join(", ")}`);
+        }
+        lines.push("");
+      }
+      return lines.join("\n");
+    })
+  );
+
+  // arcane_registry_delete_tag
+  register(
+    "arcane_registry_delete_tag",
+    {
+      title: "Delete repository tag",
+      description: "[HIGH RISK] Delete the manifest a tag points to in the remote registry (Arcane v2.15+). Every other tag sharing the same digest is removed too. The registry must allow manifest deletion.",
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: true,
+        idempotentHint: false,
+        openWorldHint: true,
+      },
+      inputSchema: {
+      registryId: z.string().describe("Registry ID"),
+      repository: z.string().min(1).describe("Repository name without the registry host (e.g. team/api)"),
+      tag: z.string().min(1).describe("Tag to delete"),
+    },
+    },
+    toolHandler(async ({ registryId, repository, tag }, client) => {
+      const response = await client.delete<{ data: { digest: string } }>(
+        `/container-registries/${registryId}/tags`,
+        { repository, tag }
+      );
+      return `Deleted ${repository}:${tag} (manifest ${response.data?.digest ?? "unknown"}). Any other tags with that digest were removed too.`;
     })
   );
 

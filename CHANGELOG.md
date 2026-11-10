@@ -12,6 +12,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI `docker` job builds the image and checks the container reaches `healthy`.
 - `Publish Docker image` workflow pushes a multi-arch (amd64/arm64) image to GHCR: `:latest` on pushes to `main`, `:x.y.z` / `:x.y` / `:x` on `v*` tags, plus `:sha-<short>`.
 - README "Docker" section covering Compose, `docker run`, stdio-via-Docker client config, and the unauthenticated-endpoint warning.
+- Registry browsing tools (Arcane v2.15+), taking the count from 180 to **183**:
+  - `arcane_registry_list_repositories` lists a registry's repositories through its catalog API.
+  - `arcane_registry_list_tags` lists a repository's tags with digest, size, creation date and platforms.
+  - `arcane_registry_delete_tag` deletes the manifest a tag points to, which also removes every tag sharing that digest.
+- `arcane_container_create` takes a `hostname`.
+- `arcane_project_list` takes a `name` filter for exact project names (Arcane v2.17+).
+- `arcane_updater_run` takes `automatic`. With it set, a manual run honours updater opt-out labels and excluded containers, as scheduled runs do (Arcane v2.17+).
+
+### Changed
+- `arcane_auth_logout` now sends the session's refresh token, so Arcane v2.17+ revokes that session. It also clears the cached JWT, so the next call logs in fresh instead of reusing the revoked token.
 
 ### Fixed
 - HTTP mode rejected every POST with `Parse error: Invalid JSON`. `express.json()` consumed the request stream before `StreamableHTTPServerTransport` could read it. The parsed body is now passed to `transport.handleRequest()`.
