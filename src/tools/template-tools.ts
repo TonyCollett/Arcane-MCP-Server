@@ -242,7 +242,7 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
         openWorldHint: false,
       },
       inputSchema: {
-      variables: z.record(z.string()).optional().default({}).describe("Variables to create or update (key-value pairs)"),
+      variables: z.record(z.string(), z.string()).optional().default({}).describe("Variables to create or update (key-value pairs)"),
       remove: z.array(z.string()).optional().describe("Keys to delete within the same scope"),
       environmentIds: z.array(z.string()).optional().describe("Scope to these environment IDs (omit for all environments)"),
       isSecret: z.boolean().optional().describe("Store values as secrets (encrypted, redacted when listed)"),

@@ -57,7 +57,7 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
       },
       inputSchema: {
       environmentId: z.string().describe("Environment ID"),
-      settings: z.record(z.string()).describe("Settings to update (key-value pairs; all values must be strings, e.g. \"true\", \"30\")"),
+      settings: z.record(z.string(), z.string()).describe("Settings to update (key-value pairs; all values must be strings, e.g. \"true\", \"30\")"),
     },
     },
     toolHandler(async ({ environmentId, settings }, client) => {

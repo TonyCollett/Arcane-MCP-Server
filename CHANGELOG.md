@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `arcane_project_list` takes a `name` filter for exact project names (Arcane v2.17+).
 - `arcane_updater_run` takes `automatic`. With it set, a manual run honours updater opt-out labels and excluded containers, as scheduled runs do (Arcane v2.17+).
 
+### Security
+- Upgraded **zod 3 → 4** (`^4.6.7`) for GHSA-mrhx-c7xc-m3w5 (memory exhaustion validating oversized constrained collections). Single-argument `z.record(v)` calls now pass an explicit key schema, as zod 4 requires. Tool input schemas on `tools/list` are unchanged.
+- Raised `@modelcontextprotocol/sdk` to `^1.32.2`. That version accepts zod 4 and includes the fix for the SDK advisory affecting ≤1.31.0.
+- Refreshed transitive dependencies (`npm audit fix`, express 4.22.3) for advisories in `proxy-addr`, `body-parser`, `qs`, `fast-uri`, `ip-address` and `@hono/node-server`. `npm audit --omit=dev` now reports 0 vulnerabilities.
+
 ### Changed
 - `arcane_auth_logout` now sends the session's refresh token, so Arcane v2.17+ revokes that session. It also clears the cached JWT, so the next call logs in fresh instead of reusing the revoked token.
 

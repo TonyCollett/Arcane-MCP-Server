@@ -101,7 +101,7 @@ export function registerNotificationTools(server: McpServer, registry?: ToolRegi
       environmentId: z.string().describe("Environment ID"),
       provider: z.enum(NOTIFICATION_PROVIDERS).describe("Notification provider"),
       enabled: z.boolean().describe("Enable/disable this provider"),
-      config: z.record(z.unknown()).optional().describe("Provider-specific configuration (e.g., webhookUrl for Discord, smtp settings for email)"),
+      config: z.record(z.string(), z.unknown()).optional().describe("Provider-specific configuration (e.g., webhookUrl for Discord, smtp settings for email)"),
     },
     },
     toolHandler(async ({ environmentId, provider, enabled, config }, client) => {

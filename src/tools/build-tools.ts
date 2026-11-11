@@ -30,7 +30,7 @@ export function registerBuildTools(server: McpServer, registry?: ToolRegistry): 
         dockerfile: z.string().optional().describe("Path to the Dockerfile within the context (default: Dockerfile)"),
         dockerfileInline: z.string().optional().describe("Inline Dockerfile content (used instead of a Dockerfile in the context)"),
         tag: z.string().describe("Image tag (e.g., myapp:latest)"),
-        buildArgs: z.record(z.string()).optional().describe("Build arguments as key-value pairs"),
+        buildArgs: z.record(z.string(), z.string()).optional().describe("Build arguments as key-value pairs"),
         platform: z.string().optional().describe("Target platform (e.g., linux/amd64, linux/arm64)"),
         noCache: z.boolean().optional().default(false).describe("Build without using the cache"),
       },

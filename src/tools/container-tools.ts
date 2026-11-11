@@ -188,7 +188,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
           hostPort: z.number().optional().describe("Port on host"),
           protocol: z.enum(["tcp", "udp"]).optional().default("tcp"),
         })).optional().describe("Port mappings"),
-        env: z.record(z.string()).optional().describe("Environment variables"),
+        env: z.record(z.string(), z.string()).optional().describe("Environment variables"),
         volumes: z.array(z.object({
           hostPath: z.string().describe("Path on host"),
           containerPath: z.string().describe("Path in container"),

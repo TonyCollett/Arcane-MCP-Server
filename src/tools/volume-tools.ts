@@ -124,8 +124,8 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
       environmentId: z.string().describe("Environment ID"),
       name: z.string().describe("Volume name"),
       driver: z.string().optional().default("local").describe("Volume driver"),
-      driverOpts: z.record(z.string()).optional().describe("Driver-specific options"),
-      labels: z.record(z.string()).optional().describe("Labels to add to the volume"),
+      driverOpts: z.record(z.string(), z.string()).optional().describe("Driver-specific options"),
+      labels: z.record(z.string(), z.string()).optional().describe("Labels to add to the volume"),
     },
     },
     toolHandler(async ({ environmentId, name, driver, driverOpts, labels }, client) => {
