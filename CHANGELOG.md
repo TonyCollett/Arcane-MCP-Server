@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- HTTP transport: after a restart or redeploy, clients still holding an old session (or sending none) got `400 Bad Request: Server not initialized` on every call, and claude.ai's connector stayed broken until it was reset. Non-initialize requests without a live session are now answered statelessly; initialize still opens a tracked session.
 - Event listings said "Found -1 events": Arcane 3.0 doesn't count event totals, so they now show the page size and whether more pages exist.
 - `arcane_system_get_health` printed "Version: unknown" and "Uptime: unknown": Arcane 3.0's health check returns only a status, so that's all it reports now (use `arcane_version_get` for the version).
 
