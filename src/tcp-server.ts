@@ -10,6 +10,7 @@
 
 import express, { type Request, type Response, type NextFunction } from "express";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { createSessionServer, preloadHttpTemplate } from "./server.js";
 import { getConfig, loadConfig } from "./config.js";
 import { startConfigWatcher, type ConfigWatcherHandle } from "./utils/config-watcher.js";
@@ -56,6 +57,11 @@ function cleanupExpiredSessions(): void {
 
 // Start session cleanup interval
 let cleanupInterval: NodeJS.Timeout | null = null;
+
+/** True when a JSON-RPC body (single message or batch) carries an initialize request. */
+function containsInitialize(body: unknown): boolean {
+  return Array.isArray(body) ? body.some((m) => isInitializeRequest(m)) : isInitializeRequest(body);
+}
 
 /**
  * Validate Origin header to prevent DNS rebinding attacks
@@ -109,25 +115,11 @@ function validateOrigin(req: Request, res: Response, next: NextFunction): void {
   }
 }
 
-export async function startTcpServer(): Promise<void> {
-  loadConfig();
-  const config = getConfig();
-
-  const port = config.httpPort;
-  const host = config.httpHost;
-
-  logger.info(`Starting Arcane MCP Server (HTTP transport) on ${host}:${port}`);
-  logger.info(`MCP Protocol Version: ${MCP_PROTOCOL_VERSION}`);
-
-  // Eagerly initialise the shared template registry so the hot-reload watcher
-  // can attach at startup (before any client connects).
-  const registry = preloadHttpTemplate();
-  const configWatcher: ConfigWatcherHandle = startConfigWatcher(registry);
-
-  // Start session cleanup interval
-  cleanupInterval = setInterval(cleanupExpiredSessions, SESSION_CLEANUP_INTERVAL_MS);
-  logger.debug(`Session cleanup interval started (every ${SESSION_CLEANUP_INTERVAL_MS / 1000}s)`);
-
+/**
+ * Build the Express app that serves /health and the MCP endpoint. Kept separate
+ * from startTcpServer so tests can drive it without timers, watchers or signals.
+ */
+export function createMcpApp(): express.Express {
   const app = express();
 
   // Parse JSON bodies
@@ -222,12 +214,32 @@ export async function startTcpServer(): Promise<void> {
         }
 
         let transport: StreamableHTTPServerTransport;
+        const sessionInfo = sessionId ? sessions.get(sessionId) : undefined;
 
-        if (sessionId && sessions.has(sessionId)) {
+        if (sessionInfo) {
           // Reuse existing transport and update activity
-          const sessionInfo = sessions.get(sessionId)!;
           sessionInfo.lastActivity = new Date();
           transport = sessionInfo.transport;
+        } else if (!containsInitialize(req.body)) {
+          // No live session and not an initialize: answer statelessly. After a
+          // restart or a session expiry, hosted clients (claude.ai among them) keep
+          // sending tool calls with no session ID or their old one. A new stateful
+          // transport would reject those with 400 "Server not initialized", and
+          // the client gives up rather than re-initializing, so every call failed
+          // until the connector was reset. Tools are plain API calls with no
+          // per-session state, so a throwaway server answers them correctly.
+          const stateless = new StreamableHTTPServerTransport({
+            sessionIdGenerator: undefined,
+            enableJsonResponse: true,
+          });
+          const server = createSessionServer();
+          res.on("close", () => {
+            void stateless.close().catch(() => {});
+            void server.close().catch(() => {});
+          });
+          await server.connect(stateless);
+          await stateless.handleRequest(req, res, req.body);
+          return;
         } else {
           // Check max sessions limit
           if (sessions.size >= MAX_SESSIONS) {
@@ -301,6 +313,30 @@ export async function startTcpServer(): Promise<void> {
       });
     }
   });
+
+  return app;
+}
+
+export async function startTcpServer(): Promise<void> {
+  loadConfig();
+  const config = getConfig();
+
+  const port = config.httpPort;
+  const host = config.httpHost;
+
+  logger.info(`Starting Arcane MCP Server (HTTP transport) on ${host}:${port}`);
+  logger.info(`MCP Protocol Version: ${MCP_PROTOCOL_VERSION}`);
+
+  // Eagerly initialise the shared template registry so the hot-reload watcher
+  // can attach at startup (before any client connects).
+  const registry = preloadHttpTemplate();
+  const configWatcher: ConfigWatcherHandle = startConfigWatcher(registry);
+
+  // Start session cleanup interval
+  cleanupInterval = setInterval(cleanupExpiredSessions, SESSION_CLEANUP_INTERVAL_MS);
+  logger.debug(`Session cleanup interval started (every ${SESSION_CLEANUP_INTERVAL_MS / 1000}s)`);
+
+  const app = createMcpApp();
 
   // Start the server
   const server = app.listen(port, host, () => {
