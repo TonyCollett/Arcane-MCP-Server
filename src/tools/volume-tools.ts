@@ -39,7 +39,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
       const response = await client.get<{
         data: Volume[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/volumes`, { search, sort, order, start, limit });
+      }>(`/agents/${environmentId}/volumes`, { search, sort, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No volumes found.";
@@ -80,7 +80,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ environmentId, volumeName }, client) => {
       const response = await client.get<{ data: Volume }>(
-        `/environments/${environmentId}/volumes/${volumeName}`
+        `/agents/${environmentId}/volumes/${volumeName}`
       );
 
       const vol = response.data;
@@ -130,7 +130,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ environmentId, name, driver, driverOpts, labels }, client) => {
       const response = await client.post<{ data: { name: string } }>(
-        `/environments/${environmentId}/volumes`,
+        `/agents/${environmentId}/volumes`,
         { name, driver, driverOpts, labels }
       );
 
@@ -157,7 +157,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId, volumeName, force }, client) => {
-      await client.delete(`/environments/${environmentId}/volumes/${volumeName}`, { force });
+      await client.delete(`/agents/${environmentId}/volumes/${volumeName}`, { force });
       return `Volume ${volumeName} deleted permanently.`;
     })
   );
@@ -181,7 +181,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.post<{
         data: { volumesDeleted?: string[] | null; spaceReclaimed?: number };
-      }>(`/environments/${environmentId}/volumes/prune`);
+      }>(`/agents/${environmentId}/volumes/prune`);
 
       const deleted = response.data.volumesDeleted?.length || 0;
       const space = response.data.spaceReclaimed
@@ -211,7 +211,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{
         data: { total: number; inuse: number; unused: number };
-      }>(`/environments/${environmentId}/volumes/counts`);
+      }>(`/agents/${environmentId}/volumes/counts`);
 
       return `Volume Counts:\n  Total: ${response.data.total}\n  In Use: ${response.data.inuse || 0}\n  Unused: ${response.data.unused || 0}`;
     })
@@ -240,7 +240,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     toolHandler(async ({ environmentId, volumeName, path }, client) => {
       const dir = toWorkspacePath(validatePath(path ?? "/"));
       const response = await client.get<{ data: Workspace }>(
-        `/environments/${environmentId}/volumes/${volumeName}/workspace`
+        `/agents/${environmentId}/volumes/${volumeName}/workspace`
       );
 
       // The workspace is a flat, recursive listing — keep only direct children of `dir`
@@ -289,7 +289,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     toolHandler(async ({ environmentId, volumeName, path }, client) => {
       const relativePath = toWorkspacePath(validatePath(path));
       const response = await client.get<{ data: WorkspaceFileContent }>(
-        `/environments/${environmentId}/volumes/${volumeName}/workspace/file`,
+        `/agents/${environmentId}/volumes/${volumeName}/workspace/file`,
         { relativePath }
       );
 
@@ -324,11 +324,11 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
       if (!relativePath) {
         throw new Error("Path must name a directory below the volume root");
       }
-      const workspacePath = `/environments/${environmentId}/volumes/${volumeName}/workspace`;
+      const workspacePath = `/agents/${environmentId}/volumes/${volumeName}/workspace`;
 
       // Workspace edits are optimistic: send the revision we read so Arcane can reject stale changes
       const current = await client.get<{ data: Workspace }>(workspacePath);
-      await client.sendForm("PUT", workspacePath, {
+      await client.sendForm("PATCH", workspacePath, {
         manifest: JSON.stringify({
           fileTreeRevision: current.data.fileTreeRevision,
           fileChanges: [{ operation: "create_folder", relativePath }],
@@ -359,7 +359,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ environmentId, volumeName }, client) => {
       const response = await client.get<{ data: Backup[] }>(
-        `/environments/${environmentId}/volumes/${volumeName}/backups`
+        `/agents/${environmentId}/volumes/${volumeName}/backups`
       );
 
       if (!response.data || response.data.length === 0) {
@@ -397,7 +397,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ environmentId, volumeName }, client) => {
       const response = await client.post<{ data: Backup }>(
-        `/environments/${environmentId}/volumes/${volumeName}/backups`
+        `/agents/${environmentId}/volumes/${volumeName}/backups`
       );
 
       return `Backup created for volume ${volumeName}.\n  ID: ${response.data.id}\n  Size: ${formatSizeMB(response.data.size)}`;
@@ -422,7 +422,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId, backupId }, client) => {
-      await client.delete(`/environments/${environmentId}/volumes/backups/${backupId}`);
+      await client.delete(`/agents/${environmentId}/volumes/backups/${backupId}`);
       return `Backup ${backupId} deleted.`;
     })
   );
@@ -446,7 +446,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId, volumeName, backupId }, client) => {
-      await client.post(`/environments/${environmentId}/volumes/${volumeName}/backups/${backupId}/restore`);
+      await client.post(`/agents/${environmentId}/volumes/${volumeName}/backups/${backupId}`, { selectAll: true }, { action: "restore" });
       return `Volume ${volumeName} restored from backup ${backupId}.`;
     })
   );
@@ -470,7 +470,7 @@ export function registerVolumeTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ environmentId, backupId }, client) => {
       const response = await client.get<{ data: string[] }>(
-        `/environments/${environmentId}/volumes/backups/${backupId}/files`
+        `/agents/${environmentId}/volumes/backups/${backupId}/files`
       );
 
       if (!response.data || response.data.length === 0) {

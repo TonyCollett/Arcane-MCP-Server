@@ -24,7 +24,7 @@
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "lint": "eslint src/",
-    "update-api-spec": "curl -so _docs/arcane_api_docs.json https://arcane.randomsynergy.xyz/api/openapi.json && npx openapi-typescript _docs/arcane_api_docs.json -o src/types/generated/arcane-api.ts",
+    "update-api-spec": "curl -fso _docs/arcane_api_docs.json \"${ARCANE_BASE_URL:?set ARCANE_BASE_URL}/api/openapi.json\" && node -e \"const y=require('js-yaml'),fs=require('fs');fs.writeFileSync('_docs/arcane_api_docs.yaml',y.dump(JSON.parse(fs.readFileSync('_docs/arcane_api_docs.json','utf8')),{lineWidth:-1,noRefs:true}))\" && npx openapi-typescript _docs/arcane_api_docs.json -o src/types/generated/arcane-api.ts",
     "prepublishOnly": "npm run build:types && npm run build"
   },
   "keywords": [

@@ -38,7 +38,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
       const response = await client.get<{
         data: SwarmService[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/swarm/services`, { search, sort, order, start, limit });
+      }>(`/agents/${environmentId}/swarm/services`, { search, sort, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No swarm services found.";
@@ -94,7 +94,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
           };
           endpoint?: { Ports?: Array<{ Protocol?: string; TargetPort?: number; PublishedPort?: number }> };
         };
-      }>(`/environments/${environmentId}/swarm/services/${serviceId}`);
+      }>(`/agents/${environmentId}/swarm/services/${serviceId}`);
 
       const svc = response.data;
       const spec = svc.spec || {};
@@ -119,7 +119,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
       // Tasks live on their own endpoint
       const tasks = await client
         .get<{ data: Array<{ id: string; currentState: string; desiredState: string; nodeName?: string; error?: string }> }>(
-          `/environments/${environmentId}/swarm/services/${serviceId}/tasks`,
+          `/agents/${environmentId}/swarm/services/${serviceId}/tasks`,
           { limit: 20 }
         )
         .catch(() => undefined);
@@ -188,7 +188,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
       };
 
       const response = await client.post<{ data: { id: string; warnings?: string[] | null } }>(
-        `/environments/${environmentId}/swarm/services`,
+        `/agents/${environmentId}/swarm/services`,
         { spec }
       );
 
@@ -229,7 +229,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
             TaskTemplate?: { ContainerSpec?: Record<string, unknown> };
           } & Record<string, unknown>;
         };
-      }>(`/environments/${environmentId}/swarm/services/${serviceId}`);
+      }>(`/agents/${environmentId}/swarm/services/${serviceId}`);
 
       const spec = (current.data.spec || {}) as Record<string, unknown> & {
         Mode?: { Replicated?: { Replicas?: number } };
@@ -249,7 +249,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
         spec.Mode = { Replicated: { Replicas: replicas } };
       }
 
-      await client.put(`/environments/${environmentId}/swarm/services/${serviceId}`, { spec, version });
+      await client.put(`/agents/${environmentId}/swarm/services/${serviceId}`, { spec, version });
       return `Swarm service ${serviceId} updated.`;
     })
   );
@@ -272,7 +272,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
     },
     },
     toolHandler(async ({ environmentId, serviceId }, client) => {
-      await client.delete(`/environments/${environmentId}/swarm/services/${serviceId}`);
+      await client.delete(`/agents/${environmentId}/swarm/services/${serviceId}`);
       return `Swarm service ${serviceId} deleted.`;
     })
   );
@@ -296,7 +296,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
     },
     },
     toolHandler(async ({ environmentId, serviceId, replicas }, client) => {
-      await client.post(`/environments/${environmentId}/swarm/services/${serviceId}/scale`, { replicas });
+      await client.patch(`/agents/${environmentId}/swarm/services/${serviceId}`, { replicas });
       return `Swarm service ${serviceId} scaled to ${replicas} replicas.`;
     })
   );
@@ -324,7 +324,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
     },
     toolHandler(async ({ environmentId, serviceId, tail, since, timestamps, maxLines }, client) => {
       const result = await client.fetchLogs(
-        `/environments/${environmentId}/ws/swarm/services/${serviceId}/logs`,
+        `/agents/${environmentId}/ws/swarm/services/${serviceId}/logs`,
         { follow: false, tail, since, timestamps },
         Math.min(maxLines, MAX_LOG_LINES)
       );
@@ -354,7 +354,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
     },
     toolHandler(async ({ environmentId, advertiseAddr, listenAddr, forceNewCluster }, client) => {
       const response = await client.post<{ data: { nodeId: string } }>(
-        `/environments/${environmentId}/swarm/init`,
+        `/agents/${environmentId}/swarm/init`,
         { advertiseAddr, listenAddr, forceNewCluster, spec: {} }
       );
 
@@ -387,7 +387,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
     },
     },
     toolHandler(async ({ environmentId, joinToken, remoteAddrs, advertiseAddr, listenAddr }, client) => {
-      await client.post(`/environments/${environmentId}/swarm/join`, {
+      await client.post(`/agents/${environmentId}/swarm/join`, {
         joinToken, remoteAddrs, advertiseAddr, listenAddr,
       });
       return "Successfully joined the swarm cluster.";
@@ -412,7 +412,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
     },
     },
     toolHandler(async ({ environmentId, force }, client) => {
-      await client.post(`/environments/${environmentId}/swarm/leave`, { force });
+      await client.post(`/agents/${environmentId}/swarm/leave`, { force });
       return "Successfully left the swarm cluster.";
     })
   );
@@ -435,7 +435,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
     },
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{ data: SwarmClusterInfo }>(
-        `/environments/${environmentId}/swarm/info`
+        `/agents/${environmentId}/swarm/info`
       );
 
       const info = response.data;
@@ -449,7 +449,7 @@ export function registerSwarmTools(server: McpServer, registry?: ToolRegistry): 
       // Node counts come from the nodes endpoint
       const nodes = await client
         .get<{ data: Array<{ role: string; status: string }> }>(
-          `/environments/${environmentId}/swarm/nodes`,
+          `/agents/${environmentId}/swarm/nodes`,
           { limit: 100 }
         )
         .catch(() => undefined);

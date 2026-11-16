@@ -82,7 +82,7 @@ describe("Arcane v2.14 API compatibility", () => {
     expect(result.isError).toBeFalsy();
     const [method, path, fields] = mockClient.sendForm.mock.calls[0];
     expect(method).toBe("POST");
-    expect(path).toBe("/environments/0/projects");
+    expect(path).toBe("/agents/0/projects");
     expect(JSON.parse(fields.project)).toEqual({ name: "web", composeContent: "services: {}" });
     expect(JSON.parse(fields.manifest)).toEqual({ fileChanges: [] });
   });
@@ -96,11 +96,11 @@ describe("Arcane v2.14 API compatibility", () => {
   });
 
   it("arcane_registry_update sends every field, null when unchanged", async () => {
-    mockClient.put.mockResolvedValueOnce(undefined);
+    mockClient.patch.mockResolvedValueOnce(undefined);
 
     await call("arcane_registry_update", { registryId: "r1", token: "new-token" });
 
-    const body = mockClient.put.mock.calls[0][1];
+    const body = mockClient.patch.mock.calls[0][1];
     expect(Object.keys(body).sort()).toEqual([
       "awsAccessKeyId", "awsRegion", "awsSecretAccessKey", "description", "enabled",
       "insecure", "registryType", "repositoryNames", "token", "url", "username",
@@ -129,7 +129,7 @@ describe("Arcane v2.14 API compatibility", () => {
 
       const result = await call("arcane_volume_browse", { environmentId: "0", volumeName: "data", path: "/conf/" });
 
-      expect(mockClient.get).toHaveBeenCalledWith("/environments/0/volumes/data/workspace");
+      expect(mockClient.get).toHaveBeenCalledWith("/agents/0/volumes/data/workspace");
       const text = result.content[0].text;
       expect(text).toContain("Contents of /conf:");
       expect(text).toContain("app.yml");
@@ -142,7 +142,7 @@ describe("Arcane v2.14 API compatibility", () => {
 
       const result = await call("arcane_volume_browse_content", { environmentId: "0", volumeName: "data", path: "/conf/app.yml" });
 
-      expect(mockClient.get).toHaveBeenCalledWith("/environments/0/volumes/data/workspace/file", { relativePath: "conf/app.yml" });
+      expect(mockClient.get).toHaveBeenCalledWith("/agents/0/volumes/data/workspace/file", { relativePath: "conf/app.yml" });
       expect(result.content[0].text).toBe("hello");
     });
 
@@ -154,8 +154,8 @@ describe("Arcane v2.14 API compatibility", () => {
 
       expect(result.isError).toBeFalsy();
       const [method, path, fields] = mockClient.sendForm.mock.calls[0];
-      expect(method).toBe("PUT");
-      expect(path).toBe("/environments/0/volumes/data/workspace");
+      expect(method).toBe("PATCH");
+      expect(path).toBe("/agents/0/volumes/data/workspace");
       expect(JSON.parse(fields.manifest)).toEqual({
         fileTreeRevision: "rev-1",
         fileChanges: [{ operation: "create_folder", relativePath: "conf/new" }],
@@ -184,7 +184,7 @@ describe("Arcane v2.14 API compatibility", () => {
 
     it("arcane_template_update_variables upserts within scope and deletes removed keys", async () => {
       mockClient.get.mockResolvedValueOnce(variables);
-      mockClient.put.mockResolvedValue({ data: { syncResults: [] } });
+      mockClient.patch.mockResolvedValue({ data: { syncResults: [] } });
       mockClient.post.mockResolvedValue({ data: { syncResults: [{ environmentId: "1", status: "error", error: "offline" }] } });
       mockClient.delete.mockResolvedValue({ data: { syncResults: [] } });
 
@@ -193,7 +193,7 @@ describe("Arcane v2.14 API compatibility", () => {
         remove: ["OLD"],
       });
 
-      expect(mockClient.put).toHaveBeenCalledWith("/variables/v1", { value: "new.example.com", isSecret: undefined });
+      expect(mockClient.patch).toHaveBeenCalledWith("/variables/v1", { value: "new.example.com", isSecret: undefined });
       expect(mockClient.post).toHaveBeenCalledWith("/variables", {
         key: "NEW_KEY", value: "1", isSecret: false, allEnvironments: true, environmentIds: [],
       });

@@ -37,7 +37,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
       const response = await client.get<{
         data: GitOpsSync[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/gitops-syncs`, { search, start, limit });
+      }>(`/agents/${environmentId}/gitops/syncs`, { search, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No GitOps syncs configured.";
@@ -78,7 +78,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ environmentId, syncId }, client) => {
       const response = await client.get<{ data: GitOpsSync }>(
-        `/environments/${environmentId}/gitops-syncs/${syncId}`
+        `/agents/${environmentId}/gitops/syncs/${syncId}`
       );
 
       const sync = response.data;
@@ -123,7 +123,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ environmentId, name, repositoryId, branch, composePath, syncDirectory, autoSync, syncInterval }, client) => {
       const response = await client.post<{ data: { id: string; name: string } }>(
-        `/environments/${environmentId}/gitops-syncs`,
+        `/agents/${environmentId}/gitops/syncs`,
         { name, repositoryId, branch, composePath, syncDirectory, autoSync, syncInterval }
       );
 
@@ -163,7 +163,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
       if (autoSync !== undefined) body.autoSync = autoSync;
       if (syncInterval !== undefined) body.syncInterval = syncInterval;
 
-      await client.put(`/environments/${environmentId}/gitops-syncs/${syncId}`, body);
+      await client.patch(`/agents/${environmentId}/gitops/syncs/${syncId}`, body);
       return `GitOps sync ${syncId} updated.`;
     })
   );
@@ -186,7 +186,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId, syncId }, client) => {
-      await client.delete(`/environments/${environmentId}/gitops-syncs/${syncId}`);
+      await client.delete(`/agents/${environmentId}/gitops/syncs/${syncId}`);
       return `GitOps sync ${syncId} deleted.`;
     })
   );
@@ -209,7 +209,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId, syncId }, client) => {
-      await client.post(`/environments/${environmentId}/gitops-syncs/${syncId}/sync`);
+      await client.post(`/agents/${environmentId}/gitops/syncs/${syncId}`, undefined, { action: "sync" });
       return `GitOps sync triggered for ${syncId}.`;
     })
   );
@@ -239,7 +239,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
           lastSyncCommit?: string;
           lastSyncError?: string;
         };
-      }>(`/environments/${environmentId}/gitops-syncs/${syncId}/status`);
+      }>(`/agents/${environmentId}/gitops/syncs/${syncId}/status`);
 
       const status = response.data;
       const lines = [
@@ -279,7 +279,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
       const response = await client.get<{
         data: GitRepository[];
         pagination: { totalItems: number };
-      }>("/customize/git-repositories", { search, start, limit });
+      }>("/gitops/repositories", { search, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No Git repositories configured.";
@@ -321,7 +321,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ name, url, authType, username, token, sshKey }, client) => {
       const response = await client.post<{ data: { id: string; name: string } }>(
-        "/customize/git-repositories",
+        "/gitops/repositories",
         { name, url, authType, username, token, sshKey }
       );
 
@@ -348,9 +348,9 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
     },
     toolHandler(async ({ repositoryId, branch }, client) => {
       const response = await client.post<{ data: { message?: string } }>(
-        `/customize/git-repositories/${repositoryId}/test`,
+        `/gitops/repositories/${repositoryId}`,
         undefined,
-        { branch }
+        { action: "test", branch }
       );
       return response.data?.message || "Connection successful!";
     })
@@ -375,7 +375,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
     toolHandler(async ({ repositoryId }, client) => {
       const response = await client.get<{
         data: { branches: Array<{ name: string; isDefault: boolean }> | null };
-      }>(`/customize/git-repositories/${repositoryId}/branches`);
+      }>(`/gitops/repositories/${repositoryId}/branches`);
 
       if (!response.data.branches || response.data.branches.length === 0) {
         return "No branches found.";
@@ -416,7 +416,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
           path: string;
           files: Array<{ name: string; path: string; type: string; size?: number }> | null;
         };
-      }>(`/customize/git-repositories/${repositoryId}/files`, { branch, path });
+      }>(`/gitops/repositories/${repositoryId}/files`, { branch, path });
 
       if (!response.data.files || response.data.files.length === 0) {
         return `No files found at path: ${path || "/"}`;
@@ -449,7 +449,7 @@ export function registerGitopsTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ repositoryId }, client) => {
-      await client.delete(`/customize/git-repositories/${repositoryId}`);
+      await client.delete(`/gitops/repositories/${repositoryId}`);
       return `Repository ${repositoryId} deleted.`;
     })
   );

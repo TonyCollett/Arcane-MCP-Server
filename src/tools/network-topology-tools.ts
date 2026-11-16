@@ -29,7 +29,7 @@ export function registerNetworkTopologyTools(server: McpServer, registry?: ToolR
     },
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{ data: NetworkTopology }>(
-        `/environments/${environmentId}/networks/topology`
+        `/agents/${environmentId}/networks/topology`
       );
 
       const topology = response.data;

@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — Arcane 3.0 support (breaking)
+Arcane 3.0 reorganised its API, so earlier releases of this server get "API endpoint not found" for every environment-scoped call against it. **Requires Arcane v3.0 or newer** (tested against v3.0.1). Installs on Arcane v2.x should stay on the previous release. Tool names and count (**183**) are unchanged.
+- Environment-scoped endpoints moved from `/environments/{id}/…` to `/agents/{id}/…`.
+- Action endpoints are now `?action=` on the resource:
+  - containers: `start`, `stop`, `restart`
+  - projects: `up`, `redeploy` and `pull` go through `/deploy`; `down`, `restart` and `updateservices` go to the project itself
+  - jobs: `run`; GitOps syncs: `sync`; registries and git repositories: `test`; notifications: `test`
+  - bulk container actions: `startall`, `stopall`, `startstopped`
+  - image update checks: `all`, `batch`; volume backups: `restore`
+- Edits use `PATCH` instead of `PUT`: environments, environment settings, projects, GitOps syncs, registries, job schedules, templates, global variables, users, swarm scaling and volume workspaces.
+- Renamed endpoints: `/api-keys` → `/apikeys`, `/container-registries` → `/registries`, `/customize/git-repositories` → `/gitops/repositories`, `/customize/categories` and `/customize/search` → `/settings/…`, `gitops-syncs` → `gitops/syncs`, `image-updates` → `images/updates`, `job-schedules` → `jobs/schedules`, `vulnerabilities/ignore` → `vulnerabilities/ignored`, `scanner-status` → `scanner`, `image-options` → `images`, `/events/environment/{id}` → `/events/agent/{id}`.
+- Notification settings are global in Arcane 3.0. The notification tools still accept `environmentId` but ignore it.
+- `arcane_dashboard_get` combines the containers, projects, images, volumes and networks counts endpoints and `/app/version`, because Arcane 3.0 has no single dashboard endpoint. Action items are no longer reported. A counts request that fails is listed as unavailable instead of failing the whole tool.
+- `arcane_project_get` merges the project's summary, runtime and updates sections, which Arcane 3.0 serves separately, so services and update status still appear.
+- The build workspace tools use Arcane 3.0's workspace API (`/builds/workspace`). `arcane_build_workspace_upload` sends a workspace manifest and creates or overwrites the file.
+- `arcane_environment_create` no longer takes `isEdge` or `accessToken`; Arcane 3.0 connects agents with enrollment tokens. `arcane_environment_pair_agent` returns the environment's enrollment token and no longer takes `rotate`. `arcane_environment_get_deployment_snippets` uses `POST`.
+- The bulk container tools report the containers Arcane lists as started or stopped, plus any that failed.
+- OpenAPI spec (`_docs/arcane_api_docs.{json,yaml}`) and generated types refreshed to v3.0.1. `npm run update-api-spec` now reads from `ARCANE_BASE_URL` instead of a fixed host.
+- New `v3-compat.test.ts` checks every literal API path in the tools against the bundled spec, plus the endpoints whose shape changed.
+
 ### Added
 - **Docker support** — multi-stage `Dockerfile` (node:22-alpine, non-root `node` user, built-in `HEALTHCHECK` on `/health`), `.dockerignore`, and `docker-compose.yml` (HTTP mode, port published on `127.0.0.1`, read-only root FS, all capabilities dropped, optional `~/.arcane` mount for hot-reloaded tool filtering). The image defaults to `--tcp`; pass `--stdio` for stdio clients.
 - CI `docker` job builds the image and checks the container reaches `healthy`.

@@ -37,7 +37,7 @@ export function registerNetworkTools(server: McpServer, registry?: ToolRegistry)
       const response = await client.get<{
         data: Network[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/networks`, { search, sort, order, start, limit });
+      }>(`/agents/${environmentId}/networks`, { search, sort, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No networks found.";
@@ -79,7 +79,7 @@ export function registerNetworkTools(server: McpServer, registry?: ToolRegistry)
     },
     toolHandler(async ({ environmentId, networkId }, client) => {
       const response = await client.get<{ data: Network }>(
-        `/environments/${environmentId}/networks/${networkId}`
+        `/agents/${environmentId}/networks/${networkId}`
       );
 
       const net = response.data;
@@ -143,7 +143,7 @@ export function registerNetworkTools(server: McpServer, registry?: ToolRegistry)
       }
 
       const response = await client.post<{ data: { id: string; warning?: string } }>(
-        `/environments/${environmentId}/networks`,
+        `/agents/${environmentId}/networks`,
         { name, options }
       );
 
@@ -173,7 +173,7 @@ export function registerNetworkTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, networkId }, client) => {
-      await client.delete(`/environments/${environmentId}/networks/${networkId}`);
+      await client.delete(`/agents/${environmentId}/networks/${networkId}`);
       return `Network ${networkId} deleted successfully.`;
     })
   );
@@ -197,7 +197,7 @@ export function registerNetworkTools(server: McpServer, registry?: ToolRegistry)
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.post<{
         data: { networksDeleted?: string[] | null; spaceReclaimed?: number };
-      }>(`/environments/${environmentId}/networks/prune`);
+      }>(`/agents/${environmentId}/networks/prune`);
 
       const deleted = response.data.networksDeleted?.length || 0;
       return deleted > 0
@@ -225,7 +225,7 @@ export function registerNetworkTools(server: McpServer, registry?: ToolRegistry)
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{
         data: { total: number; inuse: number; unused: number };
-      }>(`/environments/${environmentId}/networks/counts`);
+      }>(`/agents/${environmentId}/networks/counts`);
 
       return `Network Counts:\n  Total: ${response.data.total}\n  In Use: ${response.data.inuse || 0}\n  Unused: ${response.data.unused || 0}`;
     })

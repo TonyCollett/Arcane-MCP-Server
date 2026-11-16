@@ -6,8 +6,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
-import { validatePath } from "../utils/format.js";
-import type { Build, BuildDetails, WorkspaceFile } from "../types/arcane-types.js";
+import { formatSizeCompact, toWorkspacePath, validatePath } from "../utils/format.js";
+import type { Build, BuildDetails, Workspace, WorkspaceFileContent } from "../types/arcane-types.js";
 
 export function registerBuildTools(server: McpServer, registry?: ToolRegistry): void {
   const register = moduleRegistrar(server, registry, "build");
@@ -43,7 +43,7 @@ export function registerBuildTools(server: McpServer, registry?: ToolRegistry): 
       if (platform) body.platforms = [platform];
 
       // The build endpoint streams progress and finishes when the build is done.
-      await client.post(`/environments/${environmentId}/images/build`, body);
+      await client.post(`/agents/${environmentId}/images/build`, body);
 
       return `Build for ${tag} finished. Use arcane_build_list to inspect the result.`;
     })
@@ -73,7 +73,7 @@ export function registerBuildTools(server: McpServer, registry?: ToolRegistry): 
       const response = await client.get<{
         data: Build[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/images/builds`, {
+      }>(`/agents/${environmentId}/images/builds`, {
         status, search, start, limit,
       });
 
@@ -115,7 +115,7 @@ export function registerBuildTools(server: McpServer, registry?: ToolRegistry): 
     },
     toolHandler(async ({ environmentId, buildId }, client) => {
       const response = await client.get<{ data: BuildDetails }>(
-        `/environments/${environmentId}/images/builds/${buildId}`
+        `/agents/${environmentId}/images/builds/${buildId}`
       );
 
       const build = response.data;
@@ -150,7 +150,7 @@ export function registerBuildTools(server: McpServer, registry?: ToolRegistry): 
     "arcane_build_workspace_browse",
     {
       title: "Browse build workspace",
-      description: "Browse files in the build workspace directory",
+      description: "List the files and directories directly under a path in the build workspace",
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -163,22 +163,27 @@ export function registerBuildTools(server: McpServer, registry?: ToolRegistry): 
       },
     },
     toolHandler(async ({ environmentId, path }, client) => {
-      if (path) validatePath(path);
+      const dir = toWorkspacePath(validatePath(path ?? "/"));
+      const response = await client.get<{ data: Workspace }>(`/agents/${environmentId}/builds/workspace`);
 
-      const response = await client.get<{ data: WorkspaceFile[] }>(
-        `/environments/${environmentId}/builds/browse`,
-        { path }
+      // The workspace is a flat, recursive listing — keep only direct children of `dir`
+      const prefix = dir ? `${dir}/` : "";
+      const entries = (response.data?.files ?? []).filter(
+        (entry) => entry.relativePath.startsWith(prefix) && !entry.relativePath.slice(prefix.length).includes("/")
       );
 
-      if (!response.data || response.data.length === 0) {
-        return "No files found in workspace.";
+      if (entries.length === 0) {
+        return dir ? `Directory /${dir} is empty or does not exist.` : "No files found in workspace.";
       }
 
-      const lines = [`Workspace files${path ? ` in ${path}` : ""}:\n`];
-      for (const file of response.data) {
-        const type = file.isDirectory ? "[DIR]" : "[FILE]";
-        const size = file.size !== undefined ? ` (${file.size} bytes)` : "";
-        lines.push(`${type} ${file.name}${size}`);
+      const lines = [`Workspace files${dir ? ` in /${dir}` : ""}:\n`];
+      for (const entry of entries) {
+        const type = entry.isDirectory ? "[DIR]" : "[FILE]";
+        const size = entry.isDirectory ? "" : ` (${formatSizeCompact(entry.size)})`;
+        lines.push(`${type} ${entry.name}${size}`);
+      }
+      if (response.data.fileTreeTruncated) {
+        lines.push("\n(Workspace listing was truncated by Arcane — some entries may be missing.)");
       }
 
       return lines.join("\n");
@@ -203,14 +208,17 @@ export function registerBuildTools(server: McpServer, registry?: ToolRegistry): 
       },
     },
     toolHandler(async ({ environmentId, path }, client) => {
-      validatePath(path);
-
-      const response = await client.get<{ data: { content: string; mimeType?: string } }>(
-        `/environments/${environmentId}/builds/browse/content`,
-        { path }
+      const relativePath = toWorkspacePath(validatePath(path));
+      const response = await client.get<{ data: WorkspaceFileContent }>(
+        `/agents/${environmentId}/builds/workspace/file`,
+        { relativePath }
       );
 
-      return `File: ${path}\n\n${response.data.content}`;
+      const file = response.data;
+      if (file.content === undefined && file.readOnlyReason) {
+        return `Cannot display /${relativePath}: ${file.readOnlyReason} (${formatSizeCompact(file.size)}, ${file.mimeType})`;
+      }
+      return `File: /${relativePath}\n\n${file.content ?? ""}`;
     })
   );
 
@@ -219,7 +227,7 @@ export function registerBuildTools(server: McpServer, registry?: ToolRegistry): 
     "arcane_build_workspace_upload",
     {
       title: "Upload workspace file",
-      description: "Upload a file to the build workspace",
+      description: "Create or overwrite a text file in the build workspace (the parent directory must already exist)",
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -233,18 +241,33 @@ export function registerBuildTools(server: McpServer, registry?: ToolRegistry): 
       },
     },
     toolHandler(async ({ environmentId, path, content }, client) => {
-      validatePath(path);
+      const relativePath = toWorkspacePath(validatePath(path));
+      if (!relativePath) {
+        throw new Error("Path must name a file below the workspace root");
+      }
+      const workspacePath = `/agents/${environmentId}/builds/workspace`;
+      const fileName = relativePath.split("/").pop() as string;
 
-      // The API expects multipart/form-data with the destination path as a query param
-      const fileName = path.split("/").pop() || "file";
-      await client.postMultipart(
-        `/environments/${environmentId}/builds/browse/upload`,
-        { path },
-        fileName,
-        content
+      // Workspace edits are optimistic: send the revision we read so Arcane can reject stale changes.
+      // An overwrite also carries the file's current content as its baseline.
+      const current = await client.get<{ data: Workspace }>(workspacePath);
+      const exists = (current.data?.files ?? []).some((entry) => entry.relativePath === relativePath && !entry.isDirectory);
+      const files = [{ name: fileName, content }];
+      const change: Record<string, unknown> = { operation: exists ? "update_file" : "create_file", relativePath, uploadIndex: 0 };
+      if (exists) {
+        const baseline = await client.get<{ data: WorkspaceFileContent }>(`${workspacePath}/file`, { relativePath });
+        change.baselineIndex = files.length;
+        files.push({ name: fileName, content: baseline.data?.content ?? "" });
+      }
+
+      await client.sendForm(
+        "PATCH",
+        workspacePath,
+        { manifest: JSON.stringify({ fileTreeRevision: current.data?.fileTreeRevision, fileChanges: [change] }) },
+        files
       );
 
-      return `File uploaded to workspace: ${path}`;
+      return `File ${exists ? "updated" : "uploaded"} in workspace: /${relativePath}`;
     })
   );
 

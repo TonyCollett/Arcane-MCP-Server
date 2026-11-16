@@ -86,7 +86,7 @@ export function registerEventTools(server: McpServer, registry?: ToolRegistry): 
       const response = await client.get<{
         data: Event[];
         pagination: { totalItems: number };
-      }>(`/events/environment/${environmentId}`, { type, start, limit });
+      }>(`/events/agent/${environmentId}`, { type, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No events found for this environment.";

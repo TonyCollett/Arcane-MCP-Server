@@ -146,7 +146,7 @@ export function registerUserTools(server: McpServer, registry?: ToolRegistry): v
       if (email) body.email = email;
       if (password) body.password = password;
 
-      await client.put(`/users/${userId}`, body);
+      await client.patch(`/users/${userId}`, body);
       return `User ${userId} updated.`;
     })
   );

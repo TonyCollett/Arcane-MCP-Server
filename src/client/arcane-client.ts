@@ -264,33 +264,29 @@ export class ArcaneClient {
   }
 
   /**
-   * POST a single file as multipart/form-data (e.g. build workspace uploads).
-   */
-  async postMultipart<T>(
-    path: string,
-    params: Record<string, string | number | boolean | undefined> | undefined,
-    fileName: string,
-    content: string
-  ): Promise<T> {
-    const form = new FormData();
-    form.append("file", new Blob([content]), fileName);
-    return this.sendMultipart<T>("POST", path, params, form);
-  }
-
-  /**
    * Send multipart/form-data made of plain string fields, e.g. the JSON-encoded
    * `project` and `manifest` parts used by project creation and workspace updates.
+   * `files` are appended as repeated `files` parts, in order, so a workspace
+   * manifest can point at them by index (`uploadIndex` / `baselineIndex`).
    */
-  async sendForm<T>(method: "POST" | "PUT", path: string, fields: Record<string, string>): Promise<T> {
+  async sendForm<T>(
+    method: "POST" | "PUT" | "PATCH",
+    path: string,
+    fields: Record<string, string>,
+    files: Array<{ name: string; content: string }> = []
+  ): Promise<T> {
     const form = new FormData();
     for (const [key, value] of Object.entries(fields)) {
       form.append(key, value);
+    }
+    for (const file of files) {
+      form.append("files", new Blob([file.content], { type: "text/plain" }), file.name);
     }
     return this.sendMultipart<T>(method, path, undefined, form);
   }
 
   private async sendMultipart<T>(
-    method: "POST" | "PUT",
+    method: "POST" | "PUT" | "PATCH",
     path: string,
     params: Record<string, string | number | boolean | undefined> | undefined,
     form: FormData

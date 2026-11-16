@@ -41,7 +41,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
       const response = await client.get<{
         data: Project[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/projects`, { search, name, status, updates, sort, order, start, limit });
+      }>(`/agents/${environmentId}/projects`, { search, name, status, updates, sort, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return updates ? `No projects with update status "${updates}" found.` : "No projects found.";
@@ -95,11 +95,23 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, projectId }, client) => {
-      const response = await client.get<{ data: Project & { config?: string } }>(
-        `/environments/${environmentId}/projects/${projectId}`
-      );
+      // Arcane 3.0 serves a project in sections; its own UI fetches them separately and
+      // merges them. The summary is required, runtime (services) and updates are best-effort.
+      const basePath = `/agents/${environmentId}/projects/${projectId}`;
+      const [summary, runtime, updates] = await Promise.allSettled([
+        client.get<{ data: Project }>(basePath),
+        client.get<{ data: Project }>(`${basePath}/runtime`),
+        client.get<{ data: Project }>(`${basePath}/updates`),
+      ]);
+      if (summary.status === "rejected") throw summary.reason;
+      const section = (result: PromiseSettledResult<{ data: Project }>) =>
+        result.status === "fulfilled" ? result.value?.data : undefined;
 
-      const proj = response.data;
+      const proj: Project = {
+        ...summary.value.data,
+        ...section(runtime),
+        updateInfo: section(updates)?.updateInfo ?? section(runtime)?.updateInfo ?? summary.value.data?.updateInfo,
+      };
       const lines = [
         `Project: ${proj.name}`,
         `  ID: ${proj.id}`,
@@ -149,7 +161,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     toolHandler(async ({ environmentId, projectId, tail, since, timestamps, maxLines }, client) => {
       const result = await client.fetchLogs(
-        `/environments/${environmentId}/ws/projects/${projectId}/logs`,
+        `/agents/${environmentId}/ws/projects/${projectId}/logs`,
         { follow: false, tail, since, timestamps },
         Math.min(maxLines, MAX_LOG_LINES)
       );
@@ -182,7 +194,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
       // config plus an initial workspace `manifest` (no extra files here).
       const response = await client.sendForm<{ data: { id: string; name: string } }>(
         "POST",
-        `/environments/${environmentId}/projects`,
+        `/agents/${environmentId}/projects`,
         {
           project: JSON.stringify({ name, composeContent, envContent }),
           manifest: JSON.stringify({ fileChanges: [] }),
@@ -217,7 +229,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
       if (composeContent) body.composeContent = composeContent;
       if (envContent) body.envContent = envContent;
 
-      await client.put(`/environments/${environmentId}/projects/${projectId}`, body);
+      await client.patch(`/agents/${environmentId}/projects/${projectId}`, body);
       return `Project ${projectId} updated successfully.`;
     })
   );
@@ -240,7 +252,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, projectId }, client) => {
-      await client.post(`/environments/${environmentId}/projects/${projectId}/up`);
+      await client.post(`/agents/${environmentId}/projects/${projectId}/deploy`, {}, { action: "up" });
       return `Project ${projectId} deployed successfully.`;
     })
   );
@@ -263,7 +275,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, projectId }, client) => {
-      await client.post(`/environments/${environmentId}/projects/${projectId}/down`);
+      await client.post(`/agents/${environmentId}/projects/${projectId}`, undefined, { action: "down" });
       return `Project ${projectId} stopped and removed.`;
     })
   );
@@ -286,7 +298,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, projectId }, client) => {
-      await client.post(`/environments/${environmentId}/projects/${projectId}/restart`);
+      await client.post(`/agents/${environmentId}/projects/${projectId}`, undefined, { action: "restart" });
       return `Project ${projectId} restarted.`;
     })
   );
@@ -309,7 +321,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, projectId }, client) => {
-      await client.post(`/environments/${environmentId}/projects/${projectId}/redeploy`);
+      await client.post(`/agents/${environmentId}/projects/${projectId}/deploy`, {}, { action: "redeploy" });
       return `Project ${projectId} redeployed successfully.`;
     })
   );
@@ -333,10 +345,9 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, projectId, services }, client) => {
-      client.postInBackground(
-        `/environments/${environmentId}/projects/${projectId}/update-services`,
-        services && services.length > 0 ? { services } : {}
-      );
+      const query = new URLSearchParams({ action: "updateservices" });
+      for (const service of services ?? []) query.append("services", service);
+      client.postInBackground(`/agents/${environmentId}/projects/${projectId}?${query}`, {});
 
       const scope = services && services.length > 0 ? `services ${services.join(", ")}` : "all services";
       return [
@@ -367,7 +378,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     toolHandler(async ({ environmentId, projectId, removeVolumes, removeFiles }, client) => {
       await client.delete(
-        `/environments/${environmentId}/projects/${projectId}/destroy`,
+        `/agents/${environmentId}/projects/${projectId}`,
         undefined,
         { removeVolumes, removeFiles }
       );
@@ -393,7 +404,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, projectId }, client) => {
-      await client.post(`/environments/${environmentId}/projects/${projectId}/pull`);
+      await client.post(`/agents/${environmentId}/projects/${projectId}/deploy`, {}, { action: "pull" });
       return `Images pulled for project ${projectId}.`;
     })
   );
@@ -422,7 +433,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
           stoppedProjects: number;
           archivedProjects?: number;
         };
-      }>(`/environments/${environmentId}/projects/counts`);
+      }>(`/agents/${environmentId}/projects/counts`);
 
       const c = response.data;
       return `Project Counts:\n  Total: ${c.totalProjects}\n  Running: ${c.runningProjects || 0}\n  Stopped: ${c.stoppedProjects || 0}\n  Archived: ${c.archivedProjects || 0}`;
@@ -448,7 +459,7 @@ export function registerProjectTools(server: McpServer, registry?: ToolRegistry)
     },
     toolHandler(async ({ environmentId, projectId }, client) => {
       await client.post(
-        `/environments/${environmentId}/projects/${projectId}/build`
+        `/agents/${environmentId}/projects/${projectId}/build`
       );
       return `Build started for project ${projectId}.`;
     })

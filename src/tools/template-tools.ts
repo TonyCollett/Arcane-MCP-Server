@@ -166,7 +166,7 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
       if (content) body.content = content;
       if (envContent) body.envContent = envContent;
 
-      await client.put(`/templates/${templateId}`, body);
+      await client.patch(`/templates/${templateId}`, body);
       return `Template ${templateId} updated.`;
     })
   );
@@ -268,7 +268,7 @@ export function registerTemplateTools(server: McpServer, registry?: ToolRegistry
       for (const [key, value] of Object.entries(variables ?? {})) {
         const current = byKey.get(key);
         if (current) {
-          collect(await client.put<{ data: GlobalVariableMutation }>(`/variables/${current.id}`, { value, isSecret }));
+          collect(await client.patch<{ data: GlobalVariableMutation }>(`/variables/${current.id}`, { value, isSecret }));
           results.push(`updated ${key}`);
         } else {
           collect(

@@ -35,7 +35,7 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
       const response = await client.get<{
         data: Environment[];
         pagination: { totalItems: number };
-      }>("/environments", { search, sort, order, start, limit });
+      }>("/agents", { search, sort, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No environments found.";
@@ -69,7 +69,7 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.get<{ data: Environment }>(`/environments/${environmentId}`);
+      const response = await client.get<{ data: Environment }>(`/agents/${environmentId}`);
       const env = response.data;
 
       const lines = [
@@ -93,7 +93,7 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
     "arcane_environment_create",
     {
       title: "Create environment",
-      description: "Create a new Docker environment in Arcane",
+      description: "Create a new Docker environment in Arcane. Connect an agent to it with the enrollment token from arcane_environment_get_deployment_snippets",
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -103,16 +103,12 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
       inputSchema: {
       name: z.string().describe("Name for the environment"),
       apiUrl: z.string().optional().describe("API URL for the Docker host"),
-      isEdge: z.boolean().optional().describe("Register as an edge agent environment"),
-      accessToken: z.string().optional().describe("Access token for connecting to the environment's agent"),
     },
     },
-    toolHandler(async ({ name, apiUrl, isEdge, accessToken }, client) => {
-      const response = await client.post<{ data: Environment & { apiKey?: string } }>("/environments", {
+    toolHandler(async ({ name, apiUrl }, client) => {
+      const response = await client.post<{ data: Environment & { apiKey?: string } }>("/agents", {
         name,
         apiUrl,
-        isEdge,
-        accessToken,
       });
 
       const env = response.data;
@@ -148,7 +144,7 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
       if (name) body.name = name;
       if (apiUrl) body.apiUrl = apiUrl;
 
-      const response = await client.put<{ data: Environment }>(`/environments/${environmentId}`, body);
+      const response = await client.patch<{ data: Environment }>(`/agents/${environmentId}`, body);
       return `Environment updated: ${response.data.name}`;
     })
   );
@@ -170,7 +166,7 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      await client.delete(`/environments/${environmentId}`);
+      await client.delete(`/agents/${environmentId}`);
       return `Environment ${environmentId} deleted successfully.`;
     })
   );
@@ -193,7 +189,7 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
     },
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.post<{ data: { status: string; message?: string } }>(
-        `/environments/${environmentId}/test`
+        `/agents/${environmentId}/test`
       );
       const { status, message } = response.data;
       return `Connection test: ${status}${message ? ` - ${message}` : ""}`;
@@ -205,7 +201,7 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
     "arcane_environment_pair_agent",
     {
       title: "Pair agent",
-      description: "Generate or rotate the local agent pairing token for an environment",
+      description: "Get the enrollment token an agent uses to connect to an environment (Arcane 3.0 replaced pairing tokens with enrollment tokens)",
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -213,17 +209,18 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
         openWorldHint: false,
       },
       inputSchema: {
-      environmentId: z.string().describe("Environment ID (use '0' for local)"),
-      rotate: z.boolean().optional().default(false).describe("Rotate existing token"),
+      environmentId: z.string().describe("Environment ID"),
     },
     },
-    toolHandler(async ({ environmentId, rotate }, client) => {
-      const response = await client.post<{ data: { token: string } }>(
-        `/environments/${environmentId}/agent/pair`,
-        { rotate }
+    toolHandler(async ({ environmentId }, client) => {
+      const response = await client.post<{ data: { enrollmentToken?: string } }>(
+        `/agents/${environmentId}/deployment`
       );
 
-      return `Agent pairing token generated:\n  Token: ${response.data.token}`;
+      if (!response.data?.enrollmentToken) {
+        return "Arcane did not return an enrollment token for this environment.";
+      }
+      return `Agent enrollment token:\n  Token: ${response.data.enrollmentToken}\n\nUse arcane_environment_get_deployment_snippets for the full docker run / compose snippet.`;
     })
   );
 
@@ -245,7 +242,7 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
     },
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{ data: { currentVersion: string; buildTime?: string } }>(
-        `/environments/${environmentId}/version`
+        `/agents/${environmentId}/version`
       );
 
       return `Agent Version: ${response.data.currentVersion}${response.data.buildTime ? `\nBuild Time: ${response.data.buildTime}` : ""}`;
@@ -279,7 +276,7 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
         Images: number;
         MemTotal: number;
         NCPU: number;
-      }>(`/environments/${environmentId}/system/docker/info`);
+      }>(`/agents/${environmentId}/system/docker/info`);
 
       const lines = [
         "Docker System Info:",
@@ -313,8 +310,8 @@ export function registerEnvironmentTools(server: McpServer, registry?: ToolRegis
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.get<{ data: { dockerRun?: string; dockerCompose?: string } }>(
-        `/environments/${environmentId}/deployment`
+      const response = await client.post<{ data: { dockerRun?: string; dockerCompose?: string; enrollmentToken?: string } }>(
+        `/agents/${environmentId}/deployment`
       );
 
       const snippets = response.data;

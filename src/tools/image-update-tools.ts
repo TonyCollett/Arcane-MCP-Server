@@ -66,7 +66,7 @@ export function registerImageUpdateTools(server: McpServer, registry?: ToolRegis
     },
     toolHandler(async ({ environmentId, imageRef }, client) => {
       const response = await client.get<{ data: ImageUpdateResponse }>(
-        `/environments/${environmentId}/image-updates/check`,
+        `/agents/${environmentId}/images/updates/check`,
         { imageRef }
       );
 
@@ -93,7 +93,7 @@ export function registerImageUpdateTools(server: McpServer, registry?: ToolRegis
     },
     toolHandler(async ({ environmentId, imageId }, client) => {
       const response = await client.get<{ data: ImageUpdateResponse }>(
-        `/environments/${environmentId}/image-updates/check/${imageId}`
+        `/agents/${environmentId}/images/updates/check/${imageId}`
       );
 
       return formatUpdateCheck(imageId, response.data);
@@ -119,8 +119,9 @@ export function registerImageUpdateTools(server: McpServer, registry?: ToolRegis
     },
     toolHandler(async ({ environmentId, imageRefs }, client) => {
       const response = await client.post<{ data: BatchImageUpdateResponse }>(
-        `/environments/${environmentId}/image-updates/check-batch`,
-        { imageRefs }
+        `/agents/${environmentId}/images/updates/check`,
+        { imageRefs },
+        { action: "batch" }
       );
 
       return formatBatchResults(response.data || {});
@@ -144,7 +145,7 @@ export function registerImageUpdateTools(server: McpServer, registry?: ToolRegis
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      client.postInBackground(`/environments/${environmentId}/image-updates/check-all`, {});
+      client.postInBackground(`/agents/${environmentId}/images/updates/check?action=all`, {});
 
       return [
         "Update check for all images started in the background (this can take several minutes).",
@@ -172,7 +173,7 @@ export function registerImageUpdateTools(server: McpServer, registry?: ToolRegis
     },
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{ data: ImageUpdateSummary }>(
-        `/environments/${environmentId}/image-updates/summary`
+        `/agents/${environmentId}/images/updates/summary`
       );
 
       const s = response.data;

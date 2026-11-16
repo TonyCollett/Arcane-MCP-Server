@@ -9,10 +9,10 @@ MCP server for Docker management via the Arcane platform. 183 tools, 2 resources
 ```bash
 npm install
 npm run build          # TypeScript → dist/
-npm test               # vitest (50 tests)
+npm test               # vitest (150 tests)
 npm run dev            # stdio mode
 npm run dev:tcp        # HTTP mode
-npm run update-api-spec  # Refresh OpenAPI spec from live instance
+ARCANE_BASE_URL=… npm run update-api-spec  # Refresh OpenAPI spec + generated types from a live instance
 ARCANE_BASE_URL=… ARCANE_API_KEY=… node scripts/live-smoke.mjs [envId]  # Run every read-only tool against a live instance; flags undefined/[object Object]/NaN in output
 docker compose up -d --build  # HTTP mode in a container (reads .env)
 ```
@@ -65,8 +65,10 @@ All tools use `server.registerTool()` with:
 ## Key Conventions
 
 - Tool names: `arcane_{resource}_{action}` (e.g., `arcane_container_list`)
-- Environment-scoped endpoints: `/environments/{id}/...`
-- Global endpoints (no envId): container-registries, git-repositories, templates, users, settings
+- Environment-scoped endpoints: `/agents/{id}/...` (Arcane 3.0 renamed them from `/environments/{id}/...`)
+- Actions are a query parameter on the resource, not a sub-path: `POST /agents/{id}/containers/{cid}?action=start`, `POST /agents/{id}/projects/{pid}/deploy?action=up`. Edits use `PATCH`
+- `src/tools/__tests__/v3-compat.test.ts` checks every literal API path in `src/tools/*-tools.ts` against `_docs/arcane_api_docs.json`; refresh the spec with `ARCANE_BASE_URL=… npm run update-api-spec`
+- Global endpoints (no envId): registries, gitops/repositories, templates, users, settings, notifications
 - Pagination params: `search`, `sort`, `order`, `start` (default 0), `limit` (default 20)
 - Path params with file access: must pass through `validatePath()` from `src/utils/format.ts`
 - Size formatting: use `formatSize()` / `formatSizeCompact()` from `src/utils/format.ts`, not inline math

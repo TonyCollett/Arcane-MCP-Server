@@ -39,7 +39,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
       const response = await client.get<{
         data: Container[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/containers`, { search, sort, order, start, limit, includeInternal });
+      }>(`/agents/${environmentId}/containers`, { search, sort, order, start, limit, includeInternal });
 
       if (!response.data || response.data.length === 0) {
         return "No containers found.";
@@ -98,7 +98,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
           ports?: Array<{ privatePort: number; publicPort?: number; type: string }>;
           labels?: Record<string, string>;
         };
-      }>(`/environments/${environmentId}/containers/${containerId}`);
+      }>(`/agents/${environmentId}/containers/${containerId}`);
 
       const c = response.data;
       const stateStatus = c.state?.status || (c.state?.running ? "running" : "unknown");
@@ -158,7 +158,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
     },
     toolHandler(async ({ environmentId, containerId, tail, since, timestamps, maxLines }, client) => {
       const result = await client.fetchLogs(
-        `/environments/${environmentId}/ws/containers/${containerId}/logs`,
+        `/agents/${environmentId}/ws/containers/${containerId}/logs`,
         { follow: false, tail, since, timestamps },
         Math.min(maxLines, MAX_LOG_LINES)
       );
@@ -210,7 +210,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
       }
 
       const response = await client.post<{ data: { id: string; name: string } }>(
-        `/environments/${environmentId}/containers`,
+        `/agents/${environmentId}/containers`,
         {
           name,
           image,
@@ -246,7 +246,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
     },
     },
     toolHandler(async ({ environmentId, containerId }, client) => {
-      await client.post(`/environments/${environmentId}/containers/${containerId}/start`);
+      await client.post(`/agents/${environmentId}/containers/${containerId}`, undefined, { action: "start" });
       return `Container ${containerId} started successfully.`;
     })
   );
@@ -269,7 +269,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
     },
     },
     toolHandler(async ({ environmentId, containerId }, client) => {
-      await client.post(`/environments/${environmentId}/containers/${containerId}/stop`);
+      await client.post(`/agents/${environmentId}/containers/${containerId}`, undefined, { action: "stop" });
       return `Container ${containerId} stopped successfully.`;
     })
   );
@@ -292,7 +292,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
     },
     },
     toolHandler(async ({ environmentId, containerId }, client) => {
-      await client.post(`/environments/${environmentId}/containers/${containerId}/restart`);
+      await client.post(`/agents/${environmentId}/containers/${containerId}`, undefined, { action: "restart" });
       return `Container ${containerId} restarted successfully.`;
     })
   );
@@ -315,7 +315,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
     },
     },
     toolHandler(async ({ environmentId, containerId }, client) => {
-      await client.post(`/environments/${environmentId}/containers/${containerId}/update`);
+      await client.post(`/agents/${environmentId}/containers/${containerId}/update`);
       return `Container ${containerId} updated successfully.`;
     })
   );
@@ -340,7 +340,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
     },
     },
     toolHandler(async ({ environmentId, containerId, force, volumes }, client) => {
-      await client.delete(`/environments/${environmentId}/containers/${containerId}`, { force, volumes });
+      await client.delete(`/agents/${environmentId}/containers/${containerId}`, { force, volumes });
       return `Container ${containerId} deleted successfully.`;
     })
   );
@@ -363,7 +363,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
     },
     },
     toolHandler(async ({ environmentId, containerId }, client) => {
-      await client.post(`/environments/${environmentId}/containers/${containerId}/redeploy`);
+      await client.post(`/agents/${environmentId}/containers/${containerId}/redeploy`);
       return `Container ${containerId} redeployed successfully.`;
     })
   );
@@ -387,7 +387,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
     },
     },
     toolHandler(async ({ environmentId, containerId, enabled }, client) => {
-      await client.put(`/environments/${environmentId}/containers/${containerId}/auto-update`, { enabled });
+      await client.put(`/agents/${environmentId}/containers/${containerId}/autoupdate`, { enabled });
       return `Auto-update ${enabled ? "enabled" : "disabled"} for container ${containerId}.`;
     })
   );
@@ -416,7 +416,7 @@ export function registerContainerTools(server: McpServer, registry?: ToolRegistr
           runningContainers: number;
           stoppedContainers: number;
         };
-      }>(`/environments/${environmentId}/containers/counts`, { includeInternal });
+      }>(`/agents/${environmentId}/containers/counts`, { includeInternal });
 
       const c = response.data;
       return `Container Counts:\n  Total: ${c.totalContainers}\n  Running: ${c.runningContainers}\n  Stopped: ${c.stoppedContainers}`;
