@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Event listings said "Found -1 events": Arcane 3.0 doesn't count event totals, so they now show the page size and whether more pages exist.
+- `arcane_system_get_health` printed "Version: unknown" and "Uptime: unknown": Arcane 3.0's health check returns only a status, so that's all it reports now (use `arcane_version_get` for the version).
+
 ### Changed — Arcane 3.0 support (breaking)
 Arcane 3.0 reorganised its API, so earlier releases of this server get "API endpoint not found" for every environment-scoped call against it. **Requires Arcane v3.0 or newer** (tested against v3.0.1). Installs on Arcane v2.x should stay on the previous release. Tool names and count (**183**) are unchanged.
 - Environment-scoped endpoints moved from `/environments/{id}/…` to `/agents/{id}/…`.
