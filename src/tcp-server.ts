@@ -8,6 +8,7 @@
  * Conforms to MCP Protocol Revision: 2025-11-25
  */
 
+import { randomUUID, webcrypto } from "node:crypto";
 import express, { type Request, type Response, type NextFunction } from "express";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
@@ -21,6 +22,12 @@ import {
   SESSION_CLEANUP_INTERVAL_MS,
   MAX_SESSIONS,
 } from "./constants.js";
+
+// Node 18 has no global Web Crypto (it arrived in Node 19), but the SDK's HTTP
+// transport calls crypto.randomUUID() on every POST, so without this every
+// request failed there with "crypto is not defined".
+const runtime = globalThis as { crypto?: unknown };
+runtime.crypto ??= webcrypto;
 
 // Session info with activity tracking
 interface SessionInfo {
@@ -255,7 +262,7 @@ export function createMcpApp(): express.Express {
 
           // Create new transport and server with atomic session storage
           transport = new StreamableHTTPServerTransport({
-            sessionIdGenerator: () => crypto.randomUUID(),
+            sessionIdGenerator: () => randomUUID(),
             onsessioninitialized: (newSessionId) => {
               // Store session atomically when initialized (before response)
               const now = new Date();
