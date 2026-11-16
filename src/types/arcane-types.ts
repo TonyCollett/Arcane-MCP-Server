@@ -227,34 +227,37 @@ export interface BuildDetails extends Build {
   outputTruncated?: boolean;
 }
 
-export interface WorkspaceFile {
-  name: string;
-  path: string;
-  size?: number;
-  isDirectory: boolean;
-  modifiedAt?: string;
-}
-
 // === Dashboard ===
 
-export interface DashboardSnapshot {
-  containers?: {
-    counts?: { totalContainers: number; runningContainers: number; stoppedContainers: number };
+/** The per-resource counts and version info the dashboard tool combines (Arcane 3.0 has no single dashboard endpoint). */
+export interface DashboardCounts {
+  containers: {
+    totalContainers: number;
+    runningContainers: number;
+    stoppedContainers: number;
+    unhealthyContainers?: number;
+    updatesAvailable?: number;
   };
-  imageUsageCounts?: {
-    totalImages: number;
-    totalImageSize: number;
-    imagesInuse: number;
-    imagesUnused: number;
+  projects: {
+    totalProjects: number;
+    runningProjects: number;
+    stoppedProjects: number;
+    archivedProjects?: number;
+    updatesAvailable?: number;
   };
-  actionItems?: {
-    items?: Array<{ kind: string; severity?: string; count: number }> | null;
-  };
-  versionInfo?: {
-    currentVersion?: string;
-    newestVersion?: string;
-    releaseUrl?: string;
-  };
+  images: { totalImages: number; totalImageSize: number; imagesInuse: number; imagesUnused: number };
+  volumes: { total: number; inuse: number; unused: number };
+  networks: { total: number; inuse: number; unused: number };
+  version: { currentVersion?: string; newestVersion?: string; updateAvailable?: boolean; releaseUrl?: string };
+}
+
+/** Result of a bulk container action (start all, stop all, start stopped). */
+export interface ContainerActionResult {
+  success?: boolean;
+  started?: string[] | null;
+  stopped?: string[] | null;
+  failed?: string[] | null;
+  errors?: string[] | null;
 }
 
 // === Events ===

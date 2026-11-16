@@ -171,7 +171,7 @@ describe("container-tools", () => {
       });
 
       expect(mockClient.delete).toHaveBeenCalledWith(
-        "/environments/env-1/containers/abc123",
+        "/agents/env-1/containers/abc123",
         { force: false, volumes: false }
       );
       expect(result.content[0].text).toContain("deleted successfully");

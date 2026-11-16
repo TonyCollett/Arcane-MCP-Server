@@ -28,7 +28,7 @@ export function registerJobTools(server: McpServer, registry?: ToolRegistry): vo
     },
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{ isAgent: boolean; jobs: Job[] | null }>(
-        `/environments/${environmentId}/jobs`
+        `/agents/${environmentId}/jobs`
       );
 
       if (!response.jobs || response.jobs.length === 0) {
@@ -70,7 +70,7 @@ export function registerJobTools(server: McpServer, registry?: ToolRegistry): vo
     },
     },
     toolHandler(async ({ environmentId, jobId }, client) => {
-      await client.post(`/environments/${environmentId}/jobs/${jobId}/run`);
+      await client.post(`/agents/${environmentId}/jobs/${jobId}`, undefined, { action: "run" });
       return `Job ${jobId} started.`;
     })
   );
@@ -93,7 +93,7 @@ export function registerJobTools(server: McpServer, registry?: ToolRegistry): vo
     },
     toolHandler(async ({ environmentId }, client) => {
       const config = await client.get<Record<string, string>>(
-        `/environments/${environmentId}/job-schedules`
+        `/agents/${environmentId}/jobs/schedules`
       );
 
       const entries = Object.entries(config).filter(
@@ -148,7 +148,7 @@ export function registerJobTools(server: McpServer, registry?: ToolRegistry): vo
         return "No intervals provided - nothing to update.";
       }
 
-      await client.put(`/environments/${environmentId}/job-schedules`, body);
+      await client.patch(`/agents/${environmentId}/jobs/schedules`, body);
       return "Job schedules updated.";
     })
   );

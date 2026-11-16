@@ -37,7 +37,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
       const response = await client.get<{
         data: ContainerRegistry[];
         pagination: { totalItems: number };
-      }>("/container-registries", { search, start, limit });
+      }>("/registries", { search, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No container registries configured.";
@@ -75,7 +75,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
     },
     toolHandler(async ({ registryId }, client) => {
       const response = await client.get<{ data: ContainerRegistry }>(
-        `/container-registries/${registryId}`
+        `/registries/${registryId}`
       );
 
       const reg = response.data;
@@ -122,7 +122,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
     },
     toolHandler(async ({ description, url, registryType, username, token, insecure, enabled, awsRegion, awsAccessKeyId, awsSecretAccessKey, repositoryNames }, client) => {
       const response = await client.post<{ data: { id: string } }>(
-        "/container-registries",
+        "/registries",
         {
           description,
           url,
@@ -181,7 +181,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
         awsRegion: null,
       };
 
-      await client.put(`/container-registries/${registryId}`, body);
+      await client.patch(`/registries/${registryId}`, body);
       return `Registry ${registryId} updated.`;
     })
   );
@@ -203,7 +203,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
     },
     },
     toolHandler(async ({ registryId }, client) => {
-      await client.delete(`/container-registries/${registryId}`);
+      await client.delete(`/registries/${registryId}`);
       return `Registry ${registryId} deleted.`;
     })
   );
@@ -226,7 +226,9 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
     },
     toolHandler(async ({ registryId }, client) => {
       const response = await client.post<{ data: { message?: string } }>(
-        `/container-registries/${registryId}/test`
+        `/registries/${registryId}`,
+        undefined,
+        { action: "test" }
       );
       return response.data?.message || "Connection successful!";
     })
@@ -246,7 +248,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
       },
     },
     toolHandler(async (_params, client) => {
-      await client.post("/container-registries/sync", { registries: [] });
+      await client.post("/registries/sync", { registries: [] });
       return "Registry sync initiated.";
     })
   );
@@ -275,7 +277,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
       const response = await client.get<{
         data: RegistryRepository[];
         pagination: { totalItems: number };
-      }>(`/container-registries/${registryId}/repositories`, { search, order, start, limit });
+      }>(`/registries/${registryId}/repositories`, { search, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return search ? `No repositories matching "${search}".` : "No repositories found in this registry.";
@@ -314,7 +316,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
       const response = await client.get<{
         data: RegistryRepositoryTag[];
         pagination: { totalItems: number };
-      }>(`/container-registries/${registryId}/tags`, { repository, search, order, start, limit });
+      }>(`/registries/${registryId}/tags`, { repository, search, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return search ? `No tags matching "${search}" in ${repository}.` : `No tags found in ${repository}.`;
@@ -361,7 +363,7 @@ export function registerRegistryTools(server: McpServer, registry?: ToolRegistry
     },
     toolHandler(async ({ registryId, repository, tag }, client) => {
       const response = await client.delete<{ data: { digest: string } }>(
-        `/container-registries/${registryId}/tags`,
+        `/registries/${registryId}/tags`,
         { repository, tag }
       );
       return `Deleted ${repository}:${tag} (manifest ${response.data?.digest ?? "unknown"}). Any other tags with that digest were removed too.`;

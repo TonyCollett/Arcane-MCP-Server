@@ -8,6 +8,15 @@ import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
 import { formatSizeGB, formatSizeMB } from "../utils/format.js";
 import { SECONDS_PER_HOUR } from "../constants.js";
+import type { ContainerActionResult } from "../types/arcane-types.js";
+
+/** Containers a bulk action couldn't handle, as a suffix for the tool's reply. */
+function bulkErrors(result: ContainerActionResult | undefined): string {
+  const failed = result?.failed ?? [];
+  const errors = result?.errors ?? [];
+  if (failed.length === 0 && errors.length === 0) return "";
+  return `\nFailed: ${failed.length > 0 ? failed.join(", ") : "-"}${errors.length > 0 ? `\nErrors: ${errors.join("; ")}` : ""}`;
+}
 
 export function registerSystemTools(server: McpServer, registry?: ToolRegistry): void {
   const register = moduleRegistrar(server, registry, "system");
@@ -66,7 +75,7 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
         MemTotal: number;
         NCPU: number;
         Driver: string;
-      }>(`/environments/${environmentId}/system/docker/info`);
+      }>(`/agents/${environmentId}/system/docker/info`);
 
       const lines = [
         "Docker System Information:",
@@ -113,7 +122,7 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
           spaceReclaimed?: number;
           errors?: string[];
         };
-      }>(`/environments/${environmentId}/system/prune`, {
+      }>(`/agents/${environmentId}/system/prune`, {
         containers: { mode: "stopped" },
         images: { mode: all ? "all" : "dangling" },
         networks: { mode: "unused" },
@@ -158,7 +167,7 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     toolHandler(async ({ environmentId }, client) => {
       // Unwrapped body (no `data` envelope): whether self-upgrade is possible here
       const result = await client.get<{ canUpgrade: boolean; error: boolean; message: string }>(
-        `/environments/${environmentId}/system/upgrade/check`
+        `/agents/${environmentId}/system/upgrade/check`
       );
 
       if (result.error) {
@@ -187,7 +196,7 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      await client.post(`/environments/${environmentId}/system/upgrade`);
+      await client.post(`/agents/${environmentId}/system/upgrade`);
       return "Upgrade initiated. The agent may restart.";
     })
   );
@@ -209,10 +218,12 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.post<{ started: number }>(
-        `/environments/${environmentId}/system/containers/start-all`
+      const response = await client.post<{ data?: ContainerActionResult }>(
+        `/agents/${environmentId}/system/containers`,
+        undefined,
+        { action: "startall" }
       );
-      return `Started ${response.started || 0} containers.`;
+      return `Started ${response.data?.started?.length ?? 0} containers.${bulkErrors(response.data)}`;
     })
   );
 
@@ -233,10 +244,12 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.post<{ stopped: number }>(
-        `/environments/${environmentId}/system/containers/stop-all`
+      const response = await client.post<{ data?: ContainerActionResult }>(
+        `/agents/${environmentId}/system/containers`,
+        undefined,
+        { action: "stopall" }
       );
-      return `Stopped ${response.stopped || 0} containers.`;
+      return `Stopped ${response.data?.stopped?.length ?? 0} containers.${bulkErrors(response.data)}`;
     })
   );
 
@@ -257,10 +270,12 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      const response = await client.post<{ started: number }>(
-        `/environments/${environmentId}/system/containers/start-stopped`
+      const response = await client.post<{ data?: ContainerActionResult }>(
+        `/agents/${environmentId}/system/containers`,
+        undefined,
+        { action: "startstopped" }
       );
-      return `Started ${response.started || 0} previously stopped containers.`;
+      return `Started ${response.data?.started?.length ?? 0} previously stopped containers.${bulkErrors(response.data)}`;
     })
   );
 

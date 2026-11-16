@@ -67,7 +67,7 @@ Every tool carries **safety annotations** so your AI knows which operations are 
 
 ---
 
-> **🆕 Recent update — v3.0:** Full **Arcane v2** support — requires **Arcane v2.8 or newer** (tested against v2.14.0). Endpoints, payloads, and tool set follow the new API — if you are still on Arcane v1.x, stay on server `2.x`. Breaking changes are listed in the [CHANGELOG](CHANGELOG.md).
+> **🆕 Recent update — Arcane 3.0:** Requires **Arcane v3.0 or newer** (tested against v3.0.1). Arcane 3.0 moved its API from `/environments/{id}` to `/agents/{id}` and folded most action endpoints into `?action=` parameters, so earlier releases of this server fail on every environment call against it. If you are still on Arcane v2.x, stay on the previous release. Breaking changes are listed in the [CHANGELOG](CHANGELOG.md).
 
 ## Tool Filtering
 

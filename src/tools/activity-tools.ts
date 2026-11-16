@@ -65,7 +65,7 @@ export function registerActivityTools(server: McpServer, registry?: ToolRegistry
       const response = await client.get<{
         data: Activity[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/activities`, { status, type, start, limit });
+      }>(`/agents/${environmentId}/activities`, { status, type, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No activities found.";
@@ -104,7 +104,7 @@ export function registerActivityTools(server: McpServer, registry?: ToolRegistry
           activity: Activity;
           messages?: Array<{ createdAt: string; level: string; message: string }>;
         };
-      }>(`/environments/${environmentId}/activities/${activityId}`, { limit });
+      }>(`/agents/${environmentId}/activities/${activityId}`, { limit });
 
       const lines = formatActivity(response.data.activity);
 

@@ -31,7 +31,7 @@ export async function resolveImageId(
 
   const searchTerm = imageIdOrName.split(":")[0];
   const response = await client.get<{ data: ImageListEntry[] }>(
-    `/environments/${environmentId}/images`,
+    `/agents/${environmentId}/images`,
     { search: searchTerm, limit: 100 }
   );
 

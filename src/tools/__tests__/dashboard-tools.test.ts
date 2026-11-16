@@ -63,49 +63,56 @@ describe("dashboard-tools", () => {
   });
 
   describe("arcane_dashboard_get", () => {
-    it("returns snapshot with container/image counts and action items", async () => {
-      mockClient.get.mockResolvedValueOnce({
-        data: {
-          containers: {
-            counts: { totalContainers: 10, runningContainers: 7, stoppedContainers: 3 },
-          },
-          imageUsageCounts: { totalImages: 15, totalImageSize: 5e9, imagesInuse: 12, imagesUnused: 3 },
-          actionItems: { items: [{ kind: "image_updates", severity: "info", count: 2 }] },
-          versionInfo: { currentVersion: "v2.3.2", newestVersion: "v2.4.0" },
-        },
+    const responses: Record<string, unknown> = {
+      "/agents/env-1/containers/counts": {
+        data: { totalContainers: 10, runningContainers: 7, stoppedContainers: 3, unhealthyContainers: 1, updatesAvailable: 2 },
+      },
+      "/agents/env-1/projects/counts": {
+        data: { totalProjects: 4, runningProjects: 3, stoppedProjects: 1, updatesAvailable: 0 },
+      },
+      "/agents/env-1/images/counts": {
+        data: { totalImages: 15, totalImageSize: 5e9, imagesInuse: 12, imagesUnused: 3 },
+      },
+      "/agents/env-1/volumes/counts": { data: { total: 6, inuse: 5, unused: 1 } },
+      "/agents/env-1/networks/counts": { data: { total: 3, inuse: 2, unused: 1 } },
+      "/app/version": { currentVersion: "v3.0.1", newestVersion: "v3.0.2", updateAvailable: true },
+    };
+
+    it("combines the per-resource counts endpoints", async () => {
+      mockClient.get.mockImplementation(async (path: string) => responses[path]);
+
+      const handler = server.tools.get("arcane_dashboard_get")!;
+      const result = await handler({ environmentId: "env-1" });
+
+      const text = result.content[0].text;
+      expect(text).toContain("Containers: 10 total (7 running, 3 stopped, 1 unhealthy, 2 with updates)");
+      expect(text).toContain("Projects: 4 total (3 running, 1 stopped)");
+      expect(text).toContain("Images: 15 total (12 in use, 3 unused");
+      expect(text).toContain("Volumes: 6 total (5 in use, 1 unused)");
+      expect(text).toContain("Networks: 3 total (2 in use, 1 unused)");
+      expect(text).toContain("Arcane: v3.0.1 (update available: v3.0.2)");
+      expect(text).not.toContain("Unavailable");
+      expect(result.isError).toBeUndefined();
+      expect(mockClient.get).not.toHaveBeenCalledWith("/agents/env-1/dashboard");
+    });
+
+    it("lists counts that failed but still reports the rest", async () => {
+      mockClient.get.mockImplementation(async (path: string) => {
+        if (path.endsWith("/volumes/counts")) throw new Error("boom");
+        return responses[path];
       });
 
       const handler = server.tools.get("arcane_dashboard_get")!;
       const result = await handler({ environmentId: "env-1" });
 
       const text = result.content[0].text;
-      expect(text).toContain("Containers: 10 total (7 running, 3 stopped)");
-      expect(text).toContain("Images: 15 total (12 in use, 3 unused");
-      expect(text).toContain("[INFO] image_updates: 2");
-      expect(text).toContain("Arcane: v2.3.2 (update available: v2.4.0)");
+      expect(text).toContain("Containers: 10 total");
+      expect(text).toContain("Unavailable: volumes");
       expect(result.isError).toBeUndefined();
     });
 
-    it("handles missing action items", async () => {
-      mockClient.get.mockResolvedValueOnce({
-        data: {
-          containers: {
-            counts: { totalContainers: 1, runningContainers: 1, stoppedContainers: 0 },
-          },
-          actionItems: { items: [] },
-        },
-      });
-
-      const handler = server.tools.get("arcane_dashboard_get")!;
-      const result = await handler({ environmentId: "env-1" });
-
-      const text = result.content[0].text;
-      expect(text).toContain("Containers: 1 total");
-      expect(text).toContain("Action Items: none");
-    });
-
-    it("returns isError when client throws", async () => {
-      mockClient.get.mockRejectedValueOnce(new Error("Server error"));
+    it("returns isError when every request fails", async () => {
+      mockClient.get.mockRejectedValue(new Error("Server error"));
 
       const handler = server.tools.get("arcane_dashboard_get")!;
       const result = await handler({ environmentId: "env-1" });

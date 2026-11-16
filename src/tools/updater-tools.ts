@@ -36,7 +36,7 @@ export function registerUpdaterTools(server: McpServer, registry?: ToolRegistry)
       if (resourceIds && resourceIds.length > 0) body.resourceIds = resourceIds;
 
       const response = await client.post<{ data: UpdaterResult }>(
-        `/environments/${environmentId}/updater/run`,
+        `/agents/${environmentId}/updater/run`,
         body,
         automatic ? { automatic: true } : undefined
       );
@@ -80,7 +80,7 @@ export function registerUpdaterTools(server: McpServer, registry?: ToolRegistry)
     },
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{ data: UpdaterStatus }>(
-        `/environments/${environmentId}/updater/status`
+        `/agents/${environmentId}/updater/status`
       );
 
       const s = response.data;
@@ -118,7 +118,7 @@ export function registerUpdaterTools(server: McpServer, registry?: ToolRegistry)
     },
     toolHandler(async ({ environmentId, limit }, client) => {
       const response = await client.get<{ data: UpdateRecord[] }>(
-        `/environments/${environmentId}/updater/history`,
+        `/agents/${environmentId}/updater/history`,
         { limit }
       );
 

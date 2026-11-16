@@ -48,23 +48,23 @@ async function tryGet(path, params) {
   }
 }
 
-const containers = (await tryGet(`/environments/${envId}/containers`, { limit: 5 }))?.data || [];
-const images = (await tryGet(`/environments/${envId}/images`, { limit: 5 }))?.data || [];
-const projects = (await tryGet(`/environments/${envId}/projects`, { limit: 5 }))?.data || [];
-const volumes = (await tryGet(`/environments/${envId}/volumes`, { limit: 5 }))?.data || [];
-const networks = (await tryGet(`/environments/${envId}/networks`, { limit: 5 }))?.data || [];
-const activities = (await tryGet(`/environments/${envId}/activities`, { limit: 5 }))?.data || [];
+const containers = (await tryGet(`/agents/${envId}/containers`, { limit: 5 }))?.data || [];
+const images = (await tryGet(`/agents/${envId}/images`, { limit: 5 }))?.data || [];
+const projects = (await tryGet(`/agents/${envId}/projects`, { limit: 5 }))?.data || [];
+const volumes = (await tryGet(`/agents/${envId}/volumes`, { limit: 5 }))?.data || [];
+const networks = (await tryGet(`/agents/${envId}/networks`, { limit: 5 }))?.data || [];
+const activities = (await tryGet(`/agents/${envId}/activities`, { limit: 5 }))?.data || [];
 const events = (await tryGet(`/events`, { limit: 5 }))?.data || [];
 const users = (await tryGet(`/users`, { limit: 5 }))?.data || [];
 const templates = (await tryGet(`/templates`, { limit: 5 }))?.data || [];
-const registries = (await tryGet(`/container-registries`, { limit: 5 }))?.data || [];
-const gitRepos = (await tryGet(`/customize/git-repositories`, { limit: 5 }))?.data || [];
-const gitopsSyncs = (await tryGet(`/environments/${envId}/gitops-syncs`, { limit: 5 }))?.data || [];
-const webhooks = (await tryGet(`/environments/${envId}/webhooks`, { limit: 5 }))?.data || [];
-const jobs = (await tryGet(`/environments/${envId}/jobs`, { limit: 5 }))?.data || [];
-const swarmServices = (await tryGet(`/environments/${envId}/swarm/services`, { limit: 5 }))?.data || [];
+const registries = (await tryGet(`/registries`, { limit: 5 }))?.data || [];
+const gitRepos = (await tryGet(`/gitops/repositories`, { limit: 5 }))?.data || [];
+const gitopsSyncs = (await tryGet(`/agents/${envId}/gitops/syncs`, { limit: 5 }))?.data || [];
+const webhooks = (await tryGet(`/agents/${envId}/webhooks`, { limit: 5 }))?.data || [];
+const jobs = (await tryGet(`/agents/${envId}/jobs`, { limit: 5 }))?.data || [];
+const swarmServices = (await tryGet(`/agents/${envId}/swarm/services`, { limit: 5 }))?.data || [];
 const backups = volumes[0]
-  ? (await tryGet(`/environments/${envId}/volumes/${volumes[0].name}/backups`))?.data || []
+  ? (await tryGet(`/agents/${envId}/volumes/${volumes[0].name}/backups`))?.data || []
   : [];
 
 const PARAM_VALUES = {

@@ -27,7 +27,7 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
     },
     toolHandler(async ({ environmentId }, client) => {
       const settings = await client.get<Array<{ key: string; value: string; type?: string }>>(
-        `/environments/${environmentId}/settings`
+        `/agents/${environmentId}/settings`
       );
 
       if (!settings || settings.length === 0) {
@@ -61,7 +61,7 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
     },
     },
     toolHandler(async ({ environmentId, settings }, client) => {
-      await client.put(`/environments/${environmentId}/settings`, settings);
+      await client.patch(`/agents/${environmentId}/settings`, settings);
       return "Settings updated successfully.";
     })
   );
@@ -84,7 +84,7 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
     },
     toolHandler(async ({ environmentId }, client) => {
       const settings = await client.get<Array<{ key: string; value: string }>>(
-        `/environments/${environmentId}/settings/public`
+        `/agents/${environmentId}/settings/public`
       );
 
       if (!settings || settings.length === 0) {
@@ -116,7 +116,7 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
     toolHandler(async (_params, client) => {
       const categories = await client.get<
         Array<{ id: string; title: string; description?: string }>
-      >("/customize/categories");
+      >("/settings/categories");
 
       if (!categories || categories.length === 0) {
         return "No settings categories found.";
@@ -165,7 +165,7 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
             description?: string;
           }> | null;
         }> | null;
-      }>("/customize/search", { query });
+      }>("/settings/search", { query });
 
       if (!response.results || response.results.length === 0) {
         return `No settings matching "${query}" found.`;
@@ -217,7 +217,7 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
           expiresAt?: string;
         }>;
         pagination: { totalItems: number };
-      }>("/api-keys", { start, limit });
+      }>("/apikeys", { start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No API keys found.";
@@ -261,7 +261,7 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
     toolHandler(async ({ name, description, expiresAt, permissions, environmentId }, client) => {
       const response = await client.post<{
         data: { id: string; name: string; key: string };
-      }>("/api-keys", {
+      }>("/apikeys", {
         name,
         description,
         expiresAt,
@@ -289,7 +289,7 @@ export function registerSettingsTools(server: McpServer, registry?: ToolRegistry
     },
     },
     toolHandler(async ({ keyId }, client) => {
-      await client.delete(`/api-keys/${keyId}`);
+      await client.delete(`/apikeys/${keyId}`);
       return `API key ${keyId} deleted.`;
     })
   );

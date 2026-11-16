@@ -29,7 +29,7 @@ export function registerWebhookTools(server: McpServer, registry?: ToolRegistry)
     },
     toolHandler(async ({ environmentId }, client) => {
       const response = await client.get<{ data: Webhook[] }>(
-        `/environments/${environmentId}/webhooks`
+        `/agents/${environmentId}/webhooks`
       );
 
       if (!response.data || response.data.length === 0) {
@@ -91,7 +91,7 @@ export function registerWebhookTools(server: McpServer, registry?: ToolRegistry)
           token: string;
           createdAt: string;
         };
-      }>(`/environments/${environmentId}/webhooks`, { name, actionType, targetType, targetId });
+      }>(`/agents/${environmentId}/webhooks`, { name, actionType, targetType, targetId });
 
       const wh = response.data;
       const lines = [
@@ -127,7 +127,7 @@ export function registerWebhookTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, webhookId, enabled }, client) => {
-      await client.patch(`/environments/${environmentId}/webhooks/${webhookId}`, { enabled });
+      await client.patch(`/agents/${environmentId}/webhooks/${webhookId}`, { enabled });
       return `Webhook ${webhookId} ${enabled ? "enabled" : "disabled"}.`;
     })
   );
@@ -150,7 +150,7 @@ export function registerWebhookTools(server: McpServer, registry?: ToolRegistry)
     },
     },
     toolHandler(async ({ environmentId, webhookId }, client) => {
-      await client.delete(`/environments/${environmentId}/webhooks/${webhookId}`);
+      await client.delete(`/agents/${environmentId}/webhooks/${webhookId}`);
       return `Webhook ${webhookId} deleted.`;
     })
   );

@@ -30,7 +30,7 @@ export function registerResources(server: McpServer): void {
         const response = await client.get<{
           data: Environment[];
           pagination: { total: number; start: number; limit: number };
-        }>("/environments", { start: 0, limit: 100 });
+        }>("/agents", { start: 0, limit: 100 });
 
         if (!response.data || response.data.length === 0) {
           return {

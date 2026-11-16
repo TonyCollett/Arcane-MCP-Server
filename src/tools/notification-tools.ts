@@ -51,14 +51,14 @@ export function registerNotificationTools(server: McpServer, registry?: ToolRegi
         openWorldHint: false,
       },
       inputSchema: {
-      environmentId: z.string().describe("Environment ID"),
+      environmentId: z.string().optional().describe("Not used: notification settings are global since Arcane 3.0. Accepted so older callers keep working"),
       provider: z.enum(NOTIFICATION_PROVIDERS).optional().describe("Only show a specific provider"),
     },
     },
-    toolHandler(async ({ environmentId, provider }, client) => {
+    toolHandler(async ({ provider }, client) => {
       if (provider) {
         const settings = await client.get<NotificationSettings>(
-          `/environments/${environmentId}/notifications/settings/${provider}`
+          `/notifications/settings/${provider}`
         );
         const lines = [
           `Notification Settings (${settings.provider}):`,
@@ -69,7 +69,7 @@ export function registerNotificationTools(server: McpServer, registry?: ToolRegi
       }
 
       const settings = await client.get<NotificationSettings[]>(
-        `/environments/${environmentId}/notifications/settings`
+        `/notifications/settings`
       );
 
       if (!settings || settings.length === 0) {
@@ -98,14 +98,14 @@ export function registerNotificationTools(server: McpServer, registry?: ToolRegi
         openWorldHint: false,
       },
       inputSchema: {
-      environmentId: z.string().describe("Environment ID"),
+      environmentId: z.string().optional().describe("Not used: notification settings are global since Arcane 3.0. Accepted so older callers keep working"),
       provider: z.enum(NOTIFICATION_PROVIDERS).describe("Notification provider"),
       enabled: z.boolean().describe("Enable/disable this provider"),
       config: z.record(z.string(), z.unknown()).optional().describe("Provider-specific configuration (e.g., webhookUrl for Discord, smtp settings for email)"),
     },
     },
-    toolHandler(async ({ environmentId, provider, enabled, config }, client) => {
-      await client.post(`/environments/${environmentId}/notifications/settings`, {
+    toolHandler(async ({ provider, enabled, config }, client) => {
+      await client.post(`/notifications/settings`, {
         provider,
         enabled,
         config: config || {},
@@ -127,12 +127,12 @@ export function registerNotificationTools(server: McpServer, registry?: ToolRegi
         openWorldHint: false,
       },
       inputSchema: {
-      environmentId: z.string().describe("Environment ID"),
+      environmentId: z.string().optional().describe("Not used: notification settings are global since Arcane 3.0. Accepted so older callers keep working"),
       provider: z.enum(NOTIFICATION_PROVIDERS).describe("Notification provider to delete"),
     },
     },
-    toolHandler(async ({ environmentId, provider }, client) => {
-      await client.delete(`/environments/${environmentId}/notifications/settings/${provider}`);
+    toolHandler(async ({ provider }, client) => {
+      await client.delete(`/notifications/settings/${provider}`);
       return `Notification settings for ${provider} deleted.`;
     })
   );
@@ -150,13 +150,15 @@ export function registerNotificationTools(server: McpServer, registry?: ToolRegi
         openWorldHint: false,
       },
       inputSchema: {
-      environmentId: z.string().describe("Environment ID"),
+      environmentId: z.string().optional().describe("Not used: notification settings are global since Arcane 3.0. Accepted so older callers keep working"),
       provider: z.enum(NOTIFICATION_PROVIDERS).describe("Provider to test"),
     },
     },
-    toolHandler(async ({ environmentId, provider }, client) => {
+    toolHandler(async ({ provider }, client) => {
       const response = await client.post<{ data?: { message?: string; warning?: string } }>(
-        `/environments/${environmentId}/notifications/test/${provider}`
+        `/notifications/settings/${provider}`,
+        undefined,
+        { action: "test" }
       );
 
       let text = response.data?.message || "Test notification sent.";

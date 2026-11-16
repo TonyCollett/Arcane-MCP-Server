@@ -38,7 +38,7 @@ export function registerImageTools(server: McpServer, registry?: ToolRegistry): 
       const response = await client.get<{
         data: Image[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/images`, { search, sort, order, start, limit });
+      }>(`/agents/${environmentId}/images`, { search, sort, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No images found.";
@@ -88,7 +88,7 @@ export function registerImageTools(server: McpServer, registry?: ToolRegistry): 
           architecture?: string;
           os?: string;
         };
-      }>(`/environments/${environmentId}/images/${resolvedId}`);
+      }>(`/agents/${environmentId}/images/${resolvedId}`);
 
       const img = response.data;
 
@@ -132,7 +132,7 @@ export function registerImageTools(server: McpServer, registry?: ToolRegistry): 
     toolHandler(async ({ environmentId, imageName, tag }, client) => {
       // Credentials of registries configured in Arcane are applied automatically by the server
       const displayName = tag ? `${imageName}:${tag}` : imageName;
-      await client.post(`/environments/${environmentId}/images/pull`, { imageName, tag });
+      await client.post(`/agents/${environmentId}/images/pull`, { imageName, tag });
       return `Image ${displayName} pulled successfully.`;
     })
   );
@@ -157,7 +157,7 @@ export function registerImageTools(server: McpServer, registry?: ToolRegistry): 
     },
     toolHandler(async ({ environmentId, imageId, force }, client) => {
       const resolvedId = await resolveImageId(client, environmentId, imageId);
-      await client.delete(`/environments/${environmentId}/images/${resolvedId}`, { force });
+      await client.delete(`/agents/${environmentId}/images/${resolvedId}`, { force });
       return `Image ${imageId} removed successfully.`;
     })
   );
@@ -181,7 +181,7 @@ export function registerImageTools(server: McpServer, registry?: ToolRegistry): 
     },
     toolHandler(async ({ environmentId, all }, client) => {
       const response = await client.post<{ data: { imagesDeleted?: string[]; spaceReclaimed?: number } }>(
-        `/environments/${environmentId}/images/prune`,
+        `/agents/${environmentId}/images/prune`,
         { mode: all ? "all" : "dangling", dangling: !all }
       );
 
@@ -218,7 +218,7 @@ export function registerImageTools(server: McpServer, registry?: ToolRegistry): 
           imagesInuse: number;
           imagesUnused: number;
         };
-      }>(`/environments/${environmentId}/images/counts`);
+      }>(`/agents/${environmentId}/images/counts`);
 
       const c = response.data;
       return `Image Statistics:\n  Total: ${c.totalImages}\n  Total Size: ${formatSizeGB(c.totalImageSize)}\n  In Use: ${c.imagesInuse}\n  Unused: ${c.imagesUnused}`;
@@ -251,7 +251,7 @@ export function registerImageTools(server: McpServer, registry?: ToolRegistry): 
           currentDigest?: string;
           latestDigest?: string;
         };
-      }>(`/environments/${environmentId}/image-updates/check`, { imageRef: image });
+      }>(`/agents/${environmentId}/images/updates/check`, { imageRef: image });
 
       const u = response.data;
       if (u.hasUpdate) {
@@ -281,7 +281,7 @@ export function registerImageTools(server: McpServer, registry?: ToolRegistry): 
     },
     },
     toolHandler(async ({ environmentId }, client) => {
-      client.postInBackground(`/environments/${environmentId}/image-updates/check-all`, {});
+      client.postInBackground(`/agents/${environmentId}/images/updates/check?action=all`, {});
 
       return [
         "Update check for all images started in the background (this can take several minutes).",
@@ -315,7 +315,7 @@ export function registerImageTools(server: McpServer, registry?: ToolRegistry): 
           digestUpdates: number;
           errorsCount: number;
         };
-      }>(`/environments/${environmentId}/image-updates/summary`);
+      }>(`/agents/${environmentId}/images/updates/summary`);
 
       const s = response.data;
       return `Update Summary:\n  Total Images: ${s.totalImages}\n  Updates Available: ${s.imagesWithUpdates}\n  Digest Updates: ${s.digestUpdates}\n  Check Errors: ${s.errorsCount}`;

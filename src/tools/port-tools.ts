@@ -36,7 +36,7 @@ export function registerPortTools(server: McpServer, registry?: ToolRegistry): v
       const response = await client.get<{
         data: PortMapping[];
         pagination: { totalItems: number };
-      }>(`/environments/${environmentId}/ports`, { search, sort, order, start, limit });
+      }>(`/agents/${environmentId}/ports`, { search, sort, order, start, limit });
 
       if (!response.data || response.data.length === 0) {
         return "No port mappings found.";
