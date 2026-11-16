@@ -9,7 +9,7 @@ MCP server for Docker management via the Arcane platform. 183 tools, 2 resources
 ```bash
 npm install
 npm run build          # TypeScript → dist/
-npm test               # vitest (150 tests)
+npm test               # vitest (152 tests)
 npm run dev            # stdio mode
 npm run dev:tcp        # HTTP mode
 ARCANE_BASE_URL=… npm run update-api-spec  # Refresh OpenAPI spec + generated types from a live instance

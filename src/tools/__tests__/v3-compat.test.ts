@@ -36,6 +36,7 @@ import { registerNotificationTools } from "../notification-tools.js";
 import { registerImageUpdateTools } from "../image-update-tools.js";
 import { registerSwarmTools } from "../swarm-tools.js";
 import { registerEnvironmentTools } from "../environment-tools.js";
+import { registerEventTools } from "../event-tools.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const toolsDir = join(here, "..");
@@ -134,6 +135,7 @@ describe("Arcane v3 API compatibility", () => {
       registerImageUpdateTools,
       registerSwarmTools,
       registerEnvironmentTools,
+      registerEventTools,
     ]) {
       register(server as unknown as Server);
     }
@@ -309,5 +311,27 @@ describe("Arcane v3 API compatibility", () => {
     const result = await call("arcane_environment_pair_agent", { environmentId: "2" });
     expect(mockClient.post).toHaveBeenCalledWith("/agents/2/deployment");
     expect(result.content[0].text).toContain("tok-123");
+  });
+
+  it("event listings fall back to the page size when Arcane reports no total", async () => {
+    const event = { id: "e1", type: "git.sync.run", severity: "success", title: "Git sync completed", createdAt: "2026-11-16T00:00:00Z" };
+    mockClient.get.mockResolvedValueOnce({ data: [event], pagination: { totalItems: -1, hasNextPage: true } });
+    mockClient.get.mockResolvedValueOnce({ data: [event], pagination: { totalItems: 7 } });
+
+    const unknown = await call("arcane_event_list_by_environment", { environmentId: "0" });
+    const known = await call("arcane_event_list", {});
+
+    expect(mockClient.get.mock.calls[0][0]).toBe("/events/agent/0");
+    expect(unknown.content[0].text).toContain("Showing 1 events (more available");
+    expect(unknown.content[0].text).not.toContain("-1");
+    expect(known.content[0].text).toContain("Found 7 events");
+  });
+
+  it("system health reports the status Arcane returns", async () => {
+    mockClient.get.mockResolvedValueOnce({ status: "UP" });
+
+    const result = await call("arcane_system_get_health", {});
+
+    expect(result.content[0].text).toBe("Health Status: UP");
   });
 });

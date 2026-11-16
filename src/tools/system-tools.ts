@@ -7,7 +7,6 @@ import { z } from "zod";
 import { toolHandler } from "../utils/tool-helpers.js";
 import { moduleRegistrar, type ToolRegistry } from "./registry.js";
 import { formatSizeGB, formatSizeMB } from "../utils/format.js";
-import { SECONDS_PER_HOUR } from "../constants.js";
 import type { ContainerActionResult } from "../types/arcane-types.js";
 
 /** Containers a bulk action couldn't handle, as a suffix for the tool's reply. */
@@ -35,15 +34,9 @@ export function registerSystemTools(server: McpServer, registry?: ToolRegistry):
       inputSchema: {},
     },
     toolHandler(async (_params, client) => {
-      const response = await client.get<{
-        status: string;
-        version?: string;
-        uptime?: number;
-      }>("/health");
-
-      const uptimeHours = response.uptime ? (response.uptime / SECONDS_PER_HOUR).toFixed(1) : "unknown";
-
-      return `Health Status: ${response.status}\n  Version: ${response.version || "unknown"}\n  Uptime: ${uptimeHours} hours`;
+      // Arcane 3.0's /health returns only { status }; version lives at /app/version.
+      const response = await client.get<{ status: string }>("/health");
+      return `Health Status: ${response.status}`;
     })
   );
 
